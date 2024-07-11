@@ -64,18 +64,18 @@ export function App() {
                             <Sidebar.Item href="#" icon={HiChartPie}>
                                 Dashboard
                             </Sidebar.Item>
-                            <Sidebar.Item href="#" icon={HiViewBoards} label="Pro" labelColor="dark">
-                                Kanban
-                            </Sidebar.Item>
-                            <Sidebar.Item href="#" icon={HiInbox} label="3">
-                                Inbox
-                            </Sidebar.Item>
-                            <Sidebar.Item href="#" icon={HiUser}>
-                                Users
-                            </Sidebar.Item>
-                            <Sidebar.Item href="#" icon={HiShoppingBag}>
-                                Products
-                            </Sidebar.Item>
+                            {/*<Sidebar.Item href="#" icon={HiViewBoards} label="Pro" labelColor="dark">*/}
+                            {/*    Kanban*/}
+                            {/*</Sidebar.Item>*/}
+                            {/*<Sidebar.Item href="#" icon={HiInbox} label="3">*/}
+                            {/*    Inbox*/}
+                            {/*</Sidebar.Item>*/}
+                            {/*<Sidebar.Item href="#" icon={HiUser}>*/}
+                            {/*    Users*/}
+                            {/*</Sidebar.Item>*/}
+                            {/*<Sidebar.Item href="#" icon={HiShoppingBag}>*/}
+                            {/*    Products*/}
+                            {/*</Sidebar.Item>*/}
                             <Sidebar.Item href="#" icon={HiArrowSmRight}>
                                 Sign In
                             </Sidebar.Item>
@@ -85,9 +85,21 @@ export function App() {
                         </Sidebar.ItemGroup>
                     </Sidebar.Items>
                 </Sidebar>
-                <div className="grid grid-cols-1 xl:grid-cols-3 gap-4 mb-4">
-                    <Card className="mx-auto shadow w-full ml-1 mr-1 col-span-2 p-4 mb-4 bg-white border border-gray-200 rounded-lg shadow-sm dark:border-gray-700 sm:p-6 dark:bg-gray-800" />
-                    <Card className="mx-auto shadow w-full ml-1 mr-1 p-4 mb-4 bg-white border border-gray-200 rounded-lg shadow-sm dark:border-gray-700 sm:p-6 dark:bg-gray-800" />
+                <div className="w-full grid sm:grid-cols-1 md:grid-cols-1 xl:grid-cols-5 mb-4 pr-2">
+                    <Card
+                        className="col-span-3 w-full shadow p-4 ml-1 bg-white border border-gray-200 rounded-lg sm:shadow-sm dark:border-gray-700 sm:p-6 dark:bg-gray-800">
+                        <p className="font-normal text-gray-700 dark:text-gray-400">
+                            Here are the biggest enterprise technology acquisitions of 2021 so far, in reverse
+                            chronological order.
+                        </p>
+                    </Card>
+                    <Card
+                        className="col-span-2 shadow mr-1 w-full p-4 bg-white border border-gray-200 rounded-lg ml-1 sm:mr-0 dark:border-gray-700 sm:p-6 dark:bg-gray-800">
+                        <p className="font-normal text-gray-700 dark:text-gray-400">
+                            Here are the biggest enterprise technology acquisitions of 2021 so far, in reverse
+                            chronological order.
+                        </p>
+                    </Card>
                 </div>
             </div>
         </>
