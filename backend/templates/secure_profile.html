@@ -1,0 +1,12 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+    You logged in secure page as {{ user }}. <br />
+    <a href="{% url 'account_logout' %}">Logout</a> <br />
+    <a href="{% url 'strava_auth' %}">Connect with Strava</a>
+</body>
+</html>

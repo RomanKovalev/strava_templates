@@ -17,7 +17,12 @@ DEBUG = os.getenv('DEBUG', False)
 ALLOWED_HOSTS = [os.getenv('ALLOWED_HOSTS', '*')]
 
 
-# Application definition
+AUTHENTICATION_BACKENDS = [
+    'django.contrib.auth.backends.ModelBackend',
+    'allauth.account.auth_backends.AuthenticationBackend',
+]
+
+SITE_ID = 1
 
 INSTALLED_APPS = [
     'django.contrib.admin',
@@ -26,6 +31,12 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+    'django.contrib.sites',
+
+    'allauth',
+    'allauth.account',
+    'allauth.socialaccount',
+    'allauth.socialaccount.providers.strava',
 
     'tokens',
 ]
@@ -38,6 +49,8 @@ MIDDLEWARE = [
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
+
+    "allauth.account.middleware.AccountMiddleware",
 ]
 
 ROOT_URLCONF = 'strava_views.urls'
@@ -45,8 +58,7 @@ ROOT_URLCONF = 'strava_views.urls'
 TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
-        'DIRS': [BASE_DIR / 'templates']
-	    ,
+        'DIRS': [BASE_DIR / 'templates'],
         'APP_DIRS': True,
         'OPTIONS': {
             'context_processors': [
@@ -61,9 +73,6 @@ TEMPLATES = [
 
 WSGI_APPLICATION = 'strava_views.wsgi.application'
 
-
-# Database
-# https://docs.djangoproject.com/en/5.0/ref/settings/#databases
 
 DATABASES = {
     "default": {
@@ -120,3 +129,21 @@ DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
 CSRF_TRUSTED_ORIGINS = ['https://ebdccc6f5b8246b0a07e24ca7d566df2.serveo.net','https://*.127.0.0.1']
 
+SOCIALACCOUNT_PROVIDERS = {
+    'strava': {
+        'APP': {
+            'client_id': '31123',
+            'secret': 'ffc9de4ffq0b11c12674dadaa32409cba7731bf5a',
+            'key': ''
+        }
+    }
+}
+
+STATIC_URL = '/static/'
+STATICFILES_DIRS = [os.path.join(BASE_DIR, 'static')]
+STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')
+
+
+SIGNUP_REDIRECT_URL = '/profile/'
+LOGIN_REDIRECT_URL = '/profile/'
+LOGOUT_REDIRECT_URL = '/profile/'

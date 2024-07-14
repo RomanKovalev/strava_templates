@@ -4,9 +4,9 @@ import requests
 import time
 from .models import StravaToken
 
-client_id = 31qwe927
-client_secret = '1118cc49aff6810ff72aadf8a69af6a01363735911b209'
-redirect_uri = 'https://ebdccc6f5b8246b0a07e24csasa7d566df2.serveo.net/activities/strava_callback'
+client_id = 31237
+client_secret = 'ffc9de4ffq0b11c12674dadaa32409cba7731bf5a'
+redirect_uri = 'https://ebdccc6f5b8246b0a07e24ca7d566df2.serveo.net/activities/strava_callback'
 
 
 @login_required
@@ -27,6 +27,8 @@ def strava_callback(request):
 
     response = requests.post(token_url, data=payload)
     if response.status_code == 200:
+        # Access tokens are used by applications to obtain and modify Strava resources on behalf of the authenticated athlete.
+        # Refresh tokens are used to obtain new access tokens when older ones expire.
         tokens = response.json()
         access_token = tokens['access_token']
         refresh_token = tokens['refresh_token']
@@ -40,7 +42,7 @@ def strava_callback(request):
 
         strava_token.save()
 
-        return redirect('activities')
+        return redirect('profile')
 
 def get_access_token(user):
     strava_token = StravaToken.objects.get(user=user)
