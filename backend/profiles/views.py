@@ -1,6 +1,6 @@
 from django.shortcuts import render
 from django.contrib.auth.decorators import login_required
-
+from activities.tasks import add
 
 @login_required
 def secure_profile(request):
@@ -9,4 +9,6 @@ def secure_profile(request):
     context = {
         'user': request.user
     }
+
+    result = add.delay()
     return render(request, 'secure_profile.html', context)
