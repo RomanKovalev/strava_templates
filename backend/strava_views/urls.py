@@ -16,7 +16,10 @@ Including another URLconf
 """
 from django.contrib import admin
 from django.urls import path
+from profiles.views import secure_profile
 
 urlpatterns = [
     path('admin/', admin.site.urls),
+    path('qwe/', secure_profile),
 ]
+
