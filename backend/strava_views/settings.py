@@ -38,6 +38,8 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+
+    'social_django',
 ]
 
 MIDDLEWARE = [
@@ -64,6 +66,8 @@ TEMPLATES = [
                 'django.template.context_processors.request',
                 'django.contrib.auth.context_processors.auth',
                 'django.contrib.messages.context_processors.messages',
+                'social_django.context_processors.backends',
+                'social_django.context_processors.login_redirect'
             ],
         },
     },
@@ -127,3 +131,18 @@ STATIC_URL = 'static/'
 # https://docs.djangoproject.com/en/5.0/ref/settings/#default-auto-field
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
+
+# StravaWebsite/settings.py
+AUTHENTICATION_BACKENDS = (
+    'social_core.backends.strava.StravaOAuth',
+    'django.contrib.auth.backends.ModelBackend',
+)
+
+SOCIAL_AUTH_LOGIN_REDIRECT_URL = '/'
+SOCIAL_AUTH_STRAVA_SCOPE = ['activity:read_all']
+SOCIAL_AUTH_STRAVA_KEY = '31927'
+SOCIAL_AUTH_STRAVA_SECRET = '8cc49aff68110ff72a83a69af6a013263735911b209'
+
+CSRF_TRUSTED_ORIGINS = ['https://f20ec7768e2f94d0eefab66675d6033b.serveo.net','https://*.127.0.0.1']
+
+
