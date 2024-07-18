@@ -33,7 +33,9 @@ INSTALLED_APPS = [
     'allauth.socialaccount',
     'allauth.socialaccount.providers.strava',
     'widget_tweaks',
-    'slippers'
+    'slippers',
+    
+    'activities',
 ]
 
 MIDDLEWARE = [

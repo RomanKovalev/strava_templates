@@ -6,6 +6,7 @@
 <body>
     <p>Hello, world. You're at the myapp dashboard.</p>
     {{ request.user }}<br />
+    You havent imported activities. Click <a href="{% url 'activities:sync' %}">"LINK"</a> to start import process.<br />
     <a href="/accounts/logout">Logout</a>
 </body>
 </html>
