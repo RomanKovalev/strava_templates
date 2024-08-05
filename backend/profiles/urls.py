@@ -1,7 +1,9 @@
 from django.urls import path
+from . import views
 
-from profiles import views
+app_name = 'profiles'
 
 urlpatterns = [
-    path('', views.secure_profile, name='profile'),
+    path('dashboard/', views.dashboard, name='dashboard'),
+    path('', views.index, name='index'),
 ]

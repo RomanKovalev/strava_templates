@@ -1,14 +1,22 @@
 from django.shortcuts import render
 from django.contrib.auth.decorators import login_required
-from activities.tasks import add
+# from activities.tasks import add
+
+# def secure_profile(request):
+#     cat = list(num for num in range(0, 37))
+#     add.delay()
+#     context = {
+#         'user': request.user
+#     }
+#     return render(request, 'secure_profile.html', context)
+from django.shortcuts import render
+from django.contrib.auth.decorators import login_required
+
+
+def index(request):
+    return render(request, 'index.html')
+
 
 @login_required
-def secure_profile(request):
-    cat = list(num for num in range(0, 37))
-
-    context = {
-        'user': request.user
-    }
-
-    result = add.delay()
-    return render(request, 'secure_profile.html', context)
+def dashboard(request):
+    return render(request, 'dashboard.html')

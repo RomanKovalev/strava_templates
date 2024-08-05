@@ -31,14 +31,16 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
-    'django.contrib.sites',
 
+    'allauth_ui',
     'allauth',
     'allauth.account',
     'allauth.socialaccount',
     'allauth.socialaccount.providers.strava',
-
-    'tokens',
+    'widget_tweaks',
+    'slippers',
+    
+    'activities',
 ]
 
 MIDDLEWARE = [
@@ -49,7 +51,6 @@ MIDDLEWARE = [
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
-
     "allauth.account.middleware.AccountMiddleware",
 ]
 
@@ -63,9 +64,9 @@ TEMPLATES = [
         'OPTIONS': {
             'context_processors': [
                 'django.template.context_processors.debug',
-                'django.template.context_processors.request',
                 'django.contrib.auth.context_processors.auth',
                 'django.contrib.messages.context_processors.messages',
+                'django.template.context_processors.request'
             ],
         },
     },
@@ -127,53 +128,38 @@ STATIC_URL = 'static/'
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
-CSRF_TRUSTED_ORIGINS = ['https://ebdccc6f5b8246b0a07e24ca7d566df2.serveo.net','https://*.127.0.0.1']
+# StravaWebsite/settings.py
+AUTHENTICATION_BACKENDS = (
+    'allauth.account.auth_backends.AuthenticationBackend',
+    'django.contrib.auth.backends.ModelBackend',
+)
+
+SOCIAL_AUTH_LOGIN_REDIRECT_URL = '/admin'
+SOCIAL_AUTH_STRAVA_SCOPE = ['activity:read_all']
+SOCIAL_AUTH_STRAVA_KEY = '31927'
+SOCIAL_AUTH_STRAVA_SECRET = '8cc49aff6810ff72a8a69af6a01363735911b209'
+
+
+CSRF_TRUSTED_ORIGINS = ['https://8563d12eba60abc023dc7b94b47aae2c.serveo.net','https://*.127.0.0.1']
 
 SOCIALACCOUNT_PROVIDERS = {
     'strava': {
         'APP': {
-            'client_id': '31123',
-            'secret': 'ffc9de4ffq0b11c12674dadaa32409cba7731bf5a',
+            'client_id': '31927',
+            'secret': '8cc49aff6810ff72a8a69af6a01363735911b209',
             'key': ''
         }
     }
 }
 
-STATIC_URL = '/static/'
-STATICFILES_DIRS = [os.path.join(BASE_DIR, 'static')]
-STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')
+SOCIALACCOUNT_LOGIN_ON_GET = True
+SOCIALACCOUNT_ONLY = True
+ACCOUNT_EMAIL_VERIFICATION = 'none'
+SOCIALACCOUNT_STORE_TOKENS = True
 
+LOGIN_REDIRECT_URL = '/dashboard/'
+LOGOUT_REDIRECT_URL = ''
 
-SIGNUP_REDIRECT_URL = '/profile/'
-LOGIN_REDIRECT_URL = '/profile/'
-LOGOUT_REDIRECT_URL = '/profile/'
-
+ACCOUNT_FORMS = {'login': 'profiles.forms.CustomLoginForm'}
 CELERY_BROKER_URL = 'redis://redis:6379/0'
 CELERY_RESULT_BACKEND = 'redis://redis:6379/0'
-
-
-LOGGING = {
-    'version': 1,
-    'disable_existing_loggers': False,
-    'handlers': {
-        'console': {
-            'class': 'logging.StreamHandler',
-        },
-    },
-    'root': {
-        'handlers': ['console'],
-        'level': 'INFO',
-    },
-    'loggers': {
-        'django': {
-            'handlers': ['console'],
-            'level': 'INFO',
-            'propagate': False,
-        },
-        'celery': {
-            'handlers': ['console'],
-            'level': 'INFO',
-            'propagate': False,
-        },
-    },
-}
