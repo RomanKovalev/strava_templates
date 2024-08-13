@@ -1,26 +1,41 @@
 import React, { useState } from 'react';
 import { useDispatch } from 'react-redux';
-import { login } from '../store/authSlice';
+import { login, logout } from '../auth';
+import { useNavigate } from 'react-router-dom';
 
 function Login() {
   const [username, setUsername] = useState('');
-  const dispatch = useDispatch();
+  const [password, setPassword] = useState('');
+  const navigate = useNavigate();
 
-  const handleLogin = () => {
-    dispatch(login(username));
+  const handleLogin = async () => {
+    try {
+      await login(username, password);
+      navigate('/');
+      alert('Login successful');
+    } catch (error) {
+      alert('Login failed');
+    }
   };
 
   return (
-    <div>
-      <h2>Login</h2>
-      <input
-        type="text"
-        placeholder="Enter your username"
-        value={username}
-        onChange={(e) => setUsername(e.target.value)}
-      />
-      <button onClick={handleLogin}>Login</button>
-    </div>
+      <div>
+          <h2>Login</h2>
+          <input
+              type="text"
+              value={username}
+              onChange={(e) => setUsername(e.target.value)}
+              placeholder="Username"
+          />
+          <input
+              type="password"
+              value={password}
+              onChange={(e) => setPassword(e.target.value)}
+              placeholder="Password"
+          />
+          <button onClick={handleLogin}>Login</button>
+          <button onClick={handleLogin}>Login</button>
+      </div>
   );
 }
 
