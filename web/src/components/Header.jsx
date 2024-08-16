@@ -1,7 +1,10 @@
 import { Navbar } from 'flowbite-react';
 import { Link } from 'react-router-dom';
+import { useSelector } from 'react-redux';
 
 export const Header = () => {
+    const isAuthenticated = useSelector((state) => state.auth.isAuthenticated);
+
     return (
         <header>
             <Navbar fluid={true} rounded={true}>
@@ -32,11 +35,20 @@ export const Header = () => {
                             SignUp
                         </Link>
                     </Navbar.Link>
+
+                    { isAuthenticated ?
+                    <Navbar.Link as="div">
+                        <Link to='/logout'>
+                            Logout
+                        </Link>
+                    </Navbar.Link>
+                    :
                     <Navbar.Link as="div">
                         <Link to='/login'>
                             Login
                         </Link>
                     </Navbar.Link>
+                    }
                 </Navbar.Collapse>
             </Navbar>
         </header>
