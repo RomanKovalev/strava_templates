@@ -21,6 +21,7 @@ const App = () => {
             <Routes>
               <Route path="/" element={<Dashboard/>}/>
               <Route path="/activities" element={<PrivateRoute><Activities/></PrivateRoute>}/>
+              {/*<Route path="/activities" element={<Activities/>}/>*/}
               <Route path="/login" element={<Login/>}/>
               <Route path="/logout" element={<Logout/>}/>
               <Route path="*" element={<NotFound/>}/>
