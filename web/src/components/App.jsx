@@ -8,6 +8,7 @@ import PrivateRoute from './PrivateRoute';
 import Header from './Header.jsx';
 import WebSiteFooter from './WebSiteFooter.jsx';
 import { useSelector } from 'react-redux';
+import StravaLogin from "./StravaLogin.jsx";
 
 const App = () => {
   const isAuthenticated = useSelector((state) => state.auth.isAuthenticated);
@@ -24,6 +25,7 @@ const App = () => {
               {/*<Route path="/activities" element={<Activities/>}/>*/}
               <Route path="/login" element={<Login/>}/>
               <Route path="/logout" element={<Logout/>}/>
+              <Route path="/strava/login" element={<StravaLogin/>}/>
               <Route path="*" element={<NotFound/>}/>
             </Routes>
           </div>

@@ -3,7 +3,6 @@ import axios from 'axios';
 import api from '../api'
 
 const Activities = () => {
-  // Состояние для хранения данных из API
   const [activities, setActivities] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
@@ -11,7 +10,6 @@ const Activities = () => {
   useEffect(() => {
     const fetchActivities = async () => {
       try {
-        // const response = await axios.get('http://localhost:8000/api/activities');
         const response = await api.get('activities');
         setActivities(response.data);
       } catch (err) {
