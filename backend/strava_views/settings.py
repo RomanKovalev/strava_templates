@@ -40,6 +40,8 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
 
     'corsheaders',
+
+    'activities',
 ]
 
 MIDDLEWARE = [
@@ -150,3 +152,8 @@ REST_FRAMEWORK = {
 #     'VERIFYING_KEY': None,
 #     'AUTH_HEADER_TYPES': ('Bearer',),
 # }
+
+
+STRAVA_CLIENT_ID = '31927'
+STRAVA_CLIENT_SECRET = '8cc49aff6810ff72a8a69af6a01363735911b209'
+STRAVA_REDIRECT_URI = "http://localhost:5173/strava/login"
