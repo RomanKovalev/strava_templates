@@ -1,4 +1,6 @@
 import requests
+from datetime import datetime, timedelta
+
 from django.http import JsonResponse
 from django.conf import settings
 from django.contrib.auth.models import User
@@ -7,6 +9,7 @@ from rest_framework.permissions import IsAuthenticated, AllowAny
 from rest_framework.views import APIView
 from rest_framework.response import Response
 from rest_framework_simplejwt.tokens import RefreshToken
+from rest_framework import status
 
 from .models import StravaProfile
 
@@ -99,7 +102,31 @@ class StravaAuthCallbackView(APIView):
         })
 
         refresh = RefreshToken.for_user(user)
-        return Response({
-            'refresh': str(refresh),
-            'access': str(refresh.access_token),
-        })
+
+        response = Response({
+            'message': 'Logged in successfully',
+            'user': {
+                'username': user.username,
+                'email': user.email,
+            }
+        }, status=status.HTTP_200_OK)
+        expiration = datetime.utcnow() + timedelta(days=7)
+        response.set_cookie(
+            key='jwt',
+            value=refresh.access_token,
+            expires=expiration,
+            httponly=True,  # Доступ только через HTTP (невидимо для JavaScript)
+            # secure=True,  # Только через HTTPS (рекомендуется для production)
+            # samesite='Lax'  # Cookie отправляется только при запросах с того же сайта
+            samesite=None
+        )
+        return response
+
+
+class StravaLogoutView(APIView):
+    permission_classes = [IsAuthenticated]
+
+    def post(self, request):
+        response = Response({"message": "Logged out successfully"}, status=status.HTTP_200_OK)
+        response.delete_cookie('jwt')
+        return response
