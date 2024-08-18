@@ -21,8 +21,8 @@ const App = () => {
           <div className="container mx-auto">
             <Routes>
               <Route path="/" element={<Dashboard/>}/>
-              <Route path="/activities" element={<PrivateRoute><Activities/></PrivateRoute>}/>
-              {/*<Route path="/activities" element={<Activities/>}/>*/}
+              {/*<Route path="/activities" element={<PrivateRoute><Activities/></PrivateRoute>}/>*/}
+              <Route path="/activities" element={<Activities/>}/>
               <Route path="/login" element={<Login/>}/>
               <Route path="/logout" element={<Logout/>}/>
               <Route path="/strava/login" element={<StravaLogin/>}/>

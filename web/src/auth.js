@@ -15,11 +15,6 @@ export const login = async (username, password) => {
   }
 };
 
-export const logout = () => {
-  Cookies.remove('access_token');
-  Cookies.remove('refresh_token');
-};
-
 export const refreshToken = async () => {
   try {
     const refresh = Cookies.get('refresh_token');

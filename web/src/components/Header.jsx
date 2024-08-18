@@ -40,6 +40,11 @@ export const Header = () => {
                             Strava Login
                         </Link>
                     </Navbar.Link>
+                    <Navbar.Link as="div">
+                        <Link to='/logout'>
+                            Logout
+                        </Link>
+                    </Navbar.Link>
                     { isAuthenticated ?
                     <Navbar.Link as="div">
                         <Link to='/logout'>
