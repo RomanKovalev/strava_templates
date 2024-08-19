@@ -11,7 +11,7 @@ from rest_framework.response import Response
 from rest_framework_simplejwt.tokens import RefreshToken
 from rest_framework import status
 
-from .models import StravaProfile
+from .models import StravaProfile, Map, Activity
 
 
 class MyProtectedView(APIView):
@@ -28,7 +28,7 @@ class StravaAuthStartView(APIView):
         strava_auth_url = (
             f"https://www.strava.com/oauth/authorize?client_id={settings.STRAVA_CLIENT_ID}"
             f"&response_type=code&redirect_uri={settings.STRAVA_REDIRECT_URI}"
-            f"&scope=read,activity:read&approval_prompt=auto"
+            f"&scope=read,activity:read_all&approval_prompt=auto"
         )
         return JsonResponse({"auth_url": strava_auth_url})
 
@@ -142,3 +142,14 @@ class CheckAuthView(APIView):
                 'email': request.user.email,
         }
     })
+
+from activities.utils import fetch_strava_activities
+class RunView(APIView):
+    permission_classes = [AllowAny]
+    def get(self, request):
+        print("Starting Run View")
+        fetch_strava_activities(2)
+
+        return Response({
+            'authenticated': True,
+        })
