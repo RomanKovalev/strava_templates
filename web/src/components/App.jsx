@@ -7,12 +7,35 @@ import NotFound from './NotFound.jsx';
 import PrivateRoute from './PrivateRoute';
 import Header from './Header.jsx';
 import WebSiteFooter from './WebSiteFooter.jsx';
-import { useSelector } from 'react-redux';
+import {useDispatch, useSelector} from 'react-redux';
 import StravaLogin from "./StravaLogin.jsx";
+import React, { useEffect } from 'react';
+import { login as loginAction } from '../store/authSlice';
+import { logout as logoutAction } from '../store/authSlice';
+import api from "../api.js";
 
 const App = () => {
   const isAuthenticated = useSelector((state) => state.auth.isAuthenticated);
   const user = useSelector((state) => state.auth.user);
+  const dispatch = useDispatch()
+
+  useEffect(() => {
+    // Проверка аутентификации при загрузке страницы
+    const checkAuth = async () => {
+      try {
+        const response = await api.get('check-auth/');
+        if (response.data.authenticated) {
+          dispatch(loginAction(response.data.user))
+        } else {
+          dispatch(logoutAction())
+        }
+      } catch (error) {
+        dispatch(logoutAction())
+      }
+    };
+
+    checkAuth();
+  }, []);
 
   return (
       <div className="flex flex-col min-h-screen">

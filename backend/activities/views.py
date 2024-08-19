@@ -130,3 +130,15 @@ class StravaLogoutView(APIView):
         response = Response({"message": "Logged out successfully"}, status=status.HTTP_200_OK)
         response.delete_cookie('jwt')
         return response
+
+class CheckAuthView(APIView):
+    permission_classes = [IsAuthenticated]
+
+    def get(self, request):
+        return Response({
+            'authenticated': True,
+            'user': {
+                'username': request.user.username,
+                'email': request.user.email,
+        }
+    })
