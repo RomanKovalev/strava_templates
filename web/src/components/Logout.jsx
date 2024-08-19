@@ -12,6 +12,7 @@ function Logout() {
     try {
       await api.post('strava/logout/');
       alert('Logout successful');
+      dispatch(logoutAction());
       navigate('/');
     } catch (error) {
       alert(`Logout failed: ${error}`);

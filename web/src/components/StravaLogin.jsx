@@ -6,6 +6,7 @@ import { useNavigate, useLocation  } from 'react-router-dom';
 import api from "../api.js";
 
 function StravaLogin() {
+  const dispatch = useDispatch()
   const [stravaUrl, setstravaUrl] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
@@ -18,10 +19,7 @@ function StravaLogin() {
 
   const fetchStravaAuthUrl = async () => {
           try {
-            const interceptors = api.interceptors.request.handlers;
-            api.interceptors.request.handlers = [];
             const response = await api.get('strava/login');
-            api.interceptors.request.handlers = interceptors;
             window.location.href = response.data.auth_url;
             setstravaUrl(response.data);
           } catch (err) {
@@ -36,9 +34,13 @@ function StravaLogin() {
             const interceptors = api.interceptors.request.handlers;
             api.interceptors.request.handlers = [];
             const response = await api.get(`strava/callback/?code=${encodeURIComponent(code)}&scope=${encodeURIComponent(scope)}`);
-
             api.interceptors.request.handlers = interceptors;
-            console.log(`response.data: ${response.data}`);
+            try {
+                dispatch(loginAction(response.data.user));
+            }
+            catch (err) {
+                console.error(err);
+            }
             navigate('/activities');
           } catch (err) {
             setError(err.message);
@@ -50,10 +52,8 @@ function StravaLogin() {
   useEffect(() => {
       if (code && scope) {
           fetchToken(code, scope)
-          console.log("========================");
       } else {
         fetchStravaAuthUrl();
-        console.log(`stravaUrl: ${stravaUrl}`);
       }
   }, []);
 

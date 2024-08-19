@@ -25,24 +25,17 @@ export const Header = () => {
                             Dashboard
                         </Link>
                     </Navbar.Link>
+                    { isAuthenticated ?
                     <Navbar.Link as="div">
                         <Link to='/activities'>
                             Activities
                         </Link>
-                    </Navbar.Link>
+                    </Navbar.Link> :
+                    null
+                    }
                     <Navbar.Link as="div">
                         <Link to='/signup'>
                             SignUp
-                        </Link>
-                    </Navbar.Link>
-                    <Navbar.Link as="div">
-                        <Link to='strava/login/'>
-                            Strava Login
-                        </Link>
-                    </Navbar.Link>
-                    <Navbar.Link as="div">
-                        <Link to='/logout'>
-                            Logout
                         </Link>
                     </Navbar.Link>
                     { isAuthenticated ?
@@ -53,8 +46,8 @@ export const Header = () => {
                     </Navbar.Link>
                     :
                     <Navbar.Link as="div">
-                        <Link to='/login'>
-                            Login
+                        <Link to='strava/login/'>
+                            Strava Login
                         </Link>
                     </Navbar.Link>
                     }
