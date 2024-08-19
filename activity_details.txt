@@ -1,95 +1,3 @@
-1. Убрать столбцы, которые могут быть спорными, как то средние ватты
-2. Добавить дату последней синхронизации в SyncingActivitiesData
-3. Добавить механизм синхронизации последних тренировок
-
-# strava_views
-https://pypi.org/project/stravalib/
-
-curl -G https://www.strava.com/api/v3/athlete/activities?per_page=200 -H "Authorization: Bearer ffc9de4ffq0b11c12674dadaa32409cba7731bf5a"
-curl -G https://www.strava.com/api/v3/athlete/activities?per_page=200&page=1 -H "Authorization: Bearer ffc9de4ffq0b11c12674dadaa32409cba7731bf5a"
-
-curl -G 'https://www.strava.com/api/v3/athlete/activities?per_page=200&page=1' -H "Authorization: Bearer ffc9de4ffq0b11c12674dadaa32409cba7731bf5a"
-curl -G 'https://www.strava.com/api/v3/athlete/activities?per_page=200&page=2' -H "Authorization: Bearer ffc9de4ffq0b11c12674dadaa32409cba7731bf5a"
-curl -G 'https://www.strava.com/api/v3/athlete/activities?per_page=200&page=3' -H "Authorization: Bearer ffc9de4ffq0b11c12674dadaa32409cba7731bf5a"
-curl -G 'https://www.strava.com/api/v3/athlete/activities?per_page=200&page=4' -H "Authorization: Bearer ffc9de4ffq0b11c12674dadaa32409cba7731bf5a"
-curl -G 'https://www.strava.com/api/v3/athlete/activities?per_page=200&page=5' -H "Authorization: Bearer ffc9de4ffq0b11c12674dadaa32409cba7731bf5a"
-curl -G 'https://www.strava.com/api/v3/athlete/activities?per_page=200&page=6' -H "Authorization: Bearer ffc9de4ffq0b11c12674dadaa32409cba7731bf5a"
-
-
-curl -G 'https://www.strava.com/api/v3/athlete/activities?per_page=1&page=1' -H "Authorization: Bearer 407412d58a2104b9cbad907c159469fa280f8451"
-[
-   {
-      "resource_state":2,
-      "athlete":{
-         "id":3226679,
-         "resource_state":1
-      },
-      "name":"Puumalan saaristoreitti 👍",
-      "distance":72175.8,
-      "moving_time":13543,
-      "elapsed_time":14781,
-      "total_elevation_gain":788.3,
-      "type":"Ride",
-      "sport_type":"Ride",
-      "workout_type":10,
-      "id":11878351637,
-      "start_date":"2024-07-13T10:26:31Z",
-      "start_date_local":"2024-07-13T13:26:31Z",
-      "timezone":"(GMT+02:00) Europe/Helsinki",
-      "utc_offset":10800.0,
-      "location_city":null,
-      "location_state":null,
-      "location_country":"Finland",
-      "achievement_count":0,
-      "kudos_count":12,
-      "comment_count":2,
-      "athlete_count":1,
-      "photo_count":0,
-      "map":{
-         "id":"a11878351637",
-         "summary_polyline":"a{avJgqyjD`@Rg@?PTdIkCK}MpJqNjAyCxBtB|A?pV{MdXcYnUuJ~N{S~EwBbLbBbGg@vC~BzYnbAxKbR`BvGbBpTtBdMnAvf@sAbgFqA|H`@t_@p@dDnCfGx@tNfBfDvIwA~QxE|Jz@`TwChCZrIvQvNbg@n@hFrAle@Nbm@gFxj@dH~pAaGbKyDl@gHoGmKkBwDkD}AGsDfGcF`CgChMiD`FaHlEgDpD}I{EyKxBsB`D_DbMaEfFyHxSeEjZ{FpH]pAvCr\\}AhZ|ApPxDbPiBlBuC}@dAlB`AfJL~OgEzFeEViFlI{A|HWjJVzC[IB{EVmAY`ATnEWh@LsBIdB\\|@SwAQb@ZKL|@c@mBZh@n@vD}E`\\aFjMiC|DcBdFgKzS{]`{@kCvCcEbJwLdOqKnHoClCaA`CaO|IkFvGiHlHeGpFaAF{@zAaAGq@bBsBT{@z@W|AcAH{BdDkABiAxBe@I{IbH{r@|n@qi@lb@iRxRiT|O}DzEqPfY}FdMwD~J{ErScHvh@kJbf@mApQjCt_@bCnk@pCf`Ac@hDFjG^nCbCzG|AxV`Hd]x@zGDtNiAtQpDj[XvISlk@h@z\\eBdJwPbZcUt}@kEdNiCvByLhDoFrFu@eHiJ_^aBkQxAoxBk@kL_CkImQcRk^eo@uDoN}Ckd@qCoLgd@yc@}BcDsA_EiAeNfAm[bCuJfIkKfBwEtAmLMqKmBmKcEwGkFsEuLcEmEaFmB}EoAqK{Dk~AiBqIoKeQeC}Hs@mJRkWg@{FiAuEuVw[uXq@w_Amy@eIsJ}Cm@_EpA{B_@wFr@sKQ_DqAmZeg@}G{WsIeWk@gGC_IjDmVWBE~APkJaAwF{KsWw@yK`AgKbMsf@zAqO|AetDgAeM{CeLoCuEiWeYkCoGiBgIiA}PaIscC\\cMhGkb@fQgeBdE}m@`Es_@HiVeAkM_BuIuc@cxAuByIiCeRuMqTgDcJuBcJaBgQiEoiAmA{IuGsYmBeQEaMp@gUhAeK|DsRfLqf@vB{FzHoIfVoFvHtArS`V|CzBtDt@~ZaEhWl@fdCcWrRXzN~Dtb@dXjQn^xBfCvChA~Du@tCoCnXei@~DhHxCnIfLxn@tAxEfC`ErCdBtL|A~Aq@jEsFdB[hBv@vGbHnMnB|CSdOsFbf@bKfDgBlI{LrPePrDqChDk@rEfAbVvP~IKnA`AnEhIjDhA~As@lL{K`DKnFtBrCiA`KkOnS}\\tEtFj`@bIvAtBxC~JTq@a@d@pFtYpBnd@`AdJs@`C}JpONjNuGxBeA_@",
-         "resource_state":2
-      },
-      "trainer":false,
-      "commute":false,
-      "manual":false,
-      "private":false,
-      "visibility":"everyone", (followers_only, only_me, everyone)
-      "flagged":false,
-      "gear_id":null,
-      "start_latlng":[
-         61.45,
-         28.15
-      ],
-      "end_latlng":[
-         61.45,
-         28.15
-      ],
-      "average_speed":5.329,
-      "max_speed":14.84,
-      "average_watts":109.4,
-      "kilojoules":1481.8,
-      "device_watts":false,
-      "has_heartrate":false,
-      "heartrate_opt_out":false,
-      "display_hide_heartrate_option":false,
-      "elev_high":154.2,
-      "elev_low":68.3,
-      "upload_id":12666831661,
-      "upload_id_str":"12666831661",
-      "external_id":"8074da79-94ad-4235-b7d3-3d918199b6b3-activity.fit",
-      "from_accepted_tag":false,
-      "pr_count":0,
-      "total_photo_count":7,
-      "has_kudoed":false
-   }
-]
-====================================================================================================
-curl -G 'https://www.strava.com/api/v3/athlete/activities?per_page=200&page=6' -H "Authorization: Bearer 407412d58a2104b9cbad907c159469fa280f8451"
-None
-=====================================================================================================
-curl -G 'https://www.strava.com/api/v3/activities/11878351637' -H "Authorization: Bearer 407412d58a2104b9cbad907c159469fa280f8451"
-
 {
    "resource_state":3,
    "athlete":{
@@ -117,7 +25,7 @@ curl -G 'https://www.strava.com/api/v3/activities/11878351637' -H "Authorization
    "comment_count":2,
    "athlete_count":1,
    "photo_count":0,
-   map={
+   "map":{
       "id":"a11878351637",
       "polyline":"a{avJgqyjDFATZ@?@EACCAY?GD?LBFL?`@O`AWd@QhDaAPOH]@a@a@eHA}@Jy@X{@t@uA`H_JTe@l@kBFGFADBJRn@z@PP\\Pp@FTATEl@Sx@a@l@UxCiBpC}AnHgEx@m@xAyAbEwEzBaCrDoExAwAbAy@x@e@h@SvHeCxCiAt@_@dAs@\\Wz@}@x@cApEaHlAsB|@qAx@aAz@m@lAi@b@It@G^@~@HnAZj@Tl@NbANbAFtAGbA]VEbA?j@L\\Rh@f@p@x@j@jApAbEfBxGv@hCNp@~B|HxBjI|@xCr@hCt@|B|@hDlArDv@nBbAfBpAlBlBfCp@bAj@pAr@xBXlARnA`@dDd@zIZnD^xBz@jEVxBF|@@`@Dd@F`G\\pKZbNsAbgF]v@[zAS~AChA?rFTrSD~AL|AJh@\\jAbBzCLX\\pALx@F|@PpGDt@Jt@TdATf@T\\VTLDXFXCn@OjBs@t@W`@Cn@Bd@Fz@NrBh@THHFRDd@Rd@L^DlCt@XDn@PPHlHt@f@Df@?t@C`AIrBa@vDe@hDi@rAWb@Cf@Bh@LRLRPb@p@`@t@xF|MjEhOvBnHx@hCxB~HLn@Lt@Jz@FfArAle@HzI?pHBpHArBBnKGdC{B`SkAtKSfCCrAFfB\\dHRrBHlBn@bKbArQLfD~@zOJdCThCAb@K^SRe@fA}@bBy@pAcApA]PYFaCR_@GYQcAiASSWOi@w@o@u@c@Y{@Um@Y_AUq@Ii@Ak@IgAISEe@S_@[w@y@y@aAg@Oa@@SDIDQT{A~Cm@z@MNi@X}A`@{@d@_@^MTIXQr@}@bG_@`Be@lA{@hA_@Zg@l@w@l@k@Ta@R{CtBq@n@kAbBMJ[PM@KCWM_BqAuB{Ai@Sk@I[@YFYFYLo@PsB^_ALkAXs@j@OXo@zAg@dBw@~D]rAa@hAe@r@KFg@p@mAlAYj@qAjDcDtHo@`CG^KTYvCKlASxAGVSpAQXUtA}@lHIb@[x@W`@yBvBmA|AQ`@Kn@Ad@Bd@`@bD^xDnA|MBj@?vBY|CM`Au@hJE|ADhAHtAb@rEn@fG~@`ETt@v@fD^lAJt@ANEJ{@bAGD]FSIm@g@MEW?MHKLI@C_@ACCB@NDHFFJ@FFPXNf@`AfJBx@?|FDpBFdA?`@CLELOL_@JYVq@tA_@j@Q^SXKFY@y@KY?e@Fe@POTWPKt@]x@s@|@}@rAIHI@GDIPMn@G`@a@jBQl@QpAB~@KfAIrAAbACjADf@Pz@?t@A@EKG?CE?DGFDFEQLEBMG_@CGDD@JDB@?@IQqA@w@Ae@?GDCJWAG@OBABFCG?GA?Ub@A\\?lBB`@Pl@?PCNSN?HN]F[Iy@C@@DD?Fn@A?M^AJ?BB?ACCBAA@GDCHFHh@@AEGD`@Ga@AUIEE@?FAI?@@VBm@CICJD?@GC?B??JML?DBMB?IP@?DORBBXFFDNCJEGEOEg@Ms@ADA?DLBBH@FTGHADBQAEEAF`@@ZDJ@NDLF`@HVPV@Fo@zB[jBEl@?f@SvACZi@lCKx@A`AQbAKTUrBGVCLSROZMx@?LEFi@~@GFE@W|@a@~@a@t@Gf@IV_@p@_AxA[l@EBG?_@zAcAhCs@tAKJ}@hBuAbDs@zA}AxDEHEBM?GFO`A[`AWf@gDzHo@pAkApCg@vA{@bBeB|DkBxEq@lBMLM@GJq@vAI\\aChFQx@W|@ODYZOd@c@t@KHOCQR{BbEc@bAMt@Ud@mCrDGZGJYLWTsA`BKHQZuB|BcA~@mAdA_B~@cAv@g@Va@LQJWZ}AtAGJQNa@lA_@r@GBO?OFc@`@U\\eAf@gAj@eBnA[N_BhA[PS@_@x@_@f@e@h@o@`@UZs@n@EDEVe@VyAzA]f@MJ]Rw@\\SZSv@YH]POVQFMLWl@M@i@PQL_@d@[p@GD]EM?MFWV]|@ED]MIAYFIN[`AKPy@OSDCFa@V{@z@AZABE@Mz@I?YCI?ULKHS\\a@fAa@LGFO^GDc@KI@UFIJc@l@[~@G?]Iq@h@c@l@WH_@`@ULcA|@eAr@QRMBMFa@d@aB|Ao@h@c@V[Vgk@~g@WLm@b@yArAsGdFsEnC}AjAaEhDeAfAUHi@v@EJw@h@OVk@VeBnAcAz@cCzB{BdCa@Zm@t@Q?SHUn@Yb@cEfE{EzDuCtBcC|AeAn@kA|@a@^eAjAiBbCMJg@`A}@rAmCrE{FjK]^c@p@EFOx@K^KRg@n@y@zAmBbE_@z@_@nAo@|AgAtCw@jCq@nCqBvJiDdXmAzIKt@O^G\\G`AQj@_@zBM\\SlAi@rBuAhHGNG`AMz@c@dCy@rD[hBe@pDS|CGzDKdAFz@Ct@H|@ZnBJdAn@jJXlGJt@Cp@D|@VxDFhBv@bOPdE@lBTbEFfCd@|Lh@bRB|BFp@@jADz@DrC?~DD^HtDBLJLCt@YnAEb@@|BDlCNvANv@h@tAx@xA^jBx@bKJfBHjDL`Br@nDLZZzARt@Jp@j@`DvBrKh@fDNrBD`ABfBCjIOvEu@rHChAD`BL|ApAvJPx@XrC^dCJ`CLtEEbEGfA@jBEjC@rBA|BDfHAfBEh@?|EJfFb@nL@vACxCCp@MfB]rBS~@e@hAgChE_@h@cE`HyA|Bo@lAaA`CmAjEeBtGgDrNo@|BqAxFgCxJ}AlGmBbHm@dBo@zAU^k@j@_@Tg@TeA^sBb@YBuAb@c@Ji@Rg@NYLWPi@n@g@r@S^y@bA]VQFIGMg@MuA@o@CQUcBSaAc@_B{AiF{@_DeAsDm@aCe@}B_@kCg@oEYoFEyAC}B@mHZqV@mDRwQn@qx@E{DKcBYkCSoAa@aBk@_B]y@[g@iAsAeBgBsBkBm@q@WQa@e@kAeAyAcBcC_EeCwEkMmTwEoI}@oBw@yBk@qB{@gDU{Aw@eHW_Du@wPWmDY}Be@}B_@mAq@eBu@kAoAoAiI_IgB}AoR_RqA}Ak@eAm@wAe@gBa@iCYcCI{AC{BHaG\\sKPyCL}AVyAZaBd@aBh@wA`@u@x@kAjDwD~@qAVe@b@cAj@mB\\{AT{AN_BPuCDmB?gAEsAMgCYmCQgA_@aBa@uA]{@Yk@y@kAqAcBwA}Ai@g@g@_@aAm@wAg@eCc@qA_@{Au@i@a@mAiA_CwCe@w@Ys@m@qBa@uBS_BY{DQqJe@eRIsFeAmd@WyJQyDI}@WsBUmAWcAc@kAu@{AgAmBqG{Jw@cBSo@So@e@yB_@wCKuAG_C@oDRyEHwC?oAKyCUgDQsAc@wBe@}Au@}A_AuAeHmIaBuBeA}AuAeB}@aA]Y_@SQGe@Kk@Ek@?{ABqGZoCF_AIi@Q]OmAaAmHkGaIgHcByA]Ww@w@aFmEmCeCe@]_ByAuBcBcB_ByCcCuCoCw@m@gB{Ai@k@kBkCkB_CUUm@e@o@YYIo@Ic@?a@BSDgAf@YPg@LQ?[QIAQD?MEH@ABBAAG@IDGAEKMI?J@AFB@CDA@DH?JDBBABB_@If@C?KCSNs@?ODa@C]@_AAw@BiCIqA?k@CkCC}@OOGq@]_@[eAgAo@cAmEeJiC{E{@sAcAwAyCuDaBuCc@_Ak@}A}@sCgCoLk@yBm@qBg@sAcEiKYcA_@qB[_COgCE{ACcCD_BRsCJw@nBeLZ{B@[?ECCE?IPM~@C^FXDEH_AHmCCyAE_AOgBGa@Qq@W{@oJqT[w@Oi@YcBOqAIoBCsBBuAHoAVaCZ_BdEyOx@iD`CwIf@_CXwA^aC^sDZ{EHqBDqCHsNNqf@PgVAwDHcRJmLBoIJ{NFcTCiDEoBMkCOkBQgBWeB_AwEk@kBo@aBcAsBkAaBmCsCkAsAiBsBSYcAcAi@o@{@w@cBoBc@a@_CqC]o@o@uA}@iCi@oB]yAa@}B[eCKoAa@gJg@kPi@qMAs@WwGAeAm@cP?i@QaGUaGe@yNg@eMGu@@oA_@qKIyE@wDDiBTaDd@yDz@iF|@sG`AeGf@mDd@}EhAiKrCoYpA_MXgDd@kEt@gI`AcIx@oIb@yF`AmP~AuT`CuS^mD^oENsED}B@mDMiFMkCM}Ai@aFk@mDs@gDgBoGwI_Ym@wBeCwHs@kC{@cCU_Aw@cCc@kAiAaE}@mCMYWeAo@iBkAcEUe@Km@gAyDa@qBY}BWiC_@cD]oBYiAc@oA_AcBmGeJcBwCkAuC{AmE}@iDw@yDW_Bc@wDSeCQiDo@{QMwEo@cPMqEu@eRKiBKuAc@uDi@eDiAkF}B}ImAiGeAuHU}BSaDCkACsD?oAFcEb@aPVuD`@gDr@gEfByIz@}DL_@d@qB`@yB\\wA~CcNrCiLb@{A|@wBZq@n@cAtAiB|AyApA}@d@Q|Aa@|AYbD{@|AY~Cy@^GbAItAAp@Ff@FfAX~@l@jBvAf@h@jB~B|DjFpAxAp@~@pAxAvAjAdAn@t@Xd@Ld@Hr@BhA?rBQxB_@nAYtCa@hEw@vC[lAC~ADhALdF^dCH`@?TClBGdAK`Ek@lCW`CS~Fq@vEc@nFo@rJ_AzASlAG~Ek@|AO`AM|@Gr@MjCUb@I|@EfAKbGs@zBQjBS^A`@IvAMpASvBQ`BWvCQjAMt@CbAMlCa@bFe@~AI~DA~@BtCLJDnAF`@DvCb@nBd@pAb@`DpArClBrElCjDbBbGvDFPNNb@Xp@\\b@Zp@`@v@l@`BfAj@p@~@|A~@xBdAvBXx@`AnB\\z@P\\fA|BJPPb@v@fBn@lAn@|@hAhAdAl@^Np@JdABtAe@b@SvAcA|@kAj@_AhAsBlByDbCiElCeFtDwHhB}EJMLCJDHJZp@^j@lAhC^n@lBbFj@jBjAxEt@xDbArGpApJh@vCdBfIp@lCb@jA|@bBb@p@d@j@f@d@h@^VLh@PxBd@hC^jAVhABZCv@Mf@c@XY|@kAbA}An@o@XQVEVCZ?t@LZPVVVV`BtBxAdBbAn@dA^jATpD\\|@NlAJnA?p@IZIt@Wv@a@p@YzDoBfA]z@Od@Af@DtBd@`A\\f@Jb@NxD|@hBl@h@JXJbARzCx@x@NdAZLB`B\\`@Dx@?b@G|@Wb@Ub@W`@a@bAmA`CcEfCiDx@}@jBeBX]x@w@tBuB|AuAdB_B|BkBTQ^Sd@Qp@MpAKj@@v@Lt@Tx@`@nCjBhBvAl@\\nA|@n@h@TLHJrAhAfAr@j@d@rAn@n@Jx@BnDe@`@@b@Fx@f@TXn@hAXp@lA`Cv@jAh@f@TLb@Ld@H`@C`@ITKf@]d@i@zD}E\\[~@q@b@_@b@Ud@OhASl@@h@Dt@Vr@d@~@d@ZJh@DZCj@Md@Wd@_@h@m@`BeCRa@@OIFAB@FN@LQjAwB~BqDn@oApAyBfCaFb@u@Xo@RWZk@x@iAfA_BdAuA`A}ALIF@JJd@nAXd@`@h@XZZTh@TnAVzA^lAVz@LpCl@n@HhAVr@RVBlAXR@ZFv@JvA\\v@J`ATTLTNPTn@nA^hAb@`Ad@tAh@lBDV?V?MDPCACYCAFED?DDFWKZCEKFEF?KBE`@`CTz@?LGHAF@@@E@B?MDB~@zEV~Ad@pBD\\?^Nh@^|BXfEp@dOd@`NNdCX|BTfA@XCVQp@]v@c@p@_@^Qd@aArAa@p@cCdDc@t@[v@Ml@Ct@FpA`@lFAr@ERKLe@XgCf@]PUDg@P[DM?SQC?@EEM@CAB",
       "resource_state":3,
@@ -131,12 +39,12 @@ curl -G 'https://www.strava.com/api/v3/activities/11878351637' -H "Authorization
    "flagged":false,
    "gear_id":null,
    "start_latlng":[
-      61.45,
-      28.15
+      61.454733638092875,
+      28.152687018737197
    ],
    "end_latlng":[
-      61.45,
-      28.15
+      61.454732129350305,
+      28.152726497501135
    ],
    "average_speed":5.329,
    "max_speed":14.84,
@@ -211,7 +119,7 @@ curl -G 'https://www.strava.com/api/v3/activities/11878351637' -H "Authorization
          },
          "pr_rank":null,
          "achievements":[
-            
+
          ],
          "visibility":"everyone",
          "hidden":false
@@ -267,7 +175,7 @@ curl -G 'https://www.strava.com/api/v3/activities/11878351637' -H "Authorization
          },
          "pr_rank":null,
          "achievements":[
-            
+
          ],
          "visibility":"everyone",
          "hidden":false
@@ -323,7 +231,7 @@ curl -G 'https://www.strava.com/api/v3/activities/11878351637' -H "Authorization
          },
          "pr_rank":null,
          "achievements":[
-            
+
          ],
          "visibility":"everyone",
          "hidden":false
@@ -379,7 +287,7 @@ curl -G 'https://www.strava.com/api/v3/activities/11878351637' -H "Authorization
          },
          "pr_rank":null,
          "achievements":[
-            
+
          ],
          "visibility":"everyone",
          "hidden":false
@@ -435,7 +343,7 @@ curl -G 'https://www.strava.com/api/v3/activities/11878351637' -H "Authorization
          },
          "pr_rank":null,
          "achievements":[
-            
+
          ],
          "visibility":"everyone",
          "hidden":false
@@ -491,7 +399,7 @@ curl -G 'https://www.strava.com/api/v3/activities/11878351637' -H "Authorization
          },
          "pr_rank":null,
          "achievements":[
-            
+
          ],
          "visibility":"everyone",
          "hidden":false
@@ -1750,6 +1658,6 @@ curl -G 'https://www.strava.com/api/v3/activities/11878351637' -H "Authorization
    "device_name":"Strava Android App",
    "embed_token":"d8710f391204a5fc2d759d3e918b91eb9ee846ed",
    "available_zones":[
-      
+
    ]
 }

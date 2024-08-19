@@ -13,12 +13,12 @@ services:
     volumes:
       - db-database:/var/lib/postgresql/data/pgdata:rw,Z
 
-
   backend:
     container_name: strava_backend
     build: .
     depends_on:
       - db
+      - redis
     env_file: .env.dev
     command: >
       sh -c "/app/scripts/run_app_dev.sh"
@@ -29,25 +29,23 @@ services:
     links:
       - db
 
-#  redis:
-#    container_name: redis
-#    image: redis:alpine
-#
-#  celery:
-#    container_name: celery
-#    restart: always
-#    build:
-#      context: .
-#    command: celery -A pharmafootpath worker -l debug
-#    volumes:
-#      - ./:/app
-#      - ./trial_downloads:/app/trial_downloads:rw,Z
-#      - ./parallel_trade_downloads:/app/parallel_trade_downloads:rw,Z
-#    env_file: .env.develop
-#    depends_on:
-#      - db
-#      - redis
-##      - web
+  redis:
+    container_name: redis
+    image: redis:alpine
+
+  celery:
+    container_name: celery
+    restart: always
+    build:
+      context: .
+    command: celery -A strava_views worker -l info
+    volumes:
+      - ./:/app
+    env_file: .env.dev
+    depends_on:
+      - db
+      - redis
+
 #  celery-beat:
 #    container_name: celery-beat
 #    restart: always
