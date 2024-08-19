@@ -4,7 +4,7 @@ from rest_framework_simplejwt.views import (
     TokenObtainPairView,
     TokenRefreshView,
 )
-from activities.views import MyProtectedView, StravaAuthStartView, StravaAuthCallbackView, StravaLogoutView
+from activities.views import MyProtectedView, StravaAuthStartView, StravaAuthCallbackView, StravaLogoutView, CheckAuthView
 
 
 urlpatterns = [
@@ -15,4 +15,5 @@ urlpatterns = [
     path('api/strava/login/', StravaAuthStartView.as_view(), name='strava-login'),
     path('api/strava/logout/', StravaLogoutView.as_view(), name='strava-logout'),
     path('api/strava/callback/', StravaAuthCallbackView.as_view(), name='strava-callback'),
+    path('api/check-auth/', CheckAuthView.as_view(), name='check-auth'),
 ]
