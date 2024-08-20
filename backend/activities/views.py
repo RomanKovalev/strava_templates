@@ -12,7 +12,7 @@ from rest_framework_simplejwt.tokens import RefreshToken
 from rest_framework import status
 
 from .models import StravaProfile, Map, Activity
-
+from .serializers import ActivitySerializer
 
 class MyProtectedView(APIView):
     permission_classes = [IsAuthenticated]
@@ -153,3 +153,19 @@ class RunView(APIView):
         return Response({
             'authenticated': True,
         })
+
+class DashboardApiView(APIView):
+    permission_classes = [IsAuthenticated]
+
+    def get(self, request):
+        try:
+            strava_profile = StravaProfile.objects.get(user=request.user)
+        except StravaProfile.DoesNotExist:
+            return Response({"error": "Strava profile not found"}, status=status.HTTP_404_NOT_FOUND)
+
+        activities = Activity.objects.filter(athlete__user=request.user).order_by('-start_date')[:5]
+
+        serializer = ActivitySerializer(activities, many=True)
+
+        return Response({"activities": serializer.data}, status=status.HTTP_200_OK)
+

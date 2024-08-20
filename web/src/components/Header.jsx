@@ -20,18 +20,21 @@ export const Header = () => {
                 </Navbar.Brand>
                 <Navbar.Toggle/>
                 <Navbar.Collapse>
+                    { isAuthenticated ?
                     <Navbar.Link as="div" active={true}>
                         <Link to='/'>
                             Dashboard
                         </Link>
-                    </Navbar.Link>
+                    </Navbar.Link> :
+                        null
+                    }
                     { isAuthenticated ?
                     <Navbar.Link as="div">
                         <Link to='/activities'>
                             Activities
                         </Link>
                     </Navbar.Link> :
-                    null
+                            null
                     }
                     <Navbar.Link as="div">
                         <Link to='/signup'>
