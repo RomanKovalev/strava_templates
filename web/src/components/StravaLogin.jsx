@@ -1,5 +1,5 @@
 import React, {useEffect, useState} from 'react';
-import { useDispatch } from 'react-redux';
+import {useDispatch, useSelector} from 'react-redux';
 import { login } from '../auth';
 import { login as loginAction } from '../store/authSlice';
 import { useNavigate, useLocation  } from 'react-router-dom';
@@ -7,6 +7,7 @@ import api from "../api.js";
 
 function StravaLogin() {
   const dispatch = useDispatch()
+  const isAuthenticated = useSelector((state) => state.auth.isAuthenticated);
   const [stravaUrl, setstravaUrl] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
@@ -32,9 +33,7 @@ function StravaLogin() {
   const fetchToken = async () => {
           try {
             const interceptors = api.interceptors.request.handlers;
-            api.interceptors.request.handlers = [];
             const response = await api.get(`strava/callback/?code=${encodeURIComponent(code)}&scope=${encodeURIComponent(scope)}`);
-            api.interceptors.request.handlers = interceptors;
             try {
                 dispatch(loginAction(response.data.user));
             }
@@ -52,8 +51,9 @@ function StravaLogin() {
   useEffect(() => {
       if (code && scope) {
           fetchToken(code, scope)
-      } else {
+      } else {if (!isAuthenticated) {
         fetchStravaAuthUrl();
+        }
       }
   }, []);
 

@@ -20,7 +20,6 @@ const App = () => {
   const dispatch = useDispatch()
 
   useEffect(() => {
-    // Проверка аутентификации при загрузке страницы
     const checkAuth = async () => {
       try {
         const response = await api.get('check-auth/');
