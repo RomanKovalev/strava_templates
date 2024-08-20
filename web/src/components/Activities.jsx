@@ -20,7 +20,6 @@ const Activities = () => {
     };
 
     fetchActivities();
-    console.log(`activities: ${activities}`);
   }, []);
 
   return (
