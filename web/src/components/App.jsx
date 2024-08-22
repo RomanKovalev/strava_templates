@@ -9,15 +9,21 @@ import Header from './Header.jsx';
 import WebSiteFooter from './WebSiteFooter.jsx';
 import {useDispatch, useSelector} from 'react-redux';
 import StravaLogin from "./StravaLogin.jsx";
-import React, { useEffect } from 'react';
+import React, {useEffect, useState} from 'react';
 import { login as loginAction } from '../store/authSlice';
 import { logout as logoutAction } from '../store/authSlice';
+import { setRecentActivities } from '../store/dashboardSlice.js'
 import api from "../api.js";
 
 const App = () => {
+  const dispatch = useDispatch()
+
   const isAuthenticated = useSelector((state) => state.auth.isAuthenticated);
   const user = useSelector((state) => state.auth.user);
-  const dispatch = useDispatch()
+
+  const [activities, setActivities] = useState([]);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState(null);
 
   useEffect(() => {
     const checkAuth = async () => {
@@ -34,6 +40,23 @@ const App = () => {
     };
 
     checkAuth();
+  }, []);
+
+  useEffect(() => {
+    const fetchActivities = async () => {
+      try {
+        const response = await api.get('dashboard/');
+        setActivities(response.data.activities);
+        setLoading(false);
+        dispatch(setRecentActivities(response.data.activities));
+        console.log('Fetched data:', response.data);
+      } catch (error) {
+        setError('Failed to fetch activities');
+        setLoading(false);
+      }
+    };
+
+    fetchActivities();
   }, []);
 
   return (
