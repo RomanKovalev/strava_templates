@@ -48,7 +48,7 @@ const App = () => {
         const response = await api.get('dashboard/');
         setActivities(response.data.activities);
         setLoading(false);
-        dispatch(setRecentActivities(response.data.activities));
+        dispatch(setRecentActivities(response.data.recent_activities));
         console.log('Fetched data:', response.data);
       } catch (error) {
         setError('Failed to fetch activities');
