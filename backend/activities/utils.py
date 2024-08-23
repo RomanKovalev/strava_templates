@@ -1,7 +1,9 @@
 import requests
 
-from .models import StravaProfile, Map, Activity
+from django.db.models.functions import ExtractYear
+from datetime import datetime, timedelta
 
+from activities.models import StravaProfile, Map, Activity
 
 def fetch_strava_activities(strava_profile_to_sync_id):
     print("Starting Run View")
@@ -46,3 +48,20 @@ def fetch_strava_activities(strava_profile_to_sync_id):
             fetch_strava_activities(strava_profile_to_sync_id)
         else:
             print(f"All data fetched successfully!")
+
+
+
+
+# Генерация списка всех недель в заданном диапазоне
+def generate_week_year_pairs(start_year, end_year):
+    current_date = datetime(start_year, 1, 1)
+    end_date = datetime(end_year + 1, 1, 1)
+    week_year_pairs = []
+
+    while current_date < end_date:
+        year = current_date.year
+        week = current_date.isocalendar()[1]
+        week_year_pairs.append({'year': year, 'week': week})
+        current_date += timedelta(weeks=1)
+
+    return week_year_pairs
