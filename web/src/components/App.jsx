@@ -12,7 +12,7 @@ import StravaLogin from "./StravaLogin.jsx";
 import React, {useEffect, useState} from 'react';
 import { login as loginAction } from '../store/authSlice';
 import { logout as logoutAction } from '../store/authSlice';
-import { setRecentActivities } from '../store/dashboardSlice.js'
+import {setRecentActivities, setSummary} from '../store/dashboardSlice.js'
 import api from "../api.js";
 
 const App = () => {
@@ -46,9 +46,10 @@ const App = () => {
     const fetchActivities = async () => {
       try {
         const response = await api.get('dashboard/');
-        setActivities(response.data.activities);
-        setLoading(false);
         dispatch(setRecentActivities(response.data.recent_activities));
+        dispatch(setSummary(response.data.summary));
+        setLoading(false);
+
         console.log('Fetched data:', response.data);
       } catch (error) {
         setError('Failed to fetch activities');

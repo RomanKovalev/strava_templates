@@ -23,7 +23,10 @@ const Dashboard = () => {
               </div>
               <div className="w-full md:w-2/5 p-1">
                   <Card className="h-full flex flex-col justify-start">
-                    <Summary />
+                  <h5 className="text-md font-bold tracking-tight text-gray-900 dark:text-white">
+                      Summary
+                  </h5>
+                      <Summary/>
                   </Card>
               </div>
           </div>
