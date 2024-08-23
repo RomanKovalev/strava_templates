@@ -5,9 +5,8 @@ from dateutil.relativedelta import relativedelta
 from django.http import JsonResponse
 from django.conf import settings
 from django.contrib.auth.models import User
-from django.db.models.functions import TruncDate
-from django.db.models import Sum
-
+from django.db.models import Sum, F, Func, Value, CharField, FloatField, Min, Max
+from django.db.models.functions import TruncDate, Concat, ExtractWeek, ExtractYear, Cast, Coalesce
 
 from rest_framework.permissions import IsAuthenticated, AllowAny
 from rest_framework.views import APIView
@@ -15,8 +14,8 @@ from rest_framework.response import Response
 from rest_framework_simplejwt.tokens import RefreshToken
 from rest_framework import status
 
-from .models import StravaProfile, Map, Activity
-from .serializers import ActivitySerializer
+from activities.models import StravaProfile, Map, Activity
+from activities.serializers import ActivitySerializer
 
 class MyProtectedView(APIView):
     permission_classes = [IsAuthenticated]
@@ -147,7 +146,9 @@ class CheckAuthView(APIView):
         }
     })
 
-from activities.utils import fetch_strava_activities
+from activities.utils import fetch_strava_activities, generate_week_year_pairs
+
+
 class RunView(APIView):
     permission_classes = [AllowAny]
     def get(self, request):
@@ -192,6 +193,40 @@ class DashboardApiView(APIView):
 
         total_kilocalories_burned = round(Activity.objects.aggregate(total_kilojoules_burned=Sum('kilojoules'))['total_kilojoules_burned'] / 4.184)
 
+        min_year = Activity.objects.aggregate(min_year=ExtractYear(Min('start_date')))['min_year']
+        max_year = Activity.objects.aggregate(max_year=ExtractYear(Max('start_date')))['max_year']
+        all_weeks = generate_week_year_pairs(first_activity_start_date)
+
+        weekly_data = (
+            Activity.objects
+            .annotate(
+                week=Cast(ExtractWeek('start_date'), output_field=CharField()),  # Преобразуем week в строку
+                year=ExtractYear('start_date')
+            )
+            .values('week', 'year')
+            .annotate(
+                distance=Coalesce(Sum('distance'), Value(0, output_field=FloatField())),
+                # Задаем выходное поле как FloatField
+                name=Concat(
+                    F('year'), Value('-W'),
+                    Func(F('week'), function='LPAD', template="%(function)s(%(expressions)s, 2, '0')",
+                         output_field=CharField()),
+                    output_field=CharField()  # Указание, что результат - строка
+                )
+            )
+            .values('name', 'distance')
+            .order_by('year', 'week')
+        )
+
+        weekly_data_dict = {entry['name']: round(entry['distance'] / 1000) for entry in weekly_data}
+
+        result = []
+
+        for week_year in all_weeks:
+            name = f"{week_year['year']}-W{str(week_year['week']).zfill(2)}"
+            distance = weekly_data_dict.get(name, 0)
+            result.append({'name': name, 'distance': distance})
+
 
         return Response({
             "recent_activities": serializer.data,
@@ -216,6 +251,6 @@ class DashboardApiView(APIView):
                 "total_kilocalories_burned": total_kilocalories_burned,
                 "pizza_slices_equivalent": round(total_kilocalories_burned / 250)
             },
-
+            "weekly_distances": result
         }, status=status.HTTP_200_OK)
 
