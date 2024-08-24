@@ -12,7 +12,7 @@ import StravaLogin from "./StravaLogin.jsx";
 import React, {useEffect, useState} from 'react';
 import { login as loginAction } from '../store/authSlice';
 import { logout as logoutAction } from '../store/authSlice';
-import {setActivityIntencities, setRecentActivities, setSummary, setWeeklyDistances} from '../store/dashboardSlice.js'
+import {setActivityIntencities, setRecentActivities, setSummary, setWeeklyDistances, setStatsPerWeekDay, setStatsPerDayTime} from '../store/dashboardSlice.js'
 import api from "../api.js";
 
 const App = () => {
@@ -50,7 +50,8 @@ const App = () => {
         dispatch(setSummary(response.data.summary));
         dispatch(setWeeklyDistances(response.data.weekly_distances));
         dispatch(setActivityIntencities(response.data.activity_intensity));
-
+        dispatch(setStatsPerWeekDay(response.data.activities_by_day));
+        dispatch(setStatsPerDayTime(response.data.activities_by_day_time));
         setLoading(false);
 
         console.log('Fetched data:', response.data);

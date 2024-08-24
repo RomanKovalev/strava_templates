@@ -5,8 +5,8 @@ from dateutil.relativedelta import relativedelta
 from django.http import JsonResponse
 from django.conf import settings
 from django.contrib.auth.models import User
-from django.db.models import Sum, F, Func, Value, CharField, FloatField, Min, Max, IntegerField, ExpressionWrapper
-from django.db.models.functions import TruncDate, Concat, ExtractWeek, ExtractYear, Cast, Coalesce, ExtractYear, Round
+from django.db.models import Count, Avg, Case, When, Sum, F, Func, Value, CharField, FloatField, Min, Max, IntegerField, ExpressionWrapper
+from django.db.models.functions import ExtractHour, TruncDate, Concat, ExtractWeek, ExtractYear, Cast, Coalesce, ExtractYear, Round
 from django.utils.timezone import now
 
 from rest_framework.permissions import IsAuthenticated, AllowAny
@@ -17,6 +17,8 @@ from rest_framework import status
 
 from activities.models import StravaProfile, Map, Activity
 from activities.serializers import ActivitySerializer
+from activities.utils import fetch_strava_activities, generate_week_year_pairs, seconds_to_dhms
+
 
 class MyProtectedView(APIView):
     permission_classes = [IsAuthenticated]
@@ -147,8 +149,6 @@ class CheckAuthView(APIView):
         }
     })
 
-from activities.utils import fetch_strava_activities, generate_week_year_pairs
-
 
 class RunView(APIView):
     permission_classes = [AllowAny]
@@ -241,6 +241,97 @@ class DashboardApiView(APIView):
         else:
             activity_intensity = []
 
+        total_activities = Activity.objects.count()
+        activities_by_day = (
+            Activity.objects
+            .annotate(
+                day_of_week_name=Case(
+                    When(start_date__week_day=1, then=Value('Sunday')),
+                    When(start_date__week_day=2, then=Value('Monday')),
+                    When(start_date__week_day=3, then=Value('Tuesday')),
+                    When(start_date__week_day=4, then=Value('Wednesday')),
+                    When(start_date__week_day=5, then=Value('Thursday')),
+                    When(start_date__week_day=6, then=Value('Friday')),
+                    When(start_date__week_day=7, then=Value('Saturday')),
+                    output_field=CharField()
+                ),
+            )
+            .values('day_of_week_name')  # Группировка по названию дня недели
+            .annotate(
+                count=Count('id'),  # Количество активностей
+                value=Round(
+                    ExpressionWrapper(
+                        (Count('id') * 100.0) / total_activities,
+                        output_field=FloatField()
+                    ), 1
+                ),  # Процент активностей в этот день недели
+                total_distance=Round(
+                    ExpressionWrapper(Sum('distance') / 1000.0, output_field=FloatField()), 0
+                ),  # Общее расстояние в км
+                avg_distance=Round(
+                    ExpressionWrapper(Sum('distance') / (Count('id') * 1000.0), output_field=FloatField()), 0
+                ),  # Среднее расстояние в км
+                total_moving_time=ExpressionWrapper(Sum('moving_time'), output_field=IntegerField()),
+                # Общее время в движении в минутах
+                avg_moving_time=ExpressionWrapper(Sum('moving_time') / Count('id'), output_field=FloatField()),
+                # Среднее время в движении в минутах
+                total_elevation=Round(
+                    ExpressionWrapper(Sum('total_elevation_gain'), output_field=FloatField()), 0
+                ),  # Общий набор высоты в метрах
+                avg_elevation=Round(
+                    ExpressionWrapper(Sum('total_elevation_gain') / Count('id'), output_field=FloatField()), 0
+                ),  # Средний набор высоты в метрах
+            )
+            .order_by('day_of_week_name')  # Сортировка по названию дня недели
+        )
+
+        activities_by_day_list = list(activities_by_day)  # Преобразуем QuerySet в список словарей
+
+        # Переименование ключа 'day_of_week_name' в 'name'
+        activities_by_day = [
+            {**activity, 'name': activity.pop('day_of_week_name')}
+            for activity in activities_by_day_list
+        ]
+
+        for activity in activities_by_day:
+            activity.pop('day_of_week_name')
+            activity['total_moving_time'] = seconds_to_dhms(activity['total_moving_time'])
+
+        # ===========================================================================
+        # Aggregate data based on time of day
+        activities_with_time_of_day = Activity.objects.annotate(
+            time_of_day=Case(
+                When(start_date_local__hour__gte=6, start_date__hour__lt=12, then=Value('morning')),
+                When(start_date_local__hour__gte=12, start_date__hour__lt=17, then=Value('afternoon')),
+                When(start_date_local__hour__gte=17, start_date__hour__lt=23, then=Value('evening')),
+                default=Value('night'),
+                output_field=CharField()
+            )
+        )
+
+        # Calculate total activities count to find percentage later
+        total_activities = activities_with_time_of_day.count()
+
+        # Aggregate data based on time of day
+        aggregated_data = activities_with_time_of_day.values('time_of_day').annotate(
+            activity_count=Count('id'),
+            value=Round(
+                ExpressionWrapper(
+                    Count('id') * 100.0 / total_activities,
+                    output_field=FloatField()
+                ),
+            1 ),
+            average_distance=Round(Avg('distance') / 100, 0),
+            total_distance=Round(Sum('distance') / 100, 0),
+            total_elevation=Round(Sum('total_elevation_gain'), 0),
+            total_moving_time=Sum('moving_time')
+        ).order_by('time_of_day')
+
+        activities_by_day_time = list(aggregated_data)
+
+        for activity in activities_by_day_time:
+            activity['total_moving_time'] = seconds_to_dhms(activity['total_moving_time'])
+
         return Response({
             "recent_activities": serializer.data,
             "summary": {
@@ -265,7 +356,8 @@ class DashboardApiView(APIView):
                 "pizza_slices_equivalent": round(total_kilocalories_burned / 250)
             },
             "weekly_distances": result,
-            "activity_intensity": activity_intensity
-
+            "activity_intensity": activity_intensity,
+            "activities_by_day": activities_by_day,
+            "activities_by_day_time": activities_by_day_time
         }, status=status.HTTP_200_OK)
 

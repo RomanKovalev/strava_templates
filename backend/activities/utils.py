@@ -65,3 +65,15 @@ def generate_week_year_pairs(start_date):
         current_date += timedelta(weeks=1)
 
     return week_year_pairs
+
+
+def seconds_to_dhms(seconds):
+    days, remainder = divmod(seconds, 86400)  # 86400 seconds in a day
+    hours, remainder = divmod(remainder, 3600)  # 3600 seconds in an hour
+    minutes, seconds = divmod(remainder, 60)    # 60 seconds in a minute
+    return f"{int(days)}d {int(hours)}h {int(minutes)}m"
+
+def minutes_to_dhms(minutes):
+    days, remainder = divmod(minutes, 1440)  # 1440 minutes in a day
+    hours, minutes = divmod(remainder, 60)   # 60 minutes in an hour
+    return f"{int(days)}d {int(hours)}h {int(minutes)}m"

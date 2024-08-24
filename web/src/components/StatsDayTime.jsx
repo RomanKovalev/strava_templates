@@ -33,16 +33,16 @@ const renderCustomizedLabel = ({ cx, cy, midAngle, innerRadius, outerRadius, per
   );
 };
 
-const StatsPerWeekday = () => {
-  const statsPerWeekDay = useSelector((state) => state.dashboard.statsPerWeekDay);
+const StatsDayTime = () => {
+  const statsPerDayTime = useSelector((state) => state.dashboard.statsPerDayTime);
   return (
     <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
       <h5 className="text-md font-bold tracking-tight text-gray-900 dark:text-white">
-        Stats per weekday
+        Stats per Daytime
       </h5>
       <PieChart width={450} height={450}>
         <Pie
-          data={statsPerWeekDay}
+          data={statsPerDayTime}
           cx={200}
           cy={200}
           labelLine={false}
@@ -50,8 +50,9 @@ const StatsPerWeekday = () => {
           outerRadius={150}
           fill="#8884d8"
           dataKey="value"
+          nameKey="time_of_day"
         >
-          {statsPerWeekDay.map((entry, index) => (
+          {statsPerDayTime.map((entry, index) => (
             <Cell key={`cell-${entry.name}`} fill={COLORS[index % COLORS.length]} />
           ))}
         </Pie>
@@ -74,7 +75,7 @@ const StatsPerWeekday = () => {
           </tr>
         </thead>
         <tbody>
-        {statsPerWeekDay.map((weekday, index) => (
+        {statsPerDayTime.map((weekday, index) => (
             <tr key={index}>
               <td>{weekday.name}</td>
               <td>{weekday.count}</td>
@@ -89,4 +90,4 @@ const StatsPerWeekday = () => {
   );
 };
 
-export default StatsPerWeekday;
+export default StatsDayTime;

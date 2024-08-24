@@ -4,6 +4,7 @@ import { Table, Card } from 'flowbite-react';
 import CustomBrushChart from './CustomBrushChart';
 import ActivityHeatmap from "./ActivityHeatmap";
 import StatsPerWeekday from "./StatsPerWeekday";
+import StatsDayTime from "./StatsDayTime";
 import DistanceBreakdown from './DistanceBreakdown';
 import Trivia from './Trivia';
 import RecentActivities from "./RecentActivities.jsx";
@@ -59,7 +60,7 @@ const Dashboard = () => {
               </div>
               <div className="w-full md:w-1/2 p-1">
                   <Card className="h-full">
-                      <StatsPerWeekday/>
+                      <StatsDayTime />
                   </Card>
               </div>
           </div>
