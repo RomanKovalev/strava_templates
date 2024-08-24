@@ -5,8 +5,9 @@ from dateutil.relativedelta import relativedelta
 from django.http import JsonResponse
 from django.conf import settings
 from django.contrib.auth.models import User
-from django.db.models import Sum, F, Func, Value, CharField, FloatField, Min, Max
-from django.db.models.functions import TruncDate, Concat, ExtractWeek, ExtractYear, Cast, Coalesce
+from django.db.models import Sum, F, Func, Value, CharField, FloatField, Min, Max, IntegerField, ExpressionWrapper
+from django.db.models.functions import TruncDate, Concat, ExtractWeek, ExtractYear, Cast, Coalesce, ExtractYear, Round
+from django.utils.timezone import now
 
 from rest_framework.permissions import IsAuthenticated, AllowAny
 from rest_framework.views import APIView
@@ -193,8 +194,6 @@ class DashboardApiView(APIView):
 
         total_kilocalories_burned = round(Activity.objects.aggregate(total_kilojoules_burned=Sum('kilojoules'))['total_kilojoules_burned'] / 4.184)
 
-        min_year = Activity.objects.aggregate(min_year=ExtractYear(Min('start_date')))['min_year']
-        max_year = Activity.objects.aggregate(max_year=ExtractYear(Max('start_date')))['max_year']
         all_weeks = generate_week_year_pairs(first_activity_start_date)
 
         weekly_data = (
@@ -227,6 +226,20 @@ class DashboardApiView(APIView):
             distance = weekly_data_dict.get(name, 0)
             result.append({'name': name, 'distance': distance})
 
+        # max_moving_time = Activity.objects.aggregate(Max('moving_time'))['moving_time__max']
+        start_date = now() - timedelta(days=365)
+        recent_year_activities = Activity.objects.filter(start_date__gte=start_date)
+        max_moving_time = recent_year_activities.aggregate(max_time=Max('moving_time'))['max_time']
+        if max_moving_time:
+            activities = recent_year_activities.annotate(
+                intensity=ExpressionWrapper(
+                    Round(100 * F('moving_time') / max_moving_time),
+                    output_field=IntegerField()
+                )
+            ).values('start_date', 'intensity')
+            activity_intensity = [{'date': activity['start_date'], 'count': activity['intensity']} for activity in activities]
+        else:
+            activity_intensity = []
 
         return Response({
             "recent_activities": serializer.data,
@@ -251,6 +264,8 @@ class DashboardApiView(APIView):
                 "total_kilocalories_burned": total_kilocalories_burned,
                 "pizza_slices_equivalent": round(total_kilocalories_burned / 250)
             },
-            "weekly_distances": result
+            "weekly_distances": result,
+            "activity_intensity": activity_intensity
+
         }, status=status.HTTP_200_OK)
 

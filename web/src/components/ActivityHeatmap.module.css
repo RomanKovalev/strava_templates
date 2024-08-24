@@ -1,19 +1,56 @@
-.color-empty {
+.legend {
+  margin-top: 10px;
+  display: flex;
+  justify-content: space-between;
+}
+
+.legend span {
+  display: flex;
+  align-items: center;
+}
+
+.legend span::before {
+  content: '';
+  display: inline-block;
+  width: 15px;
+  height: 15px;
+  margin-right: 5px;
+}
+
+
+.color-empty, .colorGithubEmpty:before {
   fill: #ebedf0;
+  /* here and below 3 properties for legend only */
+  background-color: #ebedf0;
+  padding: 2px 6px;
+  border-radius: 3px;
 }
 
-.color-github-1 {
+.color-github-1, .colorGithub1:before {
   fill: #c6e48b;
+  background-color: #c6e48b;
+  padding: 2px 6px;
+  border-radius: 3px;
 }
 
-.color-github-2 {
+.color-github-2, .colorGithub2:before {
   fill: #7bc96f;
+  background-color: #7bc96f;
+  padding: 2px 6px;
+  border-radius: 3px;
 }
 
-.color-github-3 {
+.color-github-3, .colorGithub3:before {
   fill: #239a3b;
+  background-color: #239a3b;
+  padding: 2px 6px;
+  border-radius: 3px;
 }
 
-.color-github-4 {
+.color-github-4, .colorGithub4:before {
   fill: #196127;
+  padding: 2px 6px;
+  border-radius: 3px;
+  background-color:  #196127
 }
+
