@@ -64,18 +64,18 @@ const Dashboard = () => {
                   </Card>
               </div>
           </div>
-          <div className="flex flex-col md:flex-row">
-              <div className="w-full md:w-1/2 p-1" style={{minWidth: '400px'}}>
-                  <Card className="h-full">
-                      <DistanceBreakdown />
-                  </Card>
-              </div>
-              <div className="w-full md:w-1/2 p-1">
-                  <Card className="h-full">
-                      <Trivia />
-                  </Card>
-              </div>
-          </div>
+          {/*<div className="flex flex-col md:flex-row">*/}
+          {/*    <div className="w-full md:w-1/2 p-1" style={{minWidth: '400px'}}>*/}
+          {/*        <Card className="h-full">*/}
+          {/*            <DistanceBreakdown />*/}
+          {/*        </Card>*/}
+          {/*    </div>*/}
+          {/*    <div className="w-full md:w-1/2 p-1">*/}
+          {/*        <Card className="h-full">*/}
+          {/*            <Trivia />*/}
+          {/*        </Card>*/}
+          {/*    </div>*/}
+          {/*</div>*/}
       </>
   );
 }
