@@ -116,15 +116,25 @@ class StravaAuthCallbackView(APIView):
                 'email': user.email,
             }
         }, status=status.HTTP_200_OK)
-        expiration = datetime.utcnow() + timedelta(days=7)
+        access_expiration = datetime.utcnow() + timedelta(minutes=5)
         response.set_cookie(
-            key='jwt',
+            key='jwt_access',
             value=refresh.access_token,
-            expires=expiration,
-            httponly=True,  # Доступ только через HTTP (невидимо для JavaScript)
-            # secure=True,  # Только через HTTPS (рекомендуется для production)
-            # samesite='Lax'  # Cookie отправляется только при запросах с того же сайта
-            samesite=None
+            expires=access_expiration,
+            httponly=True,
+            secure=True,  # Только через HTTPS
+            samesite='Lax'
+        )
+
+        # Установка refresh token в cookie
+        refresh_expiration = datetime.utcnow() + timedelta(days=7)
+        response.set_cookie(
+            key='jwt_refresh',
+            value=str(refresh),
+            expires=refresh_expiration,
+            httponly=True,
+            secure=True,  # Только через HTTPS
+            samesite='Lax'
         )
         return response
 
