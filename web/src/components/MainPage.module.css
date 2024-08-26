@@ -1,0 +1,70 @@
+body {
+    font-family: Arial, sans-serif;
+    margin: 0;
+    padding: 0;
+    background-color: #F7F7F7;
+    color: #333;
+}
+
+.cta h2 {
+    font-size: 1.5em;
+    font-weight: bold;
+    margin-bottom: 15px;
+}
+/*header {*/
+/*    background-color: #FC4C02;*/
+/*    color: white;*/
+/*    padding: 20px;*/
+/*    text-align: center;*/
+/*}*/
+/*header h1 {*/
+/*    margin: 0;*/
+/*    font-size: 36px;*/
+/*}*/
+/*header nav {*/
+/*    margin-top: 10px;*/
+/*}*/
+/*header nav a {*/
+/*    color: white;*/
+/*    margin: 0 15px;*/
+/*    text-decoration: none;*/
+/*    font-size: 18px;*/
+/*}*/
+.cta {
+    text-align: center;
+    margin: 25px 0 35px 0;
+}
+.linkLogin {
+    background-color: #FC4C02;
+    color: white;
+    padding: 15px 30px;
+    font-size: 20px;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+}
+.features {
+    display: flex;
+    justify-content: space-around;
+    margin: 20px 0;
+    flex-wrap: wrap;
+    flex: 1 1 30%;
+}
+.feature {
+    background-color: white;
+    padding: 20px;
+    border-radius: 10px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    flex-basis: 480px;
+    margin-bottom: 20px;
+}
+@media (max-width: 768px) {
+    .feature {
+        flex: 1 1 100%; /* Элементы занимают 100% ширины при ширине окна менее 768px */
+        min-width: 100%; /* Элементы растягиваются на всю ширину */
+    }
+    }
+.feature h3 {
+    color: #FC4C02;
+    margin-bottom: 15px;
+}

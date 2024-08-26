@@ -9,10 +9,43 @@ import DistanceBreakdown from './DistanceBreakdown';
 import Trivia from './Trivia';
 import RecentActivities from "./RecentActivities.jsx";
 import Summary from "./Summary.jsx";
+import {
+    setActivityIntencities,
+    setRecentActivities, setStatsPerDayTime,
+    setStatsPerWeekDay,
+    setSummary,
+    setWeeklyDistances
+} from "../store/dashboardSlice.js";
+import {useDispatch, useSelector} from "react-redux";
 
 
 const Dashboard = () => {
+    const dispatch = useDispatch()
+    const isAuthenticated = useSelector((state) => state.auth.isAuthenticated);
 
+    useEffect(() => {
+
+    const fetchActivities = async () => {
+      try {
+        const response = await api.get('dashboard/');
+        dispatch(setRecentActivities(response.data.recent_activities));
+        dispatch(setSummary(response.data.summary));
+        dispatch(setWeeklyDistances(response.data.weekly_distances));
+        dispatch(setActivityIntencities(response.data.activity_intensity));
+        dispatch(setStatsPerWeekDay(response.data.activities_by_day));
+        dispatch(setStatsPerDayTime(response.data.activities_by_day_time));
+        setLoading(false);
+
+        console.log('Fetched data:', response.data);
+      } catch (error) {
+        setError('Failed to fetch activities');
+        setLoading(false);
+      }
+    };
+    if (isAuthenticated) {
+      fetchActivities();
+    }
+  }, []);
 
   return (
       <>
