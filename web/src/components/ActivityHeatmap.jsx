@@ -60,7 +60,7 @@ const ActivityHeatmap = () => {
               <span className={styles.colorGithub1}>Low (0 - 33)</span>
               <span className={styles.colorGithub2}>Medium (34 - 66)</span>
               <span className={styles.colorGithub3}>High (67 - 100)</span>
-              <span className={styles.colorGithub4}>Very high (> 100)</span>
+              <span className={styles.colorGithub4}>Very high (&gt; 100)</span>
           </div>
           <Tooltip/>
 

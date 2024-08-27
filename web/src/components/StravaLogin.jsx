@@ -40,7 +40,7 @@ function StravaLogin() {
             catch (err) {
                 console.error(err);
             }
-            navigate('/activities');
+            navigate('/');
           } catch (err) {
             setError(err.message);
           } finally {

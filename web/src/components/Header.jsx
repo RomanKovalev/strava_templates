@@ -6,8 +6,7 @@ export const Header = () => {
     const isAuthenticated = useSelector((state) => state.auth.isAuthenticated);
 
     return (
-        <header>
-            <Navbar fluid={true} rounded={true}>
+            <Navbar fluid={true} rounded={true} >
                 <Navbar.Brand href="/">
                     <img
                         src="https://flowbite.com/docs/images/logo.svg"
@@ -36,11 +35,6 @@ export const Header = () => {
                     </Navbar.Link> :
                             null
                     }
-                    <Navbar.Link as="div">
-                        <Link to='/signup'>
-                            SignUp
-                        </Link>
-                    </Navbar.Link>
                     { isAuthenticated ?
                     <Navbar.Link as="div">
                         <Link to='/logout'>
@@ -56,7 +50,6 @@ export const Header = () => {
                     }
                 </Navbar.Collapse>
             </Navbar>
-        </header>
     )
 }
 
