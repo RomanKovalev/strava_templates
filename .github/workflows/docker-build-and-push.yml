@@ -3,6 +3,12 @@ name: Build and Push Docker image
 on:
   workflow_dispatch:
     inputs:
+      apiUrl:
+        description: 'API URL'
+        required: true
+        default: 'http://qwqweqwe.cloud'
+        type: string
+
       tag:
         description: 'Docker image tag'
         required: true
@@ -23,10 +29,18 @@ jobs:
         username: ${{ secrets.DOCKER_USERNAME }}
         password: ${{ secrets.DOCKER_PASSWORD }}
 
-    - name: Build Docker image
+    - name: Build backend Docker image
       run: |
-        docker build -t ${{ secrets.DOCKER_USERNAME }}/strava_templates:latest -f backend/Dockerfile backend/
+        docker build -t ${{ secrets.DOCKER_USERNAME }}/strava_templates_backend:${{ github.event.inputs.tag }} -f backend/Dockerfile backend/
 
-    - name: Push Docker image
+    - name: Push backend Docker image
       run: |
-        docker push ${{ secrets.DOCKER_USERNAME }}/strava_templates:latest
+        docker push ${{ secrets.DOCKER_USERNAME }}/strava_templates_backend:${{ github.event.inputs.tag }}
+
+    - name: Build frontend Docker image
+      run: |
+        docker build --build-arg BACKEND_API_URL=${{ github.event.inputs.apiUrl }} -t ${{ secrets.DOCKER_USERNAME }}/strava_templates_web:${{ github.event.inputs.tag }} -f web/Dockerfile web/
+
+    - name: Push frontend Docker image
+      run: |
+        docker push ${{ secrets.DOCKER_USERNAME }}/strava_templates_web:${{ github.event.inputs.tag }}

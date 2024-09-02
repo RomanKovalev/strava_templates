@@ -6,6 +6,9 @@ COPY package*.json ./
 
 RUN npm install
 
+ARG BACKEND_API_URL
+ENV BACKEND_API_URL=${BACKEND_API_URL}
+
 COPY . .
 
 RUN npm run build

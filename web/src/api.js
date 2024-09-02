@@ -1,8 +1,11 @@
 import axios from 'axios';
-import Cookies from 'js-cookie';
+
+const apiUrl = import.meta.env.BACKEND_API_URL;
+
+console.log("apiUrl: ", apiUrl);
 
 const api = axios.create({
-  baseURL: 'http://localhost:8000/api/',
+  baseURL: apiUrl,
   headers: {
     'Content-Type': 'application/json',
   },
