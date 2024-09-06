@@ -1,0 +1,49 @@
+name: Deploy EC2 via CloudFormation
+
+on:
+  workflow_dispatch:
+    inputs:
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: Checkout repository
+      uses: actions/checkout@v2
+
+    - name: Configure AWS credentials
+      uses: aws-actions/configure-aws-credentials@v1
+      with:
+        aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
+        aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+        aws-region: eu-north-1
+
+    - name: Check if CloudFormation stack exists
+      id: check_stack
+      run: |
+        if aws cloudformation describe-stacks --stack-name MyEC2Stack > /dev/null 2>&1; then
+          echo "Stack exists"
+          echo "stack_exists=true" >> $GITHUB_ENV
+        else
+          echo "Stack does not exist"
+          echo "stack_exists=false" >> $GITHUB_ENV
+        fi
+
+#    - name: Deploy CloudFormation stack if not exists
+#      if: env.stack_exists == 'false'
+#      run: |
+#        aws cloudformation deploy \
+#          --template-file ec2_template.yaml \
+#          --stack-name MyEC2Stack \
+#          --capabilities CAPABILITY_NAMED_IAM \
+#          --parameter-overrides InstanceType=t2.micro KeyName=your-key-name VPCId=vpc-123abc SubnetId=subnet-456def
+#
+#    - name: Update CloudFormation stack if exists
+#      if: env.stack_exists == 'true'
+#      run: |
+#        aws cloudformation update-stack \
+#          --template-file ec2_template.yaml \
+#          --stack-name MyEC2Stack \
+#          --capabilities CAPABILITY_NAMED_IAM \
+#          --parameter-overrides InstanceType=t2.micro KeyName=your-key-name VPCId=vpc-123abc SubnetId=subnet-456def
