@@ -22,7 +22,7 @@ jobs:
     - name: Check if CloudFormation stack exists
       id: check_stack
       run: |
-        if aws cloudformation describe-stacks --stack-name MyEC2Stack > /dev/null 2>&1; then
+        if aws cloudformation describe-stacks --stack-name StravaTemplatesStack > /dev/null 2>&1; then
           echo "Stack exists"
           echo "stack_exists=true" >> $GITHUB_ENV
         else
@@ -30,20 +30,43 @@ jobs:
           echo "stack_exists=false" >> $GITHUB_ENV
         fi
 
-#    - name: Deploy CloudFormation stack if not exists
-#      if: env.stack_exists == 'false'
-#      run: |
-#        aws cloudformation deploy \
-#          --template-file ec2_template.yaml \
-#          --stack-name MyEC2Stack \
-#          --capabilities CAPABILITY_NAMED_IAM \
-#          --parameter-overrides InstanceType=t2.micro KeyName=your-key-name VPCId=vpc-123abc SubnetId=subnet-456def
-#
-#    - name: Update CloudFormation stack if exists
-#      if: env.stack_exists == 'true'
-#      run: |
-#        aws cloudformation update-stack \
-#          --template-file ec2_template.yaml \
-#          --stack-name MyEC2Stack \
-#          --capabilities CAPABILITY_NAMED_IAM \
-#          --parameter-overrides InstanceType=t2.micro KeyName=your-key-name VPCId=vpc-123abc SubnetId=subnet-456def
+    - name: Deploy CloudFormation stack if not exists
+      if: env.stack_exists == 'false'
+      run: |
+        aws cloudformation deploy \
+          --template-file ec2_template.yaml \
+          --stack-name StravaTemplatesStack \
+          --capabilities CAPABILITY_NAMED_IAM \
+          --parameter-overrides InstanceType=t3.micro VPCId=vpc-00caeba5cc2f179b5 SubnetId=subnet-086948d3977b28e9d
+
+    - name: Get EC2 instance ID
+      id: get_instance_id
+      run: |
+        INSTANCE_ID=$(aws cloudformation describe-stacks \
+          --stack-name StravaTemplatesStack \
+          --query "Stacks[0].Outputs[?OutputKey=='InstanceId'].OutputValue" \
+          --output text)
+        echo "INSTANCE_ID=$INSTANCE_ID" >> $GITHUB_ENV
+
+    - name: Wait for EC2 status checks to pass
+      run: |
+          TIMEOUT=600
+          INTERVAL=30
+
+          end_time=$((SECONDS + TIMEOUT))
+          
+          while [ $SECONDS -lt $end_time ]; do
+            status=$(aws ec2 describe-instance-status --instance-ids ${{ env.INSTANCE_ID }} --query 'InstanceStatuses[0].InstanceStatus.Status' --output text)
+            system_status=$(aws ec2 describe-instance-status --instance-ids ${{ env.INSTANCE_ID }} --query 'InstanceStatuses[0].SystemStatus.Status' --output text)
+            
+            if [ "$status" = "ok" ] && [ "$system_status" = "ok" ]; then
+              echo "EC2 instance status checks passed."
+              exit 0
+            fi
+            
+            echo "Status checks not passed yet. Waiting..."
+            sleep $INTERVAL
+          done
+          
+          echo "Timed out waiting for EC2 instance status checks to pass."
+          exit 1
