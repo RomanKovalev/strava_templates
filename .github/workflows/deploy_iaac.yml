@@ -61,6 +61,7 @@ jobs:
             
             if [ "$status" = "ok" ] && [ "$system_status" = "ok" ]; then
               echo "EC2 instance status checks passed."
+              echo "Timed out waiting for EC2 instance status checks to pass."
               exit 0
             fi
             
