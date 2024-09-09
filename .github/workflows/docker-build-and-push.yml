@@ -6,7 +6,7 @@ on:
       apiUrl:
         description: 'API URL'
         required: true
-        default: 'http://qwqweqwe.cloud'
+        default: 'http://api.strava.kovalev.cloud/api'
         type: string
 
       tag:
@@ -39,7 +39,7 @@ jobs:
 
     - name: Build frontend Docker image
       run: |
-        docker build --build-arg BACKEND_API_URL=${{ github.event.inputs.apiUrl }} -t ${{ secrets.DOCKER_USERNAME }}/strava_templates_web:${{ github.event.inputs.tag }} -f web/Dockerfile web/
+        docker build --build-arg VITE_BACKEND_API_URL=${{ github.event.inputs.apiUrl }} -t ${{ secrets.DOCKER_USERNAME }}/strava_templates_web:${{ github.event.inputs.tag }} -f web/Dockerfile web/
 
     - name: Push frontend Docker image
       run: |
