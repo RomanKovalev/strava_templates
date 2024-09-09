@@ -71,7 +71,8 @@ jobs:
           sudo apt update
           sudo apt install nginx -y
           sudo rm -rf /etc/nginx/sites-available/*
-          docker cp strava_templates_backend:/app/ec2_nginx.conf /etc/nginx/sites-available/strava.kovalev.cloud
+          sudo rm -rf /etc/nginx/sites-enabled/*
+          sudo docker cp strava_templates_backend:/app/ec2_nginx.conf /etc/nginx/sites-available/strava.kovalev.cloud
           sudo ln -s /etc/nginx/sites-available/strava.kovalev.cloud /etc/nginx/sites-enabled/strava.kovalev.cloud
           sudo systemctl start nginx
           sudo systemctl enable nginx
