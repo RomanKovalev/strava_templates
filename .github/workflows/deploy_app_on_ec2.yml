@@ -77,6 +77,8 @@ jobs:
           sudo systemctl start nginx
           sudo systemctl enable nginx
           
+          docker exec -it strava_templates_backend python manage.py migrate 
+          
           EOF
         env:
           DOCKER_USERNAME: ${{ secrets.DOCKER_USERNAME }}

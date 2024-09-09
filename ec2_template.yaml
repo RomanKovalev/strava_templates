@@ -1,44 +1,157 @@
 AWSTemplateFormatVersion: "2010-09-09"
 Description: "CloudFormation template to create an EC2 instance with associated resources"
 
-Parameters:
-  InstanceType:
-    Description: "EC2 instance type"
-    Type: String
-    Default: t2.micro
-    AllowedValues:
-      - t3.micro
-      - t2.micro
-      - t2.small
-      - t2.medium
-    ConstraintDescription: "Must be a valid EC2 instance type."
-
-  KeyName:
-    Description: "Name of an existing EC2 KeyPair to enable SSH access"
-    Type: AWS::EC2::KeyPair::KeyName
-    Default: "EC2 temp"
-    ConstraintDescription: "Must be the name of an existing EC2 KeyPair."
-
-  VPCId:
-    Description: "VPC ID where the EC2 instance will be launched"
-    Type: AWS::EC2::VPC::Id
-    ConstraintDescription: "Must be a valid VPC ID."
-
-  SubnetId:
-    Description: "Subnet ID within the specified VPC"
-    Type: AWS::EC2::Subnet::Id
-    ConstraintDescription: "Must be a valid subnet ID."
+# aws cloudformation --stack-name StravaTemplatesStack --template-file ec2_template_new.yaml --capabilities CAPABILITY_NAMED_IAM
+# aws cloudformation delete-stack --stack-name StravaTemplatesStack
 
 Resources:
-  EC2Instance:
-    Type: "AWS::EC2::Instance"
+  StravaTemplatesVPC:
+    Type: AWS::EC2::VPC
     Properties:
-      InstanceType: !Ref InstanceType
-      KeyName: !Ref KeyName
-      SubnetId: !Ref SubnetId
-      ImageId: "ami-0f12d24db5eaa6369"
+      CidrBlock: 10.0.0.0/24
+      EnableDnsSupport: true
+      EnableDnsHostnames: true
+      Tags:
+        - Key: Name
+          Value: StravaTemplatesVPC
+
+  StravaTemplatesInternetGateway:
+    Type: AWS::EC2::InternetGateway
+    Properties:
+      Tags:
+        - Key: Name
+          Value: StravaTemplatesInternetGateway
+
+  StravaTemplatesVPCGatewayAttachment:
+    Type: AWS::EC2::VPCGatewayAttachment
+    Properties:
+      VpcId: !Ref StravaTemplatesVPC
+      InternetGatewayId: !Ref StravaTemplatesInternetGateway
+
+  PrivateStravaTemplatesEC2Subnet:
+    Type: AWS::EC2::Subnet
+    Properties:
+      VpcId: !Ref StravaTemplatesVPC
+      CidrBlock: 10.0.0.96/28
+      AvailabilityZone: eu-north-1a
+      MapPublicIpOnLaunch: true
+      Tags:
+        - Key: Name
+          Value: PrivateStravaTemplatesEC2Subnet
+
+  StravaTemplatesEC2Subnet:
+    Type: AWS::EC2::Subnet
+    Properties:
+      VpcId: !Ref StravaTemplatesVPC
+      CidrBlock: 10.0.0.64/28
+      AvailabilityZone: eu-north-1a
+      MapPublicIpOnLaunch: true
+      Tags:
+        - Key: Name
+          Value: PublicStravaTemplatesEC2Subnet
+
+  StravaTemplatesRouteTable:
+    Type: AWS::EC2::RouteTable
+    Properties:
+      VpcId: !Ref StravaTemplatesVPC
+      Tags:
+        - Key: Name
+          Value: StravaTemplatesRouteTable
+
+  StravaTemplatesInternetRoute:
+    Type: AWS::EC2::Route
+    Properties:
+      RouteTableId: !Ref StravaTemplatesRouteTable
+      DestinationCidrBlock: 0.0.0.0/0
+      GatewayId: !Ref StravaTemplatesInternetGateway
+
+  StravaTemplatesSubnetRouteTableAssociation:
+    Type: AWS::EC2::SubnetRouteTableAssociation
+    Properties:
+      SubnetId: !Ref StravaTemplatesEC2Subnet
+      RouteTableId: !Ref StravaTemplatesRouteTable
+
+
+  StravaTemplatesRDSSubnetA:
+    Type: AWS::EC2::Subnet
+    Properties:
+      VpcId: !Ref StravaTemplatesVPC
+      CidrBlock: 10.0.0.16/28
+      AvailabilityZone: eu-north-1a
+      Tags:
+        - Key: Name
+          Value: StravaTemplatesRDSSubnetA
+
+  StravaTemplatesRDSSubnetB:
+    Type: AWS::EC2::Subnet
+    Properties:
+      VpcId: !Ref StravaTemplatesVPC
+      CidrBlock: 10.0.0.32/28
+      AvailabilityZone: eu-north-1b
+      Tags:
+        - Key: Name
+          Value: StravaTemplatesRDSSubnetB
+
+  StravaTemplatesDBSubnetGroup:
+    Type: AWS::RDS::DBSubnetGroup
+    Properties:
+      DBSubnetGroupDescription: "Subnet group for RDS"
+      SubnetIds:
+        - !Ref StravaTemplatesRDSSubnetA
+        - !Ref StravaTemplatesRDSSubnetB
+      Tags:
+        - Key: Name
+          Value: StravaTemplatesDBSubnetGroup
+
+  EC2SecurityGroup:
+    Type: AWS::EC2::SecurityGroup
+    Properties:
+      GroupDescription: "Allow EC2 access to RDS"
+      VpcId: !Ref StravaTemplatesVPC
+      SecurityGroupIngress:
+        - IpProtocol: tcp
+          FromPort: 22
+          ToPort: 22
+          CidrIp: 0.0.0.0/0
+        - IpProtocol: tcp
+          FromPort: 5432
+          ToPort: 5432
+          CidrIp: 10.0.0.0/24 # from StravaTemplatesVPC
+# Not used due route53 setup
+#        - IpProtocol: tcp
+#          FromPort: 8000
+#          ToPort: 8000
+#          CidrIp: 0.0.0.0/0
+#        - IpProtocol: tcp
+#          FromPort: 3000
+#          ToPort: 3000
+#          CidrIp: 0.0.0.0/0
+        - IpProtocol: tcp
+          FromPort: 80
+          ToPort: 80
+          CidrIp: 0.0.0.0/0
+
+  RDSSecurityGroup:
+    Type: AWS::EC2::SecurityGroup
+    Properties:
+      GroupDescription: "Allow RDS to be accessed by EC2"
+      VpcId: !Ref StravaTemplatesVPC
+      SecurityGroupIngress:
+        - IpProtocol: tcp
+          FromPort: 5432
+          ToPort: 5432
+          CidrIp: 10.0.0.64/28 # from StravaTemplatesEC2Subnet
+
+
+  StravaTemplatesEC2Instance:
+    Type: AWS::EC2::Instance
+    Properties:
+      InstanceType: t3.micro
+      KeyName: "EC2 temp"
+      ImageId: ami-0f12d24db5eaa6369
+      SubnetId: !Ref StravaTemplatesEC2Subnet
       SecurityGroupIds:
-        - !Ref InstanceSecurityGroup
+        - !Ref EC2SecurityGroup
       BlockDeviceMappings:
         - DeviceName: /dev/xvda
           Ebs:
@@ -46,27 +159,45 @@ Resources:
             VolumeType: gp3
       Tags:
         - Key: Name
-          Value: "StravaTemplatesEC2"
+          Value: StravaTemplatesEC2Instance
 
-  InstanceSecurityGroup:
-    Type: "AWS::EC2::SecurityGroup"
+  StravaTemplatesRDSInstance:
+    Type: AWS::RDS::DBInstance
     Properties:
-      GroupDescription: "Enable SSH access and HTTP access"
-      VpcId: !Ref VPCId
-      SecurityGroupIngress:
-        - IpProtocol: tcp
-          FromPort: 22
-          ToPort: 22
-          CidrIp: 0.0.0.0/0
-        - IpProtocol: tcp
-          FromPort: 80
-          ToPort: 80
-          CidrIp: 0.0.0.0/0
+      DBInstanceClass: db.t4g.micro
+      AllocatedStorage: 20
+      Engine: postgres
+      EngineVersion: "16.3"
+      MasterUsername: postgres # set via params
+      MasterUserPassword: postgres # set via params
+      DBName: strava_templates
+      DBSubnetGroupName: !Ref StravaTemplatesDBSubnetGroup
+      VPCSecurityGroups:
+        - !Ref RDSSecurityGroup
+      MultiAZ: false
+      BackupRetentionPeriod: 7
+      Tags:
+        - Key: Name
+          Value: StravaTemplatesRDSInstance
+
 
 Outputs:
-  InstanceId:
-    Description: "Instance ID of the created EC2 instance"
-    Value: !Ref EC2Instance
-  PublicIP:
-    Description: "Public IP address of the EC2 instance"
-    Value: !GetAtt EC2Instance.PublicIp
+  EC2SubnetId:
+    Description: "Subnet ID for EC2"
+    Value: !Ref StravaTemplatesEC2Subnet
+
+  StravaTemplatesDBSubnetGroup:
+    Description: "Subnet ID for RDS"
+    Value: !Ref StravaTemplatesDBSubnetGroup
+
+  VPCId:
+    Description: "VPC ID"
+    Value: !Ref StravaTemplatesVPC
+
+  EC2InstanceId:
+    Description: "Instance ID for EC2"
+    Value: !Ref StravaTemplatesEC2Instance
+
+  RDSInstanceEndpoint:
+    Description: "Endpoint for RDS PostgreSQL"
+    Value: !GetAtt StravaTemplatesRDSInstance.Endpoint.Address
