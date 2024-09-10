@@ -20,6 +20,7 @@ class StravaProfile(models.Model):
     status = models.CharField(default=None, blank=True, null=True, max_length=20, choices=STATUS_CHOICES)
     page = models.IntegerField(default=1, blank=True, null=True)
     per_page = models.IntegerField(default=200, blank=True, null=True)
+    onboarded = models.BooleanField(default=False)
 
     def __str__(self):
         return self.user.username
