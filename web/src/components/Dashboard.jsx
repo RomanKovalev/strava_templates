@@ -34,12 +34,13 @@ const Dashboard = () => {
         dispatch(setActivityIntencities(response.data.activity_intensity));
         dispatch(setStatsPerWeekDay(response.data.activities_by_day));
         dispatch(setStatsPerDayTime(response.data.activities_by_day_time));
-        setLoading(false);
+        // setLoading(false);
 
         console.log('Fetched data:', response.data);
       } catch (error) {
-        setError('Failed to fetch activities');
-        setLoading(false);
+          console.log(error);
+            // setError('Failed to fetch activities');
+            setLoading(false);
       }
     };
     if (isAuthenticated) {

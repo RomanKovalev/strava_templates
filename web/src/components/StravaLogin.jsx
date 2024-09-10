@@ -8,7 +8,7 @@ import api from "../api.js";
 function StravaLogin() {
   const dispatch = useDispatch()
   const isAuthenticated = useSelector((state) => state.auth.isAuthenticated);
-  const [stravaUrl, setstravaUrl] = useState([]);
+  // const [stravaUrl, setstravaUrl] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
   const navigate = useNavigate();
@@ -20,9 +20,9 @@ function StravaLogin() {
 
   const fetchStravaAuthUrl = async () => {
           try {
-            const response = await api.get('strava/login');
+            const response = await api.get('strava/login/');
             window.location.href = response.data.auth_url;
-            setstravaUrl(response.data);
+            // setstravaUrl(response.data);
           } catch (err) {
             setError(err.message);
           } finally {

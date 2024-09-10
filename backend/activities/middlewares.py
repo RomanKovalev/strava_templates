@@ -9,6 +9,10 @@ class JWTAuthCookieMiddleware:
         self.get_response = get_response
 
     def __call__(self, request):
+        if request.path == '/api/strava/login/' or request.path == '/api/strava/callback/':
+            response = self.get_response(request)
+            return response
+
         jwt_access_token = request.COOKIES.get('jwt_access')
         jwt_refresh_token = request.COOKIES.get('jwt_refresh')
 
@@ -16,7 +20,7 @@ class JWTAuthCookieMiddleware:
             try:
                 refresh_token = RefreshToken(jwt_refresh_token)
                 new_jwt_access_token = refresh_token.access_token
-                new_jwt_access_token1 = str(refresh_token.access_token)
+
                 response = self.get_response(request)
                 response.set_cookie(
                     key='jwt_access',
