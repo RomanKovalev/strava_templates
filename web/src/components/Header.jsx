@@ -1,6 +1,7 @@
 import { Navbar } from 'flowbite-react';
 import { Link } from 'react-router-dom';
 import { useSelector } from 'react-redux';
+import logo from '../assets/strava_logo.png';
 
 export const Header = () => {
     const isAuthenticated = useSelector((state) => state.auth.isAuthenticated);
@@ -9,13 +10,10 @@ export const Header = () => {
             <Navbar fluid={true} rounded={true} >
                 <Navbar.Brand href="/">
                     <img
-                        src="https://flowbite.com/docs/images/logo.svg"
+                        src={logo}
                         className="mr-3 h-6 sm:h-9"
                         alt="Flowbite Logo"
                     />
-                    <span className="self-center whitespace-nowrap text-xl font-semibold dark:text-white">
-              Flowbite
-            </span>
                 </Navbar.Brand>
                 <Navbar.Toggle/>
                 <Navbar.Collapse>

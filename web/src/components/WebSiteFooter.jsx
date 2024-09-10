@@ -6,7 +6,7 @@ const WebSiteFooter = () => {
       <footer className="w-full">
         <Footer container={true}>
           <div className="w-full text-center">
-            <Footer.Copyright href="#" by="Flowbite™" year={2024}/>
+            <Footer.Copyright href="#" by="Altfitx.com™" year={2024}/>
             <Footer.LinkGroup>
               <Footer.Link href="#">About</Footer.Link>
               <Footer.Link href="#">Privacy Policy</Footer.Link>
