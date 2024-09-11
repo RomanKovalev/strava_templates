@@ -1,4 +1,4 @@
-import React from 'react';
+import { useEffect } from 'react';
 import { useDispatch } from 'react-redux';
 import { logout as logoutAction } from '../store/authSlice';
 import {useNavigate} from "react-router-dom";
@@ -8,21 +8,19 @@ function Logout() {
 
   const dispatch = useDispatch();
   const navigate = useNavigate();
-  const handleLogout = async () => {
+useEffect (() => {
     try {
-      await api.post('strava/logout/');
-      alert('Logout successful');
+      api.post('strava/logout/');
       dispatch(logoutAction());
       navigate('/');
     } catch (error) {
-      alert(`Logout failed: ${error}`);
+      console.log(`Logout failed: ${error}`);
     }
-  };
+  })
 
   return (
     <div>
-      <h2>Logout Header</h2>
-      <button onClick={handleLogout}>Logout Button</button>
+      <h2>Logout</h2>
     </div>
   );
 }
