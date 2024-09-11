@@ -92,7 +92,7 @@ const Dashboard = () => {
                       <StatsPerWeekday/>
                   </Card>
               </div>
-              <div className="w-full md:w-1/2 p-1">
+              <div className="w-full md:w-1/2 p-0">
                   <Card className="h-full">
                       <StatsDayTime />
                   </Card>

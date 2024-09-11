@@ -10,7 +10,7 @@ const Activities = () => {
   useEffect(() => {
     const fetchActivities = async () => {
       try {
-        const response = await api.get('activities');
+        const response = await api.get('activities/');
         setActivities(response.data);
       } catch (err) {
         setError(err.message);

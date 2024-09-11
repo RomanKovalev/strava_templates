@@ -2,15 +2,6 @@ import React from 'react';
 import { PieChart, Pie, Cell, Legend } from 'recharts';
 import {useSelector} from "react-redux";
 
-const data = [
-  { name: 'Monday', value: 10.82 },
-  { name: 'Tuesday', value: 15.23 },
-  { name: 'Wednesday', value: 15.83 },
-  { name: 'Thursday', value: 13.01 },
-  { name: 'Friday', value: 14.57 },
-  { name: 'Saturday', value: 15.7 },
-  { name: 'Sunday', value: 14.84 },
-];
 
 const COLORS = ['#0088FE', '#00C49F', '#FFBB28', '#FF8042', '#FF6384', '#36A2EB', '#FFCE56'];
 
@@ -63,7 +54,7 @@ const StatsPerWeekday = () => {
         />
       </PieChart>
       <br/>
-      <table border="1" style={{ marginTop: '20px', textAlign: 'center' }}>
+      <table border="1" style={{ marginTop: '20px', textAlign: 'left', width: '100%' }}>
         <thead>
           <tr>
             <th>Weekday</th>
@@ -78,8 +69,8 @@ const StatsPerWeekday = () => {
             <tr key={index}>
               <td>{weekday.name}</td>
               <td>{weekday.count}</td>
-              <td>{weekday.avg_distance} m avg\{weekday.total_distance} m total</td>
-              <td>{weekday.avg_elevation} m avg\{weekday.total_elevation} m total</td>
+              <td>{weekday.avg_distance} km avg \ {weekday.total_distance} km total</td>
+              <td>{weekday.total_elevation} m total</td>
               <td>{weekday.total_moving_time}</td>
             </tr>
         ))}

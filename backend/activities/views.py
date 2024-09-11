@@ -266,38 +266,37 @@ class DashboardApiView(APIView):
                     output_field=CharField()
                 ),
             )
-            .values('day_of_week_name')  # Группировка по названию дня недели
+            .values('day_of_week_name')
             .annotate(
-                count=Count('id'),  # Количество активностей
+                count=Count('id'),
                 value=Round(
                     ExpressionWrapper(
                         (Count('id') * 100.0) / total_activities,
                         output_field=FloatField()
                     ), 1
-                ),  # Процент активностей в этот день недели
+                ),
                 total_distance=Round(
                     ExpressionWrapper(Sum('distance') / 1000.0, output_field=FloatField()), 0
-                ),  # Общее расстояние в км
+                ),
                 avg_distance=Round(
                     ExpressionWrapper(Sum('distance') / (Count('id') * 1000.0), output_field=FloatField()), 0
-                ),  # Среднее расстояние в км
+                ),
                 total_moving_time=ExpressionWrapper(Sum('moving_time'), output_field=IntegerField()),
-                # Общее время в движении в минутах
+
                 avg_moving_time=ExpressionWrapper(Sum('moving_time') / Count('id'), output_field=FloatField()),
-                # Среднее время в движении в минутах
+
                 total_elevation=Round(
                     ExpressionWrapper(Sum('total_elevation_gain'), output_field=FloatField()), 0
-                ),  # Общий набор высоты в метрах
+                ),
                 avg_elevation=Round(
                     ExpressionWrapper(Sum('total_elevation_gain') / Count('id'), output_field=FloatField()), 0
-                ),  # Средний набор высоты в метрах
+                ),
             )
-            .order_by('day_of_week_name')  # Сортировка по названию дня недели
+            .order_by('day_of_week_name')
         )
 
-        activities_by_day_list = list(activities_by_day)  # Преобразуем QuerySet в список словарей
+        activities_by_day_list = list(activities_by_day)
 
-        # Переименование ключа 'day_of_week_name' в 'name'
         activities_by_day = [
             {**activity, 'name': activity.pop('day_of_week_name')}
             for activity in activities_by_day_list
@@ -306,6 +305,8 @@ class DashboardApiView(APIView):
         for activity in activities_by_day:
             activity.pop('day_of_week_name')
             activity['total_moving_time'] = seconds_to_dhms(activity['total_moving_time'])
+            activity['total_distance'] = f"{int(activity['total_distance']):,}".replace(',', ' ')
+            activity['total_elevation'] = f"{int(activity['total_elevation']):,}".replace(',', ' ')
 
         # ===========================================================================
         # Aggregate data based on time of day
@@ -337,8 +338,20 @@ class DashboardApiView(APIView):
             total_moving_time=Sum('moving_time')
         ).order_by('time_of_day')
 
-        activities_by_day_time = list(aggregated_data)
+        formatted_data = []
+        for entry in aggregated_data:
+            formatted_entry = {
+                'time_of_day': entry['time_of_day'].capitalize(),
+                'activity_count': entry['activity_count'],
+                'value': entry['value'],
+                'average_distance': entry['average_distance'],
+                'total_distance': f"{round(entry['total_distance']):,}".replace(',', ' '),  # Форматирование с пробелами
+                'total_elevation': f"{round(entry['total_elevation']):,}".replace(',', ' '),  # Форматирование с пробелами
+                'total_moving_time': entry['total_moving_time']
+            }
+            formatted_data.append(formatted_entry)
 
+        activities_by_day_time = list(formatted_data)
         for activity in activities_by_day_time:
             activity['total_moving_time'] = seconds_to_dhms(activity['total_moving_time'])
 
@@ -348,22 +361,22 @@ class DashboardApiView(APIView):
                 "date_difference_years": date_difference.years,
                 "date_difference_months": date_difference.months,
                 "date_difference_days": date_difference.days,
-                "first_activity_start_date": first_activity_start_date,
+                "first_activity_start_date": first_activity_start_date.strftime('%d %b %Y'),
                 "uniq_days": uniq_days,
-                "total_distance": total_distance,
+                "total_distance": f"{total_distance:,}".replace(',', ' '),
                 "around_earth": round(total_distance / 36788, 2),
                 "way_to_the_moon": round(total_distance / 384000, 3),
-                "total_elevation": total_elevation,
+                "total_elevation": f"{total_elevation:,}".replace(',', ' '),
                 "everest_elevation": round(total_elevation / 8845, 2),
                 "total_elapsed_time_weeks": rd.weeks,
                 "total_elapsed_time_days": rd.days,
                 "total_elapsed_time_hours": rd.hours,
                 "total_elapsed_time_minutes": rd.minutes,
-                "average_day_distance_since_first_activity": total_distance / days_since_first_activity,
-                "average_week_distance_since_first_activity": total_distance / weeks_since_first_activity,
-                "average_months_distance_since_first_activity": total_distance / months_since_first_activity,
-                "total_kilocalories_burned": total_kilocalories_burned,
-                "pizza_slices_equivalent": round(total_kilocalories_burned / 250)
+                "average_day_distance_since_first_activity": round(total_distance / days_since_first_activity, 2),
+                "average_week_distance_since_first_activity": round(total_distance / weeks_since_first_activity,2),
+                "average_months_distance_since_first_activity": round(total_distance / months_since_first_activity, 2),
+                "total_kilocalories_burned": f"{total_kilocalories_burned:,}".replace(',', ' '),
+                "pizza_slices_equivalent": round(total_kilocalories_burned / 250, 0)
             },
             "weekly_distances": result,
             "activity_intensity": activity_intensity,

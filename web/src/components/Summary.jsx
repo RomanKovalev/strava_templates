@@ -8,7 +8,7 @@ const Summary = () => {
       <div className="flex-grow">
           <p>
               Since I began cycling {summary.date_difference_years} year and {summary.date_difference_months} months
-              and {summary.date_difference_days} days ago on{summary.first_activity_start_date}, I
+              and {summary.date_difference_days} days ago on {summary.first_activity_start_date}, I
               had {summary.uniq_days} cycling days.
           </p>
           <br/>

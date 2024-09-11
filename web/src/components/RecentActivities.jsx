@@ -1,6 +1,7 @@
 import React from 'react';
 import { Table } from "flowbite-react";
 import { useSelector } from "react-redux";
+import {Link} from "react-router-dom";
 
 const RecentActivities = () => {
 
@@ -8,11 +9,15 @@ const RecentActivities = () => {
 
   return (
       <div>
-          <div className="w-1/1 flex flex-row justify-between align-items-center">
+          <div className="w-1/1 flex flex-row justify-between align-items-center mb-5 mt-0">
               <h5 className="text-md font-bold tracking-tight text-gray-900 dark:text-white">
                   Most recent activities
               </h5>
-              <h3><a href="#">All activities</a></h3>
+              <h3>
+                <Link to='/activities'>
+                    View All
+                </Link>
+              </h3>
           </div>
           <Table>
               <Table.Head>
@@ -34,6 +39,22 @@ const RecentActivities = () => {
                           <Table.Cell className="py-2">{activity.total_elevation_gain}</Table.Cell>
                       </Table.Row>
                   ))}
+                    <Table.Row key="index0">
+                      <Table.Cell className="py-2"></Table.Cell>
+                      <Table.Cell className="py-2"></Table.Cell>
+                      <Table.Cell className="py-2"></Table.Cell>
+                      <Table.Cell className="py-2"></Table.Cell>
+                      <Table.Cell className="py-2"></Table.Cell>
+                      <Table.Cell className="py-2"></Table.Cell>
+                    </Table.Row>
+                    <Table.Row key="index1">
+                      <Table.Cell className="py-2"></Table.Cell>
+                      <Table.Cell className="py-2"></Table.Cell>
+                      <Table.Cell className="py-2"></Table.Cell>
+                      <Table.Cell className="py-2"></Table.Cell>
+                      <Table.Cell className="py-2"></Table.Cell>
+                      <Table.Cell className="py-2"></Table.Cell>
+                    </Table.Row>
               </Table.Body>
           </Table>
       </div>
