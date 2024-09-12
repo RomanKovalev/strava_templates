@@ -1,4 +1,5 @@
 import Slider from "react-slick";
+import { useRef } from "react";
 import "slick-carousel/slick/slick.css";
 import "slick-carousel/slick/slick-theme.css";
 
@@ -11,14 +12,26 @@ import tmb_6 from '../assets/tmb_6.png';
 
 
 const SliderComponent = () => {
-var settings = {
-    infinite: true,
-    speed: 500,
-    slidesToShow: 3,
-    slidesToScroll: 1,
-  };
+
+    let sliderRef = useRef(null);
+      const play = () => {
+        sliderRef.slickPlay();
+      };
+      const pause = () => {
+        sliderRef.slickPause();
+      };
+
+      const settings = {
+        dots: true,
+        infinite: true,
+        slidesToShow: 3,
+        slidesToScroll: 1,
+        autoplay: true,
+        autoplaySpeed: 2000
+      }
+
   return (
-      <Slider {...settings}>
+      <Slider ref={slider => (sliderRef = slider)} {...settings}>
           <div>
               <img src={tmb_1} alt="tmb_1"/>
           </div>
