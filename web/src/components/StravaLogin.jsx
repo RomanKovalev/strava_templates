@@ -8,7 +8,6 @@ import api from "../api.js";
 function StravaLogin() {
   const dispatch = useDispatch()
   const isAuthenticated = useSelector((state) => state.auth.isAuthenticated);
-  // const [stravaUrl, setstravaUrl] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
   const navigate = useNavigate();
@@ -32,7 +31,6 @@ function StravaLogin() {
 
   const fetchToken = async () => {
           try {
-            const interceptors = api.interceptors.request.handlers;
             const response = await api.get(`strava/callback/?code=${encodeURIComponent(code)}&scope=${encodeURIComponent(scope)}`);
             try {
                 dispatch(loginAction(response.data.user));
