@@ -1,6 +1,5 @@
-import React, {useEffect, useState} from 'react';
+import {useEffect, useState} from 'react';
 import {useDispatch, useSelector} from 'react-redux';
-import { login } from '../auth';
 import { login as loginAction } from '../store/authSlice';
 import { useNavigate, useLocation  } from 'react-router-dom';
 import api from "../api.js";
@@ -21,7 +20,6 @@ function StravaLogin() {
           try {
             const response = await api.get('strava/login/');
             window.location.href = response.data.auth_url;
-            // setstravaUrl(response.data);
           } catch (err) {
             setError(err.message);
           } finally {

@@ -1,4 +1,4 @@
-import React, {useEffect, useState} from 'react';
+import {useEffect, useState} from 'react';
 import {useDispatch, useSelector} from 'react-redux';
 import { Card, Table, Button, TextInput } from "flowbite-react";
 import api from "../api.js";
@@ -14,9 +14,9 @@ const Activities = () => {
                 const response = await api.get('activities/');
                 dispatch(setAllActivities(response.data))
             } catch (err) {
-                setError(err.message);
+                console.log(err.message);
             } finally {
-                setLoading(false);
+                console.log(false);
             }
         };
         fetchActivities();

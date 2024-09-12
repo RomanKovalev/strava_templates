@@ -1,4 +1,3 @@
-import React from 'react';
 import App from './components/App.jsx'
 import './index.css'
 import ReactDOM from 'react-dom/client';

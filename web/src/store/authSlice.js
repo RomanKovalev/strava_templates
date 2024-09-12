@@ -10,7 +10,7 @@ const authSlice = createSlice({
   name: 'auth',
   initialState,
   reducers: {
-    setOnboarded(state, action) {
+    setOnboarded(state) {
       state.user.isOnboarded = true;
     },
     login(state, action) {

@@ -1,12 +1,10 @@
-import React, { useEffect, useState } from 'react';
+import { useEffect } from 'react';
 import api from "../api.js";
-import { Table, Card } from 'flowbite-react';
+import { Card } from 'flowbite-react';
 import CustomBrushChart from './CustomBrushChart';
 import ActivityHeatmap from "./ActivityHeatmap";
 import StatsPerWeekday from "./StatsPerWeekday";
 import StatsDayTime from "./StatsDayTime";
-import DistanceBreakdown from './DistanceBreakdown';
-import Trivia from './Trivia';
 import RecentActivities from "./RecentActivities.jsx";
 import Summary from "./Summary.jsx";
 import {
@@ -34,13 +32,12 @@ const Dashboard = () => {
         dispatch(setActivityIntencities(response.data.activity_intensity));
         dispatch(setStatsPerWeekDay(response.data.activities_by_day));
         dispatch(setStatsPerDayTime(response.data.activities_by_day_time));
-        // setLoading(false);
 
         console.log('Fetched data:', response.data);
       } catch (error) {
           console.log(error);
             // setError('Failed to fetch activities');
-            setLoading(false);
+            console.log(false);
       }
     };
     if (isAuthenticated) {

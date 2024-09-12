@@ -1,4 +1,3 @@
-import React from 'react';
 import CalendarHeatmap from 'react-calendar-heatmap';
 import 'react-calendar-heatmap/dist/styles.css';
 import { Tooltip } from 'react-tooltip';
@@ -7,17 +6,7 @@ import {useSelector} from "react-redux";
 
 const ActivityHeatmap = () => {
   const activityIntencities = useSelector((state) => state.dashboard.activityIntencities);
-  const data = [
-    { date: '2024-01-01', count: 11 },
-    { date: '2024-02-02', count: 55 },
-    { date: '2024-03-03', count: 77 },
-    { date: '2024-04-03', count: 110 },
-    { date: '2024-05-01', count: 11 },
-    { date: '2024-06-02', count: 55 },
-    { date: '2024-07-03', count: 77 },
-    { date: '2024-08-03', count: 110 },
-    // Добавьте больше данных для соответствия вашему диапазону
-  ];
+
   const startDate = new Date();
   return (
       <div>

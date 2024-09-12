@@ -1,5 +1,3 @@
-import React from 'react';
-
 const distanceData = [
   { range: '0 - 20 km', rides: 208, avgDistance: '10km', totalDistance: '2 011km', elevation: '10 091m', totalTime: '3d 20h 3m', avgSpeed: '21.8km/h' },
   { range: '20 - 40 km', rides: 157, avgDistance: '30km', totalDistance: '4 757km', elevation: '43 550m', totalTime: '6d 15h 20m', avgSpeed: '29.9km/h' },

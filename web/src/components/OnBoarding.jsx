@@ -1,5 +1,3 @@
-import styles from './MainPage.module.css';
-import {Link} from "react-router-dom";
 import { useState } from "react";
 import api from "../api.js";
 import { setOnboarded as setOnboardedAction } from "../store/authSlice.js";

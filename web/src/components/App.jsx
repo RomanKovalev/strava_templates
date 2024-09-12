@@ -1,4 +1,4 @@
-import { Routes, Route, Link } from 'react-router-dom';
+import { Routes, Route } from 'react-router-dom';
 import Dashboard from './Dashboard';
 import Activities from './Activities';
 import Login from './Login';
@@ -11,7 +11,7 @@ import Header from './Header.jsx';
 import WebSiteFooter from './WebSiteFooter.jsx';
 import {useDispatch, useSelector} from 'react-redux';
 import StravaLogin from "./StravaLogin.jsx";
-import React, {useEffect, useState} from 'react';
+import {useEffect, useState} from 'react';
 import { login as loginAction } from '../store/authSlice';
 import { logout as logoutAction } from '../store/authSlice';
 import api from "../api.js";
@@ -21,10 +21,6 @@ const App = () => {
 
   const isAuthenticated = useSelector((state) => state.auth.isAuthenticated);
   const user = useSelector((state) => state.auth.user);
-
-  const [activities, setActivities] = useState([]);
-  const [loading, setLoading] = useState(true);
-  const [error, setError] = useState(null);
 
   useEffect(() => {
     const checkAuth = async () => {
