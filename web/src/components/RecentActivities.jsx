@@ -32,14 +32,22 @@ const RecentActivities = () => {
                   {recentActivities.map((activity, index) => (
                       <Table.Row key={index}>
                           <Table.Cell className="py-2">{activity.start_date}</Table.Cell>
-                          <Table.Cell className="py-2">{activity.name}</Table.Cell>
+                          <Table.Cell className="py-2">
+                              <a
+                                  href={`https://www.strava.com/activities/${activity.id}`}
+                                  target="_blank"
+                                  className="text-blue-600 hover:underline cursor-pointer"
+                              >
+                                  {activity.name}
+                              </a>
+                          </Table.Cell>
                           <Table.Cell className="py-2">{activity.type}</Table.Cell>
                           <Table.Cell className="py-2">{activity.distance}</Table.Cell>
                           <Table.Cell className="py-2">{activity.moving_time}</Table.Cell>
                           <Table.Cell className="py-2">{activity.total_elevation_gain}</Table.Cell>
                       </Table.Row>
                   ))}
-                    <Table.Row key="index0">
+                  <Table.Row key="index0">
                       <Table.Cell className="py-2"></Table.Cell>
                       <Table.Cell className="py-2"></Table.Cell>
                       <Table.Cell className="py-2"></Table.Cell>
