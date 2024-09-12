@@ -2,12 +2,32 @@ const triviaData = [
   { label: 'First ride', value: '27-03-2023', description: 'Morning Ride' },
   { label: 'Earliest start time', value: '00:23', description: 'Night Ride' },
   { label: 'Latest start time', value: '23:34', description: 'Night Ride' },
-  { label: 'Longest ride', value: '174km', description: 'The PRL Full in London' },
-  { label: 'Highest elevation', value: '2 622m', description: 'The PRL Full in London' },
-  { label: 'Fastest ride', value: '44.2km/h', description: 'Race: EVO CC Sprint Race Series' },
-  { label: 'Most kudos', value: '45', description: 'Group Ride: Stage 3 | Ride London' },
+  {
+    label: 'Longest ride',
+    value: '174km',
+    description: 'The PRL Full in London',
+  },
+  {
+    label: 'Highest elevation',
+    value: '2 622m',
+    description: 'The PRL Full in London',
+  },
+  {
+    label: 'Fastest ride',
+    value: '44.2km/h',
+    description: 'Race: EVO CC Sprint Race Series',
+  },
+  {
+    label: 'Most kudos',
+    value: '45',
+    description: 'Group Ride: Stage 3 | Ride London',
+  },
   { label: 'Total kudos', value: '3089', description: '' },
-  { label: 'Most consecutive days', value: '19', description: '24-12-2023 - 11-01-2024' },
+  {
+    label: 'Most consecutive days',
+    value: '19',
+    description: '24-12-2023 - 11-01-2024',
+  },
 ];
 
 const Trivia = () => {

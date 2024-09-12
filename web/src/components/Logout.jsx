@@ -1,14 +1,13 @@
 import { useEffect } from 'react';
 import { useDispatch } from 'react-redux';
 import { logout as logoutAction } from '../store/authSlice';
-import {useNavigate} from "react-router-dom";
-import api from "../api.js";
+import { useNavigate } from 'react-router-dom';
+import api from '../api.js';
 
 function Logout() {
-
   const dispatch = useDispatch();
   const navigate = useNavigate();
-useEffect (() => {
+  useEffect(() => {
     try {
       api.post('strava/logout/');
       dispatch(logoutAction());
@@ -16,7 +15,7 @@ useEffect (() => {
     } catch (error) {
       console.log(`Logout failed: ${error}`);
     }
-  })
+  });
 
   return (
     <div>

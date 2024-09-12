@@ -10,7 +10,7 @@ const activitiesSlice = createSlice({
   reducers: {
     setActivities(state, action) {
       state.activities = action.payload;
-    }
+    },
   },
 });
 

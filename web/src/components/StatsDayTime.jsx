@@ -1,9 +1,24 @@
 import { PieChart, Pie, Cell, Legend } from 'recharts';
-import {useSelector} from "react-redux";
+import { useSelector } from 'react-redux';
 
-const COLORS = ['#0088FE', '#00C49F', '#FFBB28', '#FF8042', '#FF6384', '#36A2EB', '#FFCE56'];
+const COLORS = [
+  '#0088FE',
+  '#00C49F',
+  '#FFBB28',
+  '#FF8042',
+  '#FF6384',
+  '#36A2EB',
+  '#FFCE56',
+];
 
-const renderCustomizedLabel = ({ cx, cy, midAngle, innerRadius, outerRadius, percent }) => {
+const renderCustomizedLabel = ({
+  cx,
+  cy,
+  midAngle,
+  innerRadius,
+  outerRadius,
+  percent,
+}) => {
   const RADIAN = Math.PI / 180;
   const radius = 10 + innerRadius + (outerRadius - innerRadius);
   const x = cx + radius * Math.cos(-midAngle * RADIAN);
@@ -23,9 +38,13 @@ const renderCustomizedLabel = ({ cx, cy, midAngle, innerRadius, outerRadius, per
 };
 
 const StatsDayTime = () => {
-  const statsPerDayTime = useSelector((state) => state.dashboard.statsPerDayTime);
+  const statsPerDayTime = useSelector(
+    (state) => state.dashboard.statsPerDayTime,
+  );
   return (
-    <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
+    <div
+      style={{ display: 'flex', flexDirection: 'column', alignItems: 'center' }}
+    >
       <h5 className="text-md font-bold tracking-tight text-gray-900 dark:text-white">
         Stats per Daytime
       </h5>
@@ -42,40 +61,49 @@ const StatsDayTime = () => {
           nameKey="time_of_day"
         >
           {statsPerDayTime.map((entry, index) => (
-            <Cell key={`cell-${entry.name}`} fill={COLORS[index % COLORS.length]} />
+            <Cell
+              key={`cell-${entry.name}`}
+              fill={COLORS[index % COLORS.length]}
+            />
           ))}
         </Pie>
-         <Legend
+        <Legend
           layout="horizontal"
           verticalAlign="bottom"
           align="center"
           margin={{ top: 50, right: 20, bottom: 10, left: 20 }}
         />
       </PieChart>
-      <br/>
-      <table border="1" style={{marginTop: '20px', textAlign: 'left', width: '100%'}}>
+      <br />
+      <table
+        border="1"
+        style={{ marginTop: '20px', textAlign: 'left', width: '100%' }}
+      >
         <thead>
-        <tr>
-          <th>Weekday</th>
-          <th>Rides</th>
-          <th>Distance</th>
-          <th>Elevation</th>
-          <th>Total Time</th>
-        </tr>
+          <tr>
+            <th>Weekday</th>
+            <th>Rides</th>
+            <th>Distance</th>
+            <th>Elevation</th>
+            <th>Total Time</th>
+          </tr>
         </thead>
-          <tbody>
+        <tbody>
           {statsPerDayTime.map((weekday, index) => (
-              <tr key={index}>
-                  <td>{weekday.time_of_day}</td>
-                  <td>{weekday.activity_count}</td>
-                  <td>{weekday.average_distance} m avg \ {weekday.total_distance} m total</td>
-                  <td>{weekday.total_elevation} m total</td>
-                  <td>{weekday.total_moving_time}</td>
-              </tr>
+            <tr key={index}>
+              <td>{weekday.time_of_day}</td>
+              <td>{weekday.activity_count}</td>
+              <td>
+                {weekday.average_distance} m avg \ {weekday.total_distance} m
+                total
+              </td>
+              <td>{weekday.total_elevation} m total</td>
+              <td>{weekday.total_moving_time}</td>
+            </tr>
           ))}
           <tr></tr>
           <tr></tr>
-          </tbody>
+        </tbody>
       </table>
     </div>
   );

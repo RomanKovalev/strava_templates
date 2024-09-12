@@ -8,7 +8,7 @@ const initialState = {
   statsPerWeekDay: [],
   statsPerDayTime: [],
   distanceBreakdown: [],
-  triviaStats: []
+  triviaStats: [],
 };
 
 const dashboardSlice = createSlice({
@@ -50,7 +50,7 @@ export const {
   setStatsPerWeekDay,
   setStatsPerDayTime,
   setDistanceBreakdown,
-  setTriviaStats
+  setTriviaStats,
 } = dashboardSlice.actions;
 
-export default dashboardSlice.reducer;  
+export default dashboardSlice.reducer;
