@@ -7,7 +7,8 @@ const MainPage: React.FC = () => {
     <div>
       <div className={styles.cta}>
         <h2>Connect Strava and Track Your Performance</h2>
-        <Link to="strava/login/" className={styles.linkLogin}>
+        {/*<Link to="strava/login/" className={styles.linkLogin}>*/}
+        <Link to="#" className={styles.linkLogin}>
           Connect Strava
         </Link>
       </div>
