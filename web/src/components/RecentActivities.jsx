@@ -14,7 +14,7 @@ const RecentActivities = () => {
                   Most recent activities
               </h5>
               <h3>
-                <Link to='/activities'>
+                <Link to='/activities' className="text-blue-600 hover:underline cursor-pointer">
                     View All
                 </Link>
               </h3>
