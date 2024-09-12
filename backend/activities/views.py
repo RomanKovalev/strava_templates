@@ -144,20 +144,27 @@ class StravaLogoutView(APIView):
 
     def post(self, request):
         response = Response({"message": "Logged out successfully"}, status=status.HTTP_200_OK)
-        response.delete_cookie('jwt')
+        response.delete_cookie('jwt_access')
+        response.delete_cookie('jwt_refresh')
         return response
 
 class CheckAuthView(APIView):
-    permission_classes = [IsAuthenticated]
 
     def get(self, request):
-        return Response({
-            'authenticated': True,
-            'user': {
-                'username': request.user.username,
-                'email': request.user.email,
-        }
-    })
+        if request.user.is_authenticated:
+            return Response({
+                'authenticated': True,
+                'user': {
+                    'username': request.user.username,
+                    'email': request.user.email,
+                    'isOnboarded': request.user.stravaprofile.onboarded,
+                }
+            })
+        else:
+            return Response({
+                'authenticated': False
+            })
+
 
 
 class RunView(APIView):
@@ -384,3 +391,20 @@ class DashboardApiView(APIView):
             "activities_by_day_time": activities_by_day_time
         }, status=status.HTTP_200_OK)
 
+class ActivityListView(APIView):
+    def get(self, request):
+        activities = Activity.objects.all()
+        serializer = ActivitySerializer(activities, many=True)
+        return Response(serializer.data)
+
+
+class OnBoardApiView(APIView):
+    def post(self, request):
+        try:
+            stravaprofile = self.request.user.stravaprofile
+            stravaprofile.onboarded = True
+            stravaprofile.save()
+            return Response(status=status.HTTP_200_OK)
+        except Exception as e:
+            print(e)
+            return Response(status=status.HTTP_400_BAD_REQUEST)

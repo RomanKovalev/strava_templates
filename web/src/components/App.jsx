@@ -4,6 +4,7 @@ import Activities from './Activities';
 import Login from './Login';
 import Logout from './Logout';
 import MainPage from './MainPage.jsx';
+import OnBoarding from './OnBoarding.jsx';
 import NotFound from './NotFound.jsx';
 import PrivateRoute from './PrivateRoute';
 import Header from './Header.jsx';
@@ -13,7 +14,6 @@ import StravaLogin from "./StravaLogin.jsx";
 import React, {useEffect, useState} from 'react';
 import { login as loginAction } from '../store/authSlice';
 import { logout as logoutAction } from '../store/authSlice';
-import {setActivityIntencities, setRecentActivities, setSummary, setWeeklyDistances, setStatsPerWeekDay, setStatsPerDayTime} from '../store/dashboardSlice.js'
 import api from "../api.js";
 
 const App = () => {
@@ -39,9 +39,8 @@ const App = () => {
         dispatch(logoutAction())
       }
     };
-    if (isAuthenticated) {
-      checkAuth();
-    }
+    checkAuth();
+
   }, []);
 
 
@@ -53,13 +52,18 @@ const App = () => {
           <div className="container mx-auto">
             <Routes>
               <Route
-              path="/"
-              element={
-                isAuthenticated ? <Dashboard /> : <MainPage />
-              }
+                path="/"
+                element={
+                  !isAuthenticated ? (
+                    <MainPage />
+                  ) : isAuthenticated && !user.isOnboarded ? (
+                    <OnBoarding />
+                  ) : (
+                    <Dashboard />
+                  )
+                }
               />
               <Route path="/activities" element={<PrivateRoute><Activities/></PrivateRoute>}/>
-              {/*<Route path="/activities" element={<Activities/>}/>*/}
               <Route path="/login" element={<Login/>}/>
               <Route path="/logout" element={<Logout/>}/>
               <Route path="/strava/login" element={<StravaLogin/>}/>
