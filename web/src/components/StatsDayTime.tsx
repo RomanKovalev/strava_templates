@@ -1,5 +1,8 @@
+import React from 'react';
 import { PieChart, Pie, Cell, Legend } from 'recharts';
 import { useSelector } from 'react-redux';
+import { RootState } from '../store/store';
+import { CustomizedLabelProps } from "../types";
 
 const COLORS = [
   '#0088FE',
@@ -18,7 +21,7 @@ const renderCustomizedLabel = ({
   innerRadius,
   outerRadius,
   percent,
-}) => {
+}: CustomizedLabelProps) => {
   const RADIAN = Math.PI / 180;
   const radius = 10 + innerRadius + (outerRadius - innerRadius);
   const x = cx + radius * Math.cos(-midAngle * RADIAN);
@@ -37,20 +40,19 @@ const renderCustomizedLabel = ({
   );
 };
 
-const StatsPerWeekday = () => {
-  const statsPerWeekDay = useSelector(
-    (state) => state.dashboard.statsPerWeekDay,
-  );
+const StatsDayTime: React.FC = () => {
+  const statsPerDayTime = useSelector((state: RootState) => state.dashboard.statsPerDayTime);
+
   return (
     <div
       style={{ display: 'flex', flexDirection: 'column', alignItems: 'center' }}
     >
       <h5 className="text-md font-bold tracking-tight text-gray-900 dark:text-white">
-        Stats per weekday
+        Stats per Daytime
       </h5>
       <PieChart width={450} height={450}>
         <Pie
-          data={statsPerWeekDay}
+          data={statsPerDayTime}
           cx={200}
           cy={200}
           labelLine={false}
@@ -58,10 +60,11 @@ const StatsPerWeekday = () => {
           outerRadius={150}
           fill="#8884d8"
           dataKey="value"
+          nameKey="time_of_day"
         >
-          {statsPerWeekDay.map((entry, index) => (
+          {statsPerDayTime.map((entry, index) => (
             <Cell
-              key={`cell-${entry.name}`}
+              key={`cell-${index}`} // Используйте индекс вместо entry.name для уникального ключа
               fill={COLORS[index % COLORS.length]}
             />
           ))}
@@ -88,22 +91,24 @@ const StatsPerWeekday = () => {
           </tr>
         </thead>
         <tbody>
-          {statsPerWeekDay.map((weekday, index) => (
+          {statsPerDayTime.map((weekday, index) => (
             <tr key={index}>
-              <td>{weekday.name}</td>
-              <td>{weekday.count}</td>
+              <td>{weekday.time_of_day}</td>
+              <td>{weekday.activity_count}</td>
               <td>
-                {weekday.avg_distance} km avg \ {weekday.total_distance} km
+                {weekday.average_distance} m avg \ {weekday.total_distance} m
                 total
               </td>
               <td>{weekday.total_elevation} m total</td>
               <td>{weekday.total_moving_time}</td>
             </tr>
           ))}
+          <tr></tr>
+          <tr></tr>
         </tbody>
       </table>
     </div>
   );
 };
 
-export default StatsPerWeekday;
+export default StatsDayTime;

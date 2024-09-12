@@ -1,12 +1,12 @@
 import { useEffect } from 'react';
-import api from '../api.js';
+import api from '../api';
 import { Card } from 'flowbite-react';
 import CustomBrushChart from './CustomBrushChart';
 import ActivityHeatmap from './ActivityHeatmap';
 import StatsPerWeekday from './StatsPerWeekday';
 import StatsDayTime from './StatsDayTime';
-import RecentActivities from './RecentActivities.jsx';
-import Summary from './Summary.jsx';
+import RecentActivities from './RecentActivities';
+import Summary from './Summary';
 import {
   setActivityIntencities,
   setRecentActivities,
@@ -14,17 +14,19 @@ import {
   setStatsPerWeekDay,
   setSummary,
   setWeeklyDistances,
-} from '../store/dashboardSlice.js';
+} from '../store/dashboardSlice';
+import { DashboardData } from '../types'
 import { useDispatch, useSelector } from 'react-redux';
+import { RootState } from '../store/store';
 
 const Dashboard = () => {
   const dispatch = useDispatch();
-  const isAuthenticated = useSelector((state) => state.auth.isAuthenticated);
+  const isAuthenticated = useSelector((state: RootState) => state.auth.isAuthenticated);
 
   useEffect(() => {
     const fetchActivities = async () => {
       try {
-        const response = await api.get('dashboard/');
+        const response = await api.get<DashboardData>('dashboard/');
         dispatch(setRecentActivities(response.data.recent_activities));
         dispatch(setSummary(response.data.summary));
         dispatch(setWeeklyDistances(response.data.weekly_distances));
@@ -35,14 +37,14 @@ const Dashboard = () => {
         console.log('Fetched data:', response.data);
       } catch (error) {
         console.log(error);
-        // setError('Failed to fetch activities');
         console.log(false);
       }
     };
+
     if (isAuthenticated) {
       fetchActivities();
     }
-  }, []); // eslint-disable-line react-hooks/exhaustive-deps
+  }, [isAuthenticated, dispatch]);
 
   return (
     <>
@@ -94,18 +96,6 @@ const Dashboard = () => {
           </Card>
         </div>
       </div>
-      {/*<div className="flex flex-col md:flex-row">*/}
-      {/*    <div className="w-full md:w-1/2 p-1" style={{minWidth: '400px'}}>*/}
-      {/*        <Card className="h-full">*/}
-      {/*            <DistanceBreakdown />*/}
-      {/*        </Card>*/}
-      {/*    </div>*/}
-      {/*    <div className="w-full md:w-1/2 p-1">*/}
-      {/*        <Card className="h-full">*/}
-      {/*            <Trivia />*/}
-      {/*        </Card>*/}
-      {/*    </div>*/}
-      {/*</div>*/}
     </>
   );
 };

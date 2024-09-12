@@ -1,16 +1,22 @@
 import { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { Card, Table, Button, TextInput } from 'flowbite-react';
-import api from '../api.js';
-import { setActivities as setAllActivities } from '../store/activitiesSlice.js';
+import api from '../api';
+import { setActivities as setAllActivities } from '../store/activitiesSlice';
+import { RootState } from '../store/store';
+import { Activity } from '../types';
 
 const Activities = () => {
   const dispatch = useDispatch();
+  const allActivities = useSelector((state: RootState) => state.activities.activities);
+  const [currentPage, setCurrentPage] = useState<number>(1);
+  const [pageInput, setPageInput] = useState<string>('');
+  const itemsPerPage = 20;
 
   useEffect(() => {
     const fetchActivities = async () => {
       try {
-        const response = await api.get('activities/');
+        const response = await api.get<Activity[]>('activities/');
         dispatch(setAllActivities(response.data));
       } catch (err) {
         console.log(err.message);
@@ -19,12 +25,7 @@ const Activities = () => {
       }
     };
     fetchActivities();
-  }, []); // eslint-disable-line react-hooks/exhaustive-deps
-
-  const allActivities = useSelector((state) => state.activities.activities);
-  const [currentPage, setCurrentPage] = useState(1);
-  const [pageInput, setPageInput] = useState('');
-  const itemsPerPage = 20;
+  }, [dispatch]); // eslint-disable-line react-hooks/exhaustive-deps
 
   const totalPages = Math.ceil(allActivities.length / itemsPerPage);
 
@@ -53,7 +54,7 @@ const Activities = () => {
     }
   };
 
-  const handlePageInput = (e) => {
+  const handlePageInput = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     const page = parseInt(pageInput, 10);
     if (page >= 1 && page <= totalPages) {
@@ -82,13 +83,14 @@ const Activities = () => {
             <Table.HeadCell className="py-2">Elevation</Table.HeadCell>
           </Table.Head>
           <Table.Body>
-            {currentActivities.map((activity, index) => (
-              <Table.Row key={index}>
+            {currentActivities.map((activity) => (
+              <Table.Row key={activity.id}>
                 <Table.Cell className="py-2">{activity.start_date}</Table.Cell>
                 <Table.Cell className="py-2">
                   <a
                     href={`https://www.strava.com/activities/${activity.id}`}
                     target="_blank"
+                    rel="noopener noreferrer"
                     className="text-blue-600 hover:underline cursor-pointer"
                   >
                     {activity.name}

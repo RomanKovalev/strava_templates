@@ -1,11 +1,8 @@
 import styles from './MainPage.module.css';
 import { Link } from 'react-router-dom';
+import SliderComponent from './SliderComponent'; // Убедитесь, что компонент правильно типизирован и путь указан верно
 
-import SliderComponent from './SliderComponent.jsx';
-
-// install Swiper modules
-
-const MainPage = () => {
+const MainPage: React.FC = () => {
   return (
     <div>
       <div className={styles.cta}>
@@ -38,7 +35,6 @@ const MainPage = () => {
           </p>
         </div>
       </div>
-
       <SliderComponent />
     </div>
   );

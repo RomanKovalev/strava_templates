@@ -1,7 +1,8 @@
 import { useSelector } from 'react-redux';
+import { RootState } from '../store/store';
 
 const Summary = () => {
-  const summary = useSelector((state) => state.dashboard.summary);
+  const summary = useSelector((state: RootState) => state.dashboard.summary);
 
   return (
     <div className="flex-grow">

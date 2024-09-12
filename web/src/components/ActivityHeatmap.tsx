@@ -3,23 +3,26 @@ import 'react-calendar-heatmap/dist/styles.css';
 import { Tooltip } from 'react-tooltip';
 import styles from './ActivityHeatmap.module.css';
 import { useSelector } from 'react-redux';
+import { RootState } from '../store/store';
+import { ActivityIntensity } from '../types';
+import { ReactCalendarHeatmapValue } from '../types';
 
 const ActivityHeatmap = () => {
-  const activityIntencities = useSelector(
-    (state) => state.dashboard.activityIntencities,
-  );
+  const activityIntencities = useSelector((state: RootState) => state.dashboard.activityIntencities);
 
   const startDate = new Date();
+  startDate.setDate(startDate.getDate() - 365);
+
   return (
     <div>
       <h5 className="text-md font-bold tracking-tight text-gray-900 dark:text-white">
         Activity intensity
       </h5>
       <CalendarHeatmap
-        startDate={startDate.setDate(startDate.getDate() - 365)}
+        startDate={startDate}
         endDate={new Date()}
         values={activityIntencities}
-        classForValue={(value) => {
+        classForValue={(value: ReactCalendarHeatmapValue<ActivityIntensity> | any): string => {
           if (!value) {
             return 'color-empty';
           }
@@ -35,9 +38,9 @@ const ActivityHeatmap = () => {
             return 'color-empty';
           }
         }}
-        tooltipDataAttrs={(value) => {
+        tooltipDataAttrs={(value: ReactCalendarHeatmapValue<ActivityIntensity> | undefined) => {
           return {
-            'data-tip': value.date
+            'data-tip': value
               ? `${value.date}: ${value.count} activities`
               : 'No activities',
           };
@@ -57,5 +60,4 @@ const ActivityHeatmap = () => {
     </div>
   );
 };
-
 export default ActivityHeatmap;

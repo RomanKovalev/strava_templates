@@ -9,11 +9,12 @@ import {
   Brush,
 } from 'recharts';
 import { useSelector } from 'react-redux';
+import { WeeklyDistance } from "../types";
+
 
 const CustomBrushChart = () => {
-  const weeklyDistances = useSelector(
-    (state) => state.dashboard.weeklyDistances,
-  );
+  const weeklyDistances = useSelector((state: any) => state.dashboard.weeklyDistances) as WeeklyDistance[];
+
   return (
     <ResponsiveContainer width="100%" height={400}>
       <LineChart

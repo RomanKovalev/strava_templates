@@ -3,29 +3,31 @@ import Dashboard from './Dashboard';
 import Activities from './Activities';
 import Login from './Login';
 import Logout from './Logout';
-import MainPage from './MainPage.jsx';
-import OnBoarding from './OnBoarding.jsx';
-import NotFound from './NotFound.jsx';
+import MainPage from './MainPage';
+import OnBoarding from './OnBoarding';
+import NotFound from './NotFound';
 import PrivateRoute from './PrivateRoute';
-import Header from './Header.jsx';
-import WebSiteFooter from './WebSiteFooter.jsx';
+import Header from './Header';
+import WebSiteFooter from './WebSiteFooter';
 import { useDispatch, useSelector } from 'react-redux';
-import StravaLogin from './StravaLogin.jsx';
+import StravaLogin from './StravaLogin';
 import { useEffect } from 'react';
-import { login as loginAction } from '../store/authSlice';
-import { logout as logoutAction } from '../store/authSlice';
-import api from '../api.js';
+import { login as loginAction, logout as logoutAction } from '../store/authSlice';
+import api from '../api';
+import { AuthResponse } from "../types";
+import { RootState } from '../store/store';
+import { AppDispatch } from '../store/store';
 
 const App = () => {
-  const dispatch = useDispatch();
+  const dispatch: AppDispatch = useDispatch();
 
-  const isAuthenticated = useSelector((state) => state.auth.isAuthenticated);
-  const user = useSelector((state) => state.auth.user);
+  const isAuthenticated = useSelector((state: RootState) => state.auth.isAuthenticated);
+  const user = useSelector((state: RootState) => state.auth.user);
 
   useEffect(() => {
     const checkAuth = async () => {
       try {
-        const response = await api.get('check-auth/');
+        const response = await api.get<AuthResponse>('check-auth/');
         if (response.data.authenticated) {
           dispatch(loginAction(response.data.user));
         } else {
@@ -36,7 +38,7 @@ const App = () => {
       }
     };
     checkAuth();
-  }, []); // eslint-disable-line react-hooks/exhaustive-deps
+  }, [dispatch]);
 
   return (
     <div className="flex flex-col min-h-screen">
@@ -49,7 +51,7 @@ const App = () => {
               element={
                 !isAuthenticated ? (
                   <MainPage />
-                ) : isAuthenticated && !user.isOnboarded ? (
+                ) : isAuthenticated && !user?.isOnboarded ? (
                   <OnBoarding />
                 ) : (
                   <Dashboard />

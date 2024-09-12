@@ -1,30 +1,25 @@
-import { useState } from 'react';
-import api from '../api.js';
-import { setOnboarded as setOnboardedAction } from '../store/authSlice.js';
+import { useState, ChangeEvent, FormEvent } from 'react';
+import api from '../api';
+import { setOnboarded as setOnboardedAction } from '../store/authSlice';
 import { useDispatch } from 'react-redux';
 
-const OnBoarding = () => {
+const OnBoarding: React.FC = () => {
   const dispatch = useDispatch();
-  const [isChecked, setIsChecked] = useState(false);
-  const handleCheckboxChange = (event) => {
+  const [isChecked, setIsChecked] = useState<boolean>(false);
+
+  const handleCheckboxChange = (event: ChangeEvent<HTMLInputElement>): void => {
     setIsChecked(event.target.checked);
   };
 
-  const handleSubmit = (event) => {
+  const handleSubmit = async (event: FormEvent<HTMLFormElement>): Promise<void> => {
     event.preventDefault();
-    const setOnboarded = async () => {
-      try {
-        const response = await api.post('onboarding/');
-        console.log(response);
-        dispatch(setOnboardedAction());
-      } catch (err) {
-        console.log(err);
-        // setError(err.message);
-      } finally {
-        // setLoading(false);
-      }
-    };
-    setOnboarded();
+    try {
+      const response = await api.post('onboarding/');
+      console.log(response);
+      dispatch(setOnboardedAction());
+    } catch (err) {
+      console.log(err);
+    }
   };
 
   return (
@@ -35,7 +30,7 @@ const OnBoarding = () => {
         data from Strava.com for the purposes of visualizing and displaying this
         data in my account on Altfitx.com.
       </p>
-      <form className="space-y-6">
+      <form className="space-y-6" onSubmit={handleSubmit}>
         <div className="flex items-center mt-3">
           <input
             id="terms"
@@ -58,7 +53,6 @@ const OnBoarding = () => {
             !isChecked ? 'opacity-50 cursor-not-allowed' : ''
           }`}
           disabled={!isChecked}
-          onClick={handleSubmit}
         >
           Sync Strava Activities
         </button>
