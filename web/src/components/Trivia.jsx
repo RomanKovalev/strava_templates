@@ -1,5 +1,3 @@
-import React from 'react';
-
 const triviaData = [
   { label: 'First ride', value: '27-03-2023', description: 'Morning Ride' },
   { label: 'Earliest start time', value: '00:23', description: 'Night Ride' },

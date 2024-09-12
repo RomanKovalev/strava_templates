@@ -43,7 +43,7 @@ const Dashboard = () => {
     if (isAuthenticated) {
       fetchActivities();
     }
-  }, []);
+  }, []);  // eslint-disable-line react-hooks/exhaustive-deps
 
   return (
       <>

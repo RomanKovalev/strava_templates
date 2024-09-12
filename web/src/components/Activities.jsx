@@ -20,7 +20,7 @@ const Activities = () => {
             }
         };
         fetchActivities();
-    }, []);
+    }, []); // eslint-disable-line react-hooks/exhaustive-deps
 
     const allActivities = useSelector((state) => state.activities.activities);
     const [currentPage, setCurrentPage] = useState(1);

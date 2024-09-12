@@ -11,7 +11,6 @@ export const login = async (username, password) => {
 };
 
 export const refreshToken = async () => {
-  try {
     const refresh = Cookies.get('refresh_token');
     const response = await api.post('token/refresh/', { refresh });
     const { access } = response.data;
@@ -19,7 +18,4 @@ export const refreshToken = async () => {
     Cookies.set('access_token', access);
 
     return access;
-  } catch (error) {
-    throw error;
-  }
 };

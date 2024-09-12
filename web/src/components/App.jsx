@@ -9,9 +9,9 @@ import NotFound from './NotFound.jsx';
 import PrivateRoute from './PrivateRoute';
 import Header from './Header.jsx';
 import WebSiteFooter from './WebSiteFooter.jsx';
-import {useDispatch, useSelector} from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import StravaLogin from "./StravaLogin.jsx";
-import {useEffect, useState} from 'react';
+import { useEffect } from 'react';
 import { login as loginAction } from '../store/authSlice';
 import { logout as logoutAction } from '../store/authSlice';
 import api from "../api.js";
@@ -37,7 +37,7 @@ const App = () => {
     };
     checkAuth();
 
-  }, []);
+  }, []);   // eslint-disable-line react-hooks/exhaustive-deps
 
 
 

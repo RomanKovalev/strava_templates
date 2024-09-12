@@ -1,5 +1,4 @@
 import Slider from "react-slick";
-import { useRef } from "react";
 import "slick-carousel/slick/slick.css";
 import "slick-carousel/slick/slick-theme.css";
 
@@ -13,7 +12,7 @@ import tmb_6 from '../assets/tmb_6.png';
 
 const SliderComponent = () => {
 
-    let sliderRef = useRef(null);
+    // let sliderRef = useRef(null);
 
       const settings = {
         dots: true,
@@ -25,7 +24,7 @@ const SliderComponent = () => {
       }
 
   return (
-      <Slider ref={slider => (sliderRef = slider)} {...settings}>
+      <Slider ref={slider => (slider)} {...settings}>
           <div>
               <img src={tmb_1} alt="tmb_1"/>
           </div>

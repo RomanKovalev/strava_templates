@@ -21,8 +21,8 @@ const Summary = () => {
           </p>
           <br/>
           <p>
-              That's a daily average of {summary.average_day_distance_since_first_activity} km, a weekly average of {summary.average_week_distance_since_first_activity} km and a
-              monthly average of {summary.average_months_distance_since_first_activity} km 🐣. I burned {summary.total_kilocalories_burned} calories doing so, that's about {summary.pizza_slices_equivalent} pizza slices 🍕.
+              That&rsquo;s a daily average of {summary.average_day_distance_since_first_activity} km, a weekly average of {summary.average_week_distance_since_first_activity} km and a
+              monthly average of {summary.average_months_distance_since_first_activity} km 🐣. I burned {summary.total_kilocalories_burned} calories doing so, that&rsquo;s about {summary.pizza_slices_equivalent} pizza slices 🍕.
           </p>
       </div>
   );

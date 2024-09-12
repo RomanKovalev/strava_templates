@@ -1,5 +1,5 @@
-import {useEffect, useState} from 'react';
-import {useDispatch, useSelector} from 'react-redux';
+import { useEffect } from 'react';
+import { useDispatch, useSelector } from 'react-redux';
 import { login as loginAction } from '../store/authSlice';
 import { useNavigate, useLocation  } from 'react-router-dom';
 import api from "../api.js";
@@ -7,12 +7,9 @@ import api from "../api.js";
 function StravaLogin() {
   const dispatch = useDispatch()
   const isAuthenticated = useSelector((state) => state.auth.isAuthenticated);
-  const [loading, setLoading] = useState(true);
-  const [error, setError] = useState(null);
   const navigate = useNavigate();
   const location = useLocation();
   const queryParams = new URLSearchParams(location.search);
-  const state = queryParams.get('state');
   const code = queryParams.get('code');
   const scope = queryParams.get('scope');
 
@@ -21,9 +18,9 @@ function StravaLogin() {
             const response = await api.get('strava/login/');
             window.location.href = response.data.auth_url;
           } catch (err) {
-            setError(err.message);
+            console.log(err.message);
           } finally {
-            setLoading(false);
+            console.log(false);
           }
     };
 
@@ -38,9 +35,9 @@ function StravaLogin() {
             }
             navigate('/');
           } catch (err) {
-            setError(err.message);
+            console.log(err.message);
           } finally {
-            setLoading(false);
+            console.log(false);
           }
     };
 
@@ -51,7 +48,7 @@ function StravaLogin() {
         fetchStravaAuthUrl();
         }
       }
-  }, []);
+  }, []); // eslint-disable-line react-hooks/exhaustive-deps
 
   return (
       <div>
