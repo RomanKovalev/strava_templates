@@ -28,7 +28,7 @@ body {
 }
 .features {
     display: flex;
-    justify-content: space-around;
+    justify-content: space-between;
     margin: 20px 0;
     flex-wrap: wrap;
     flex: 1 1 30%;
