@@ -117,15 +117,14 @@ Resources:
           FromPort: 5432
           ToPort: 5432
           CidrIp: 10.0.0.0/24 # from StravaTemplatesVPC
-# Not used due route53 setup
-#        - IpProtocol: tcp
-#          FromPort: 8000
-#          ToPort: 8000
-#          CidrIp: 0.0.0.0/0
-#        - IpProtocol: tcp
-#          FromPort: 3000
-#          ToPort: 3000
-#          CidrIp: 0.0.0.0/0
+        - IpProtocol: tcp
+          FromPort: 8000
+          ToPort: 8000
+          CidrIp: 0.0.0.0/0
+        - IpProtocol: tcp
+          FromPort: 3000
+          ToPort: 3000
+          CidrIp: 0.0.0.0/0
         - IpProtocol: tcp
           FromPort: 80
           ToPort: 80
