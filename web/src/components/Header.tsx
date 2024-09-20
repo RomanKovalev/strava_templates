@@ -28,7 +28,7 @@ export const Header = () => {
           </>
         ) : (
           <Navbar.Link as="div">
-            {/*<Link to="/strava/login/">Strava Login</Link>*/}
+            <Link to="/">Home</Link>
           </Navbar.Link>
         )}
       </Navbar.Collapse>

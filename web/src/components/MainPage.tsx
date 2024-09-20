@@ -1,5 +1,6 @@
 import styles from './MainPage.module.css';
 import { Link } from 'react-router-dom';
+import strava_connect from '../assets/btn_strava_connectwith_orange.png'
 import SliderComponent from './SliderComponent'; // Убедитесь, что компонент правильно типизирован и путь указан верно
 
 const MainPage: React.FC = () => {
@@ -9,7 +10,7 @@ const MainPage: React.FC = () => {
           <h2>Connect Strava and Track Your Performance</h2>
           {/*<Link to="strava/login/" className={styles.linkLogin}>*/}
           <Link to="#" className={styles.linkLogin}>
-            Connect Strava
+            <img src={strava_connect as string} alt="Sign In" />
           </Link>
         </div>
         <div style={{textAlign: "center", fontSize: "30px", paddingTop: "30px", paddingBottom: "30px"}}>

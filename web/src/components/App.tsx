@@ -8,6 +8,7 @@ import OnBoarding from './OnBoarding';
 import NotFound from './NotFound';
 import PrivateRoute from './PrivateRoute';
 import Header from './Header';
+import SupportPage from "./SupportPage";
 import WebSiteFooter from './WebSiteFooter';
 import { useDispatch, useSelector } from 'react-redux';
 import StravaLogin from './StravaLogin';
@@ -68,6 +69,7 @@ const App = () => {
             />
             <Route path="/login" element={<Login />} />
             <Route path="/logout" element={<Logout />} />
+            <Route path="/support" element={<SupportPage />} />
             <Route path="/strava/login" element={<StravaLogin />} />
             <Route path="*" element={<NotFound />} />
           </Routes>
