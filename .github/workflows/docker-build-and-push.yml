@@ -6,7 +6,7 @@ on:
       apiUrl:
         description: 'API URL'
         required: true
-        default: 'http://api.strava.kovalev.cloud/api'
+        default: 'http://api.altfitx.com/api'
         type: string
 
       tag:
