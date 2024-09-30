@@ -14,7 +14,7 @@ interface RecentActivity {
 }
 
 const RecentActivities: React.FC = () => {
-  // Типизация useSelector для состояния
+
   const recentActivities = useSelector((state: RootState) => state.dashboard.recentActivities);
 
   return (

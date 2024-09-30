@@ -25,7 +25,7 @@ const Activities = () => {
       }
     };
     fetchActivities();
-  }, [dispatch]); // eslint-disable-line react-hooks/exhaustive-deps
+  }, [dispatch]);
 
   const totalPages = Math.ceil(allActivities.length / itemsPerPage);
 

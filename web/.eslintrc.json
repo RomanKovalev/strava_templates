@@ -18,7 +18,7 @@
   },
   "plugins": ["react"],
   "rules": {
-    "react/react-in-jsx-scope": "off" // если используете React 17+
+    "react/react-in-jsx-scope": "off"
   },
   "settings": {
     "react": {

@@ -24,12 +24,12 @@ export interface Summary {
   date_difference_years: number;
   date_difference_months: number;
   date_difference_days: number;
-  first_activity_start_date: string; // Вы можете использовать `Date`, если преобразуете строки в объекты Date
+  first_activity_start_date: string;
   uniq_days: number;
-  total_distance: string; // Если нужно, преобразуйте в число
+  total_distance: string;
   around_earth: number;
   way_to_the_moon: number;
-  total_elevation: string; // Если нужно, преобразуйте в число
+  total_elevation: string;
   everest_elevation: number;
   total_elapsed_time_weeks: number;
   total_elapsed_time_days: number;
@@ -38,7 +38,7 @@ export interface Summary {
   average_day_distance_since_first_activity: number;
   average_week_distance_since_first_activity: number;
   average_months_distance_since_first_activity: number;
-  total_kilocalories_burned: string; // Если нужно, преобразуйте в число
+  total_kilocalories_burned: string;
   pizza_slices_equivalent: number;
 }
 
@@ -48,20 +48,20 @@ export interface WeeklyDistance {
 }
 
 export interface ActivityCount {
-  date: string; // Дата в формате ISO 8601
-  count: number; // Количество
+  date: string;
+  count: number;
 }
 
 export interface DayStats {
-  count: number; // Общее количество
-  value: number; // Значение, например, среднее или суммарное
-  total_distance: string; // Общее расстояние
-  avg_distance: number; // Среднее расстояние
-  total_moving_time: string; // Общее время перемещения
-  avg_moving_time: number; // Среднее время перемещения в секундах
-  total_elevation: string; // Общая высота
-  avg_elevation: number; // Средняя высота
-  name: string; // Название дня или периода
+  count: number;
+  value: number;
+  total_distance: string;
+  avg_distance: number;
+  total_moving_time: string;
+  avg_moving_time: number;
+  total_elevation: string;
+  avg_elevation: number;
+  name: string;
 }
 
 export interface TimeOfDayStats {

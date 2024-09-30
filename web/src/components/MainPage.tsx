@@ -1,7 +1,7 @@
 import styles from './MainPage.module.css';
 import { Link } from 'react-router-dom';
 import strava_connect from '../assets/btn_strava_connectwith_orange.png'
-import SliderComponent from './SliderComponent'; // Убедитесь, что компонент правильно типизирован и путь указан верно
+import SliderComponent from './SliderComponent';
 
 const MainPage: React.FC = () => {
   return (

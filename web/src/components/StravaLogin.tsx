@@ -59,7 +59,7 @@ const StravaLogin: React.FC = () => {
         fetchStravaAuthUrl();
       }
     }
-  }, [code, scope, isAuthenticated, dispatch, navigate]); // Добавляем зависимости для useEffect
+  }, [code, scope, isAuthenticated, dispatch, navigate]);
 
   return (
     <div>

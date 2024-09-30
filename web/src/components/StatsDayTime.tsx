@@ -64,7 +64,7 @@ const StatsDayTime: React.FC = () => {
         >
           {statsPerDayTime.map((entry, index) => (
             <Cell
-              key={`cell-${index}`} // Используйте индекс вместо entry.name для уникального ключа
+              key={`cell-${index}`}
               fill={COLORS[index % COLORS.length]}
             />
           ))}
