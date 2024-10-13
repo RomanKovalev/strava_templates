@@ -1,0 +1,161 @@
+.modalOverlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-color: rgba(0, 0, 0, 0.5);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 99;
+}
+
+.modalContent {
+  background-color: white;
+  padding: 20px;
+  border-radius: 10px;
+  width: 400px;
+  max-width: 100%;
+  position: relative;
+}
+
+.closeBtn {
+  position: absolute;
+  top: 10px;
+  right: 10px;
+  font-size: 20px;
+  background: none;
+  border: none;
+  cursor: pointer;
+}
+
+input {
+  width: 100%;
+  padding: 10px;
+  margin-bottom: 10px;
+}
+
+.btn {
+  width: 100%;
+  padding: 10px;
+  background-color: orange;
+  border: none;
+  color: white;
+  cursor: pointer;
+}
+
+.toggleBtn {
+  margin-top: 10px;
+  background: none;
+  border: none;
+  color: orange;
+  cursor: pointer;
+  text-decoration: underline;
+}
+
+.roleSelection {
+  display: flex;
+  justify-content: space-between;
+}
+
+.roleBtn {
+  flex: 1;
+  margin: 0 5px;
+  padding: 10px;
+  border: 1px solid #ccc;
+  background-color: #f8f8f8;
+  cursor: pointer;
+}
+
+.signupИtn {
+  width: 100%;
+  padding: 10px;
+  background-color: #ff5a00; /* Ярко-оранжевый цвет */
+  color: white; /* Белый текст */
+  border: none; /* Без рамки */
+  border-radius: 5px; /* Скругленные углы */
+  font-size: 16px; /* Размер шрифта */
+  cursor: pointer; /* Курсор-указатель при наведении */
+  transition: background-color 0.3s ease; /* Плавное изменение фона */
+}
+
+.signupИtn:hover {
+  background-color: #e04a00; /* Темнее при наведении */
+}
+
+
+/* Стили для ссылки "I've forgotten my password" */
+.forgotPassword {
+  background: none;
+  border: none;
+  color: #ff5a00; /* Оранжевый цвет текста */
+  cursor: pointer;
+  text-decoration: underline; /* Подчеркнутый текст */
+  font-size: 14px;
+  margin-bottom: 10px;
+}
+
+/* Стили для формы регистрации */
+.signupForm {
+  display: flex;
+  flex-direction: column;
+}
+
+.signupForm input {
+  width: 100%;
+  padding: 10px;
+  margin-bottom: 10px;
+  border: 1px solid #ccc; /* Серый бордер */
+  border-radius: 5px;
+  font-size: 14px;
+}
+
+/* Стили для кнопки "Sign me up" */
+.signupBtn {
+  width: 100%;
+  padding: 10px;
+  background-color: #ff5a00; /* Ярко-оранжевый цвет */
+  color: white; /* Белый текст */
+  border: none; /* Без рамки */
+  border-radius: 5px; /* Скругленные углы */
+  font-size: 16px; /* Размер шрифта */
+  cursor: pointer; /* Курсор-указатель при наведении */
+  transition: background-color 0.3s ease; /* Плавное изменение фона */
+}
+
+.signupBtn:hover {
+  background-color: #e04a00; /* Темнее при наведении */
+}
+
+/* Стили для формы логина */
+.loginForm {
+  display: flex;
+  flex-direction: column;
+}
+
+.loginForm input {
+  width: 100%;
+  padding: 10px;
+  margin-bottom: 10px;
+  border: 1px solid #ccc; /* Серый бордер */
+  border-radius: 5px;
+  font-size: 14px;
+}
+
+/* Стили для кнопки "Log me in" */
+.loginBtn {
+  width: 100%;
+  padding: 10px;
+  background-color: #ff5a00; /* Ярко-оранжевый цвет */
+  color: white; /* Белый текст */
+  border: none; /* Без рамки */
+  border-radius: 5px; /* Скругленные углы */
+  font-size: 16px; /* Размер шрифта */
+  cursor: pointer; /* Курсор-указатель при наведении */
+  transition: background-color 0.3s ease; /* Плавное изменение фона */
+}
+
+.loginBtn:hover {
+  background-color: #e04a00; /* Темнее при наведении */
+}

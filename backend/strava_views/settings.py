@@ -41,6 +41,7 @@ INSTALLED_APPS = [
 
     'corsheaders',
 
+    'profiles',
     'activities',
 ]
 
@@ -165,9 +166,10 @@ SIMPLE_JWT = {
 }
 
 
-
 STRAVA_CLIENT_ID = os.getenv('STRAVA_CLIENT_ID')
 STRAVA_CLIENT_SECRET = os.getenv('STRAVA_CLIENT_SECRET')
 STRAVA_REDIRECT_URI = os.getenv('STRAVA_REDIRECT_URI')
+
+AUTH_USER_MODEL = 'profiles.StravaUserProfile'
 
 

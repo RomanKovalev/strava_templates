@@ -5,7 +5,7 @@ from rest_framework_simplejwt.views import (
     TokenRefreshView,
 )
 from activities.views import MyProtectedView, StravaAuthStartView, StravaAuthCallbackView, StravaLogoutView, CheckAuthView, RunView, DashboardApiView, ActivityListView, OnBoardApiView
-
+from profiles.views import register_user
 
 urlpatterns = [
     path('admin/', admin.site.urls),
@@ -20,4 +20,5 @@ urlpatterns = [
     path('api/dashboard/', DashboardApiView.as_view(), name='dashboard'),
     path('api/onboarding/', OnBoardApiView.as_view(), name='onboarding'),
     path('qwe/', RunView.as_view(), name='rw'),
+    path('api/v1/register/', register_user, name='register'),
 ]

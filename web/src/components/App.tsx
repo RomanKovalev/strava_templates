@@ -4,7 +4,7 @@ import Activities from './Activities';
 import Login from './Login';
 import Logout from './Logout';
 import MainPage from './MainPage';
-import OnBoarding from './OnBoarding';
+import EmptyPage from './EmptyPage';
 import NotFound from './NotFound';
 import PrivateRoute from './PrivateRoute';
 import Header from './Header';
@@ -52,8 +52,6 @@ const App = () => {
               element={
                 !isAuthenticated ? (
                   <MainPage />
-                ) : isAuthenticated && !user?.isOnboarded ? (
-                  <OnBoarding />
                 ) : (
                   <Dashboard />
                 )

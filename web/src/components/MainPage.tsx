@@ -1,22 +1,56 @@
+import { useState } from "react";
 import styles from './MainPage.module.css';
 import { Link } from 'react-router-dom';
 import strava_connect from '../assets/btn_strava_connectwith_orange.png'
 import SliderComponent from './SliderComponent';
-
+import AuthModal from './AuthModal';
 const MainPage: React.FC = () => {
+  const [isModalOpen, setIsModalOpen] = useState(false);
+  const [isLoginForm, setIsLoginForm] = useState(true);
+
+  const handleLoginClick = () => {
+    setIsLoginForm(true);
+    setIsModalOpen(true);
+  };
+
+  const handleSignupClick = () => {
+    setIsLoginForm(false);
+    setIsModalOpen(true);
+  };
+
+  const closeModal = () => {
+    setIsModalOpen(false);
+  };
+
+  const openSignUpModal = () => {
+    setIsModalOpen(true);
+    setIsLoginForm(false);
+  }
+
+  const openLoginModal = () => {
+    setIsModalOpen(true);
+  };
+
   return (
       <div>
+        {isModalOpen && (
+        <AuthModal
+          isLoginForm={isLoginForm}
+          onClose={closeModal}
+          handleLoginClick={handleLoginClick}
+          handleSignupClick={handleSignupClick}
+        />
+      )}
         <div className={styles.cta}>
           <h2>Connect Strava and Track Your Performance</h2>
-          {/*<Link to="strava/login/" className={styles.linkLogin}>*/}
-          <Link to="#" className={styles.linkLogin}>
-            <img src={strava_connect as string} alt="Sign In" />
-          </Link>
-        </div>
-        <div style={{textAlign: "center", fontSize: "30px", paddingTop: "30px", paddingBottom: "30px"}}>
-          <h2>
-            Strava is considering the possibility of increasing the number of users for us, the website is temporarily unavailable
-          </h2>
+          <div>
+            <Link to="" className={styles.linkButton} onClick={openLoginModal}>
+              Login
+            </Link>
+            <Link to="" className={styles.linkButton} onClick={openSignUpModal}>
+              Create Account
+            </Link>
+          </div>
         </div>
         <div className={styles.features}>
           <div className={styles.feature}>

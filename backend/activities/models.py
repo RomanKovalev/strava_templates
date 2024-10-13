@@ -3,27 +3,28 @@ from django.db import models
 
 from django.contrib.postgres.fields import ArrayField
 
+from profiles.models import StravaUserProfile
 
-class StravaProfile(models.Model):
-    STATUS_CHOICES = [
-        ('CREATED', 'Created'),
-        ('PENDING', 'Pending'),
-        ('IN_PROGRESS', 'In Progress'),
-        ('COMPLETED', 'Completed'),
-        ('FAILED', 'Failed'),
-    ]
-    user = models.OneToOneField(User, on_delete=models.CASCADE)
-    strava_id = models.CharField(max_length=255, unique=True)
-    access_token = models.CharField(max_length=255)
-    refresh_token = models.CharField(max_length=255)
-    expires_at = models.IntegerField()
-    status = models.CharField(default=None, blank=True, null=True, max_length=20, choices=STATUS_CHOICES)
-    page = models.IntegerField(default=1, blank=True, null=True)
-    per_page = models.IntegerField(default=200, blank=True, null=True)
-    onboarded = models.BooleanField(default=False)
-
-    def __str__(self):
-        return self.user.username
+# class StravaProfile(models.Model):
+#     STATUS_CHOICES = [
+#         ('CREATED', 'Created'),
+#         ('PENDING', 'Pending'),
+#         ('IN_PROGRESS', 'In Progress'),
+#         ('COMPLETED', 'Completed'),
+#         ('FAILED', 'Failed'),
+#     ]
+#     # user = models.OneToOneField(User, on_delete=models.CASCADE)
+#     strava_id = models.CharField(max_length=255, unique=True)
+#     access_token = models.CharField(max_length=255)
+#     refresh_token = models.CharField(max_length=255)
+#     expires_at = models.IntegerField()
+#     status = models.CharField(default=None, blank=True, null=True, max_length=20, choices=STATUS_CHOICES)
+#     page = models.IntegerField(default=1, blank=True, null=True)
+#     per_page = models.IntegerField(default=200, blank=True, null=True)
+#     is_syncing = models.BooleanField(default=True)
+#
+#     def __str__(self):
+#         return self.user.username
 
 
 class Map(models.Model):
@@ -34,7 +35,7 @@ class Map(models.Model):
 
 class Activity(models.Model):
     resource_state = models.IntegerField(blank=True, null=True)
-    athlete = models.ForeignKey(StravaProfile, on_delete=models.CASCADE)
+    athlete = models.ForeignKey(StravaUserProfile, on_delete=models.CASCADE)
     type = models.CharField(default=None, blank=True, null=True, max_length=50)
     name = models.CharField(default=None, blank=True, null=True, max_length=255)
     distance = models.FloatField(blank=True, null=True)

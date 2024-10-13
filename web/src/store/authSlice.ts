@@ -1,21 +1,35 @@
-import { createSlice } from '@reduxjs/toolkit';
+import { createSlice, createAsyncThunk } from '@reduxjs/toolkit';
+import { User } from '../types';
 
 const initialState = {
+  isSyncing: true,
   isAuthenticated: false,
-  isOnboarded: null,
   user: null,
 };
+
+
+// export const loginUserAsync = createAsyncThunk(
+//   'auth/login',
+//   async (user: User, { rejectWithValue }) => {
+//     try {
+//       // Симуляция сохранения пользователя
+//       return user; // Возвращаем пользователя, чтобы он стал payload
+//     } catch (err) {
+//       return rejectWithValue('Login failed');
+//     }
+//   }
+// );
+
+
 
 const authSlice = createSlice({
   name: 'auth',
   initialState,
   reducers: {
-    setOnboarded(state) {
-      state.user.isOnboarded = true;
-    },
     login(state, action) {
       state.isAuthenticated = true;
       state.user = action.payload;
+      state.isSyncing = action.payload.isSyncing;
     },
     logout(state) {
       state.isAuthenticated = false;
@@ -24,6 +38,6 @@ const authSlice = createSlice({
   },
 });
 
-export const { login, logout, setOnboarded } = authSlice.actions;
+export const { login, logout } = authSlice.actions;
 
 export default authSlice.reducer;

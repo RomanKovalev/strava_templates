@@ -15,7 +15,8 @@ from rest_framework.response import Response
 from rest_framework_simplejwt.tokens import RefreshToken
 from rest_framework import status
 
-from activities.models import StravaProfile, Map, Activity
+from activities.models import Map, Activity
+from profiles.models import StravaUserProfile as StravaProfile
 from activities.serializers import ActivitySerializer
 from activities.utils import fetch_strava_activities, generate_week_year_pairs, seconds_to_dhms
 
@@ -157,7 +158,7 @@ class CheckAuthView(APIView):
                 'user': {
                     'username': request.user.username,
                     'email': request.user.email,
-                    'isOnboarded': request.user.stravaprofile.onboarded,
+                    'isSyncing': request.user.stravaprofile.is_syncing,
                 }
             })
         else:
@@ -182,10 +183,13 @@ class DashboardApiView(APIView):
 
     def get(self, request):
         try:
-            strava_profile = StravaProfile.objects.get(user=request.user)
+            print("req user", request)
+            strava_profile = StravaProfile.objects.get(username=request.user.username)
         except StravaProfile.DoesNotExist:
             return Response({"error": "Strava profile not found"}, status=status.HTTP_404_NOT_FOUND)
-        activities = Activity.objects.filter(athlete__user=request.user).order_by('-start_date')[:5]
+        activities = Activity.objects.filter(athlete=request.user).order_by('-start_date')[:5]
+        if len(activities) <= 10:
+            return Response({}, status=status.HTTP_204_NO_CONTENT)
         serializer = ActivitySerializer(activities, many=True)
 
         first_activity_start_date = Activity.objects.filter(

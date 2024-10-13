@@ -3,12 +3,12 @@ import { useDispatch, useSelector } from 'react-redux';
 import { login as loginAction } from '../store/authSlice';
 import { useNavigate, useLocation } from 'react-router-dom';
 import api from '../api';
-import { RootState } from '../store/store';
+import { RootState, AppDispatch } from '../store/store';
 import { User } from "../types";
 import { AuthStravaUrlResponse } from "../types";
 
 const StravaLogin: React.FC = () => {
-  const dispatch = useDispatch();
+  const dispatch: AppDispatch = useDispatch();
   const isAuthenticated = useSelector((state: RootState) => state.auth.isAuthenticated);
   const navigate = useNavigate();
   const location = useLocation();
@@ -38,11 +38,8 @@ const StravaLogin: React.FC = () => {
       const response = await api.get<{ user: User }>(
         `strava/callback/?code=${encodeURIComponent(code)}&scope=${encodeURIComponent(scope)}`,
       );
-      try {
-        dispatch(loginAction(response.data.user));
-      } catch (err) {
-        console.error(err);
-      }
+      console.log(response.data);
+      dispatch(loginAction(response.data.user));
       navigate('/');
     } catch (err) {
       console.log(err.message);
@@ -59,7 +56,7 @@ const StravaLogin: React.FC = () => {
         fetchStravaAuthUrl();
       }
     }
-  }, [code, scope, isAuthenticated, dispatch, navigate]);
+  }, [code, scope]); //, isAuthenticated, dispatch, navigate]);
 
   return (
     <div>

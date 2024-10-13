@@ -3,11 +3,12 @@ import requests
 from django.db.models.functions import ExtractYear
 from datetime import datetime, timedelta
 
-from activities.models import StravaProfile, Map, Activity
+from activities.models import Map, Activity
+from profiles.models import StravaUserProfile
 
 def fetch_strava_activities(strava_profile_to_sync_id):
     print("Starting Run View")
-    strava_profile_to_sync = StravaProfile.objects.get(id=strava_profile_to_sync_id)
+    strava_profile_to_sync = StravaUserProfile.objects.get(id=strava_profile_to_sync_id)
     if strava_profile_to_sync.status != "Completed":
         strava_profile_to_sync.status = "In Progress"
         strava_profile_to_sync.save()

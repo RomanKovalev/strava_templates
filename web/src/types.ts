@@ -116,7 +116,7 @@ export interface WeekdayStats {
 export interface User {
     username: string;
     email: string;
-    isOnboarded: boolean;
+    isSyncing: boolean;
 }
 
 export interface AuthResponse {
