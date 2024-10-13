@@ -10,7 +10,7 @@ class JWTAuthCookieMiddleware:
         self.get_response = get_response
 
     def __call__(self, request):
-        if request.path in ['/api/strava/login/', '/api/strava/callback/']:
+        if request.path in ['api/v1/login', 'api/v1/register', '/api/strava/login/', '/api/strava/callback/']:
             return self.get_response(request)
 
         jwt_access_token = request.COOKIES.get('jwt_access')

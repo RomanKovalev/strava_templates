@@ -7,6 +7,9 @@ import StatsPerWeekday from './StatsPerWeekday';
 import StatsDayTime from './StatsDayTime';
 import RecentActivities from './RecentActivities';
 import Summary from './Summary';
+import { Link } from 'react-router-dom';
+import strava_connect from '../assets/btn_strava_connectwith_orange.png'
+
 import {
   setActivityIntencities,
   setRecentActivities,
@@ -46,7 +49,7 @@ const Dashboard = () => {
       }
     };
 
-    if (isAuthenticated) {
+    if (isAuthenticated && !isSyncing) {
       fetchActivities();
     }
   }, [isAuthenticated, dispatch]);
@@ -54,10 +57,18 @@ const Dashboard = () => {
   return (
     <>
       {isSyncing ? (
-        <div>Syncing is going...Come back later.---{isAuthenticated}==</div>
+          <div>
+            <p>Your account is not connected to Strava</p>
+            <p>To connect click the button below</p>
+            <Link to="#">
+              <img src={strava_connect as string} alt="Sign In" />
+            </Link>
+            <p>After successfull connect we need some time to pull your activities for you!</p>
+            <p>We will send you email after operation completing...</p>
+          </div>
       ) : (
-        <div className="flex flex-col md:flex-row">
-          <div className="w-full md:w-3/5 p-1" style={{ minWidth: '400px' }}>
+          <div className="flex flex-col md:flex-row">
+            <div className="w-full md:w-3/5 p-1" style={{ minWidth: '400px' }}>
             <Card className="h-full">
               <RecentActivities />
             </Card>

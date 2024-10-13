@@ -158,7 +158,7 @@ class CheckAuthView(APIView):
                 'user': {
                     'username': request.user.username,
                     'email': request.user.email,
-                    'isSyncing': request.user.stravaprofile.is_syncing,
+                    'isSyncing': request.user.is_syncing,
                 }
             })
         else:
@@ -183,7 +183,6 @@ class DashboardApiView(APIView):
 
     def get(self, request):
         try:
-            print("req user", request)
             strava_profile = StravaProfile.objects.get(username=request.user.username)
         except StravaProfile.DoesNotExist:
             return Response({"error": "Strava profile not found"}, status=status.HTTP_404_NOT_FOUND)
