@@ -34,10 +34,10 @@ from django.contrib.postgres.fields import ArrayField
 #         return self.user.username
 
 class StravaUserProfile(AbstractUser):
-    # strava_id = models.CharField(max_length=255, unique=True)
-    # access_token = models.CharField(max_length=255)
-    # refresh_token = models.CharField(max_length=255)
-    # expires_at = models.IntegerField()
+    strava_id = models.CharField(max_length=255, unique=True, null=True, blank=True)
+    access_token = models.CharField(max_length=255, null=True, blank=True)
+    refresh_token = models.CharField(max_length=255, null=True, blank=True)
+    expires_at = models.IntegerField(blank=True, null=True)
     is_syncing = models.BooleanField(default=True)
     def __str__(self):
         return str(self.user)

@@ -41,7 +41,7 @@ class StravaAuthStartView(APIView):
 
 
 class StravaAuthCallbackView(APIView):
-    permission_classes = [AllowAny]
+    # permission_classes = [AllowAny]
 
     def get(self, request):
         code = request.GET.get('code')
@@ -95,18 +95,21 @@ class StravaAuthCallbackView(APIView):
         strava_token = response_data['access_token']
         athlete = response_data['athlete']
 
-        user, created = User.objects.get_or_create(username=athlete['id'], defaults={
+        user, created = StravaProfile.objects.get_or_create(username=athlete['id'], defaults={
             'first_name': athlete['firstname'],
             'last_name': athlete['lastname'],
-            'email': athlete.get('email', ''),
-        })
-
-        StravaProfile.objects.update_or_create(user=user, defaults={
             'strava_id': athlete['id'],
             'access_token': strava_token,
             'refresh_token': response_data['refresh_token'],
             'expires_at': response_data['expires_at'],
         })
+
+        # StravaProfile.objects.update_or_create(user=user, defaults={
+        #     'strava_id': athlete['id'],
+        #     'access_token': strava_token,
+        #     'refresh_token': response_data['refresh_token'],
+        #     'expires_at': response_data['expires_at'],
+        # })
 
         refresh = RefreshToken.for_user(user)
 

@@ -1,7 +1,7 @@
 import { Table } from 'flowbite-react';
 import { useSelector } from 'react-redux';
 import { Link } from 'react-router-dom';
-import { RootState } from '../store'; // Импортируйте RootState из вашего Redux store
+import { RootState } from '../store';
 
 interface RecentActivity {
   id: number;

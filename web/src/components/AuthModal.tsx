@@ -45,9 +45,6 @@ const loginUser = async (payload) => {
 };
 const handleLogInSubmit = async (e) => {
     e.preventDefault();
-    console.log("Login submit");
-    console.log("Login submit1", e.target);
-
     const email = e.target.email.value;
     const password = e.target.password.value;
 
