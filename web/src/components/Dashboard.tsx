@@ -32,6 +32,7 @@ const Dashboard = () => {
     const fetchActivities = async () => {
       try {
         const response = await api.get<DashboardData>('dashboard/');
+        console.log("Fired...");
         if (response.status === 204) {
           console.log("Not enough activities...");
         } else {
@@ -59,7 +60,7 @@ const Dashboard = () => {
         <div>
           <p>Your account is not connected to Strava</p>
           <p>To connect click the button below</p>
-          <Link to="strava/login">
+          <Link to="https://www.strava.com/oauth/authorize/?client_id=31927&response_type=code&redirect_uri=http://localhost:8000/api/strava/callback/&scope=read,activity:read_all&approval_prompt=auto&state=rvk.sft@gmail.com">
             <img src={strava_connect as string} alt="Sign In" />
           </Link>
           <p>After successful connect we need some time to pull your activities for you!</p>

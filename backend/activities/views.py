@@ -4,7 +4,7 @@ from dateutil.relativedelta import relativedelta
 
 from django.http import JsonResponse
 from django.conf import settings
-from django.contrib.auth.models import User
+from django.shortcuts import redirect
 from django.db.models import Count, Avg, Case, When, Sum, F, Func, Value, CharField, FloatField, Min, Max, IntegerField, ExpressionWrapper
 from django.db.models.functions import ExtractHour, TruncDate, Concat, ExtractWeek, ExtractYear, Cast, Coalesce, ExtractYear, Round
 from django.utils.timezone import now
@@ -29,7 +29,7 @@ class MyProtectedView(APIView):
 
 
 class StravaAuthStartView(APIView):
-    permission_classes = [AllowAny]
+    permission_classes = [IsAuthenticated]
 
     def get(self, request):
         strava_auth_url = (
@@ -41,7 +41,6 @@ class StravaAuthStartView(APIView):
 
 
 class StravaAuthCallbackView(APIView):
-    # permission_classes = [AllowAny]
 
     def get(self, request):
         code = request.GET.get('code')
@@ -94,32 +93,21 @@ class StravaAuthCallbackView(APIView):
 
         strava_token = response_data['access_token']
         athlete = response_data['athlete']
+        username = request.GET.get('state')
 
-        user, created = StravaProfile.objects.get_or_create(username=athlete['id'], defaults={
-            'first_name': athlete['firstname'],
-            'last_name': athlete['lastname'],
-            'strava_id': athlete['id'],
-            'access_token': strava_token,
-            'refresh_token': response_data['refresh_token'],
-            'expires_at': response_data['expires_at'],
-        })
-
-        # StravaProfile.objects.update_or_create(user=user, defaults={
-        #     'strava_id': athlete['id'],
-        #     'access_token': strava_token,
-        #     'refresh_token': response_data['refresh_token'],
-        #     'expires_at': response_data['expires_at'],
-        # })
+        user = StravaProfile.objects.get(username=username)
+        user.first_name = athlete['firstname']
+        user.last_name = athlete['lastname']
+        user.strava_id = athlete['id']
+        user.access_token = strava_token
+        user.refresh_token = response_data['refresh_token']
+        user.expires_at = response_data['expires_at']
+        user.is_syncing = False
+        user.save()
 
         refresh = RefreshToken.for_user(user)
 
-        response = Response({
-            'message': 'Logged in successfully',
-            'user': {
-                'username': user.username,
-                'email': user.email,
-            }
-        }, status=status.HTTP_200_OK)
+        response = redirect('http://localhost:5173/')
         access_expiration = datetime.utcnow() + timedelta(minutes=5)
         response.set_cookie(
             key='jwt_access',
