@@ -1,5 +1,5 @@
 from celery import shared_task
-from activities.utils import get_activities, get_activities1
+# from activities.utils import get_activities, get_activities1
 import logging
 from celery import shared_task
 import requests
@@ -10,17 +10,17 @@ from django.db import transaction
 logger = logging.getLogger('celery')
 
 
-@shared_task
-def add():
-    logger.info(f'Executing task: add()')
-    for i in range(1, 4):
-        get_activities1()
-
-
-
 # @shared_task
-def fetch_strava_activities():
-    print("sssssssssssssssssssssssssss")
+# def add():
+#     logger.info(f'Executing task: add()')
+#     for i in range(1, 4):
+#         get_activities1()
+
+
+
+@shared_task
+def fetchrava_activities():
+    print("This task runs periodically!")
     # syncing_activities_data = SyncingActivitiesData.objects.get(id=syncing_activities_data_id)
     # if syncing_activities_data.status != "Completed":
     #     syncing_activities_data.status = "In Progress"

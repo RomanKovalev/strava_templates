@@ -29,10 +29,10 @@ services:
     links:
       - db
 
-#  redis:
-#    container_name: redis
-#    image: redis:alpine
-#
+  redis:
+    container_name: redis
+    image: redis:alpine
+
 #  celery:
 #    container_name: celery
 #    restart: always
