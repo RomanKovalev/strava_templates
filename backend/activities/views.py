@@ -15,6 +15,7 @@ from rest_framework.response import Response
 from rest_framework_simplejwt.tokens import RefreshToken
 from rest_framework import status
 
+from activities.tasks import fetchrava_activities
 from activities.models import Map, Activity
 from profiles.models import StravaUserProfile as StravaProfile
 from activities.serializers import ActivitySerializer
@@ -402,3 +403,11 @@ class OnBoardApiView(APIView):
         except Exception as e:
             print(e)
             return Response(status=status.HTTP_400_BAD_REQUEST)
+
+
+class StartSyncingView(APIView):
+    def post(self, request):
+        print(request.user.username)
+
+        fetchrava_activities.delay(request.user.username)
+        return Response(status=status.HTTP_200_OK)

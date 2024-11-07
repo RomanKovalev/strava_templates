@@ -1,4 +1,4 @@
-import { useEffect } from 'react';
+import React, { useEffect } from 'react';
 import api from '../api';
 import { Card } from 'flowbite-react';
 import CustomBrushChart from './CustomBrushChart';
@@ -21,6 +21,7 @@ import {
 import { DashboardData } from '../types';
 import { useDispatch, useSelector } from 'react-redux';
 import { RootState } from '../store/store';
+import styles from "./AuthModal.module.css";
 
 const Dashboard = () => {
   const dispatch = useDispatch();
@@ -69,11 +70,13 @@ const Dashboard = () => {
       ) : (
         <>
           {recentActivities.length <= 5 ? (
-            <div>Your activities are syncing now or you have less than 5 activities to import...</div>
+              <div>
+                <div>You have less than 5 activities to import...</div>
+              </div>
           ) : (
-            <>
-              <div className="flex flex-col md:flex-row">
-                <div className="w-full md:w-3/5 p-1" style={{ minWidth: '400px' }}>
+              <>
+                <div className="flex flex-col md:flex-row">
+                  <div className="w-full md:w-3/5 p-1" style={{minWidth: '400px' }}>
                   <Card className="h-full">
                     <RecentActivities />
                   </Card>

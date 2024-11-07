@@ -5,64 +5,45 @@ services:
     image: postgres:13.5
     ports:
       - "5434:5432"
+    env_file: .env.dev
     environment:
-      - POSTGRES_DB=${DB_NAME}
-      - POSTGRES_USER=${DB_USER}
-      - POSTGRES_PASSWORD=${DB_PASSWORD}
       - PGDATA=/var/lib/postgresql/data/pgdata
     volumes:
       - db-database:/var/lib/postgresql/data/pgdata:rw,Z
 
+  redis:
+    container_name: redis
+    image: redis:alpine
 
   backend:
     container_name: strava_backend
     build: .
     depends_on:
       - db
+      - redis
+    links:
+      - redis
     env_file: .env.dev
     command: >
-      sh -c "/app/scripts/run_app_dev.sh"
+      sh -c "sleep 10 && /app/scripts/run_app_dev.sh"  # Добавляем задержку для ожидания запуска db и redis
     volumes:
       - .:/app:rw,Z
     ports:
       - "8000:8000"
-    links:
+
+  celery:
+    container_name: celery
+    restart: always
+    build: .
+    command: >
+      sh -c "sleep 10 && celery -A strava_views worker --loglevel=info"  # Задержка для ожидания backend, db, redis
+    depends_on:
       - db
-
-  redis:
-    container_name: redis
-    image: redis:alpine
-
-#  celery:
-#    container_name: celery
-#    restart: always
-#    build:
-#      context: .
-#    command: celery -A pharmafootpath worker -l debug
-#    volumes:
-#      - ./:/app
-#      - ./trial_downloads:/app/trial_downloads:rw,Z
-#      - ./parallel_trade_downloads:/app/parallel_trade_downloads:rw,Z
-#    env_file: .env.develop
-#    depends_on:
-#      - db
-#      - redis
-##      - web
-#  celery-beat:
-#    container_name: celery-beat
-#    restart: always
-#    build:
-#      context: .
-#    command: celery -A pharmafootpath beat -l debug
-#    volumes:
-#      - ./:/app
-#      - ./trial_downloads:/app/trial_downloads:rw,Z
-#      - ./parallel_trade_downloads:/app/parallel_trade_downloads:rw,Z
-#    env_file: .env.develop
-#    depends_on:
-#      - db
-#      - redis
-##      - web
+      - redis
+    volumes:
+      - ./:/app
+    links:  # Убираем links между celery и backend, чтобы избежать циклической зависимости
+      - redis
 
 volumes:
   db-database:

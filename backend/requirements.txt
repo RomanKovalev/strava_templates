@@ -1,5 +1,6 @@
 amqp==5.2.0
 asgiref==3.8.1
+async-timeout==5.0.1
 billiard==4.2.0
 celery==5.4.0
 certifi==2024.7.4
@@ -19,7 +20,6 @@ djangorestframework-simplejwt==5.3.1
 drf-social-oauth2==3.1.0
 idna==3.7
 jwcrypto==1.5.6
-python-dateutil==2.9.0.post0
 kombu==5.4.0
 oauthlib==3.2.2
 prompt_toolkit==3.0.47
@@ -29,6 +29,7 @@ PyJWT==2.9.0
 python-dateutil==2.9.0.post0
 python3-openid==3.2.0
 pytz==2024.1
+redis==5.2.0
 requests==2.32.3
 requests-oauthlib==2.0.0
 six==1.16.0

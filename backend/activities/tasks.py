@@ -19,8 +19,8 @@ logger = logging.getLogger('celery')
 
 
 @shared_task
-def fetchrava_activities():
-    print("This task runs periodically!")
+def fetchrava_activities(user):
+    print("This task runs asyncronously!", user)
     # syncing_activities_data = SyncingActivitiesData.objects.get(id=syncing_activities_data_id)
     # if syncing_activities_data.status != "Completed":
     #     syncing_activities_data.status = "In Progress"
