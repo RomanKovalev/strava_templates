@@ -23,6 +23,7 @@ services:
       - redis
     links:
       - redis
+      - celery
     env_file: .env.dev
     command: >
       sh -c "sleep 10 && /app/scripts/run_app_dev.sh"  # Добавляем задержку для ожидания запуска db и redis
@@ -33,6 +34,7 @@ services:
 
   celery:
     container_name: celery
+    env_file: .env.dev0
     restart: always
     build: .
     command: >
