@@ -1,0 +1,92 @@
+name: Deploy App to EC2
+
+on:
+  workflow_dispatch:
+    inputs:
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v3
+
+      - name: Configure AWS credentials
+        uses: aws-actions/configure-aws-credentials@v1
+        with:
+          aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
+          aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+          aws-region: eu-north-1
+
+      - name: Install SSH client
+        run: sudo apt-get install -y openssh-client
+
+      - name: Add SSH key
+        run: |
+          mkdir -p ~/.ssh
+          echo "${{ secrets.EC2_SSH_KEY }}" > ~/.ssh/id_rsa
+          chmod 600 ~/.ssh/id_rsa
+
+      - name: Get EC2 instance IP
+        id: get_instance_ip
+        run: |
+          INSTANCE_ID=$(aws cloudformation describe-stacks \
+            --stack-name StravaTemplatesStack \
+            --query "Stacks[0].Outputs[?OutputKey=='EC2InstanceId'].OutputValue" \
+            --output text)
+
+          INSTANCE_IP=$(aws ec2 describe-instances \
+            --instance-ids $INSTANCE_ID \
+            --query "Reservations[0].Instances[0].PublicIpAddress" \
+            --output text)
+
+          echo "INSTANCE_IP=$INSTANCE_IP" >> $GITHUB_ENV
+
+      - name: Add EC2 Host to known_hosts
+        run: ssh-keyscan -H "${{ env.INSTANCE_IP }}" >> ~/.ssh/known_hosts
+
+      - name: Create .env file on EC2
+        run: |
+          ssh -o StrictHostKeyChecking=no ubuntu@${{ env.INSTANCE_IP }} << EOF
+            echo '${{ secrets.DJANGO_ENV_FILE }}' > /home/ubuntu/.env
+          EOF
+
+      - name: Connect to EC2 instance and pull Docker image
+        run: |
+          ssh -o StrictHostKeyChecking=no ubuntu@${{ env.INSTANCE_IP }} << 'EOF'
+            echo $DOCKER_PASSWORD | docker login --username $DOCKER_USERNAME --password-stdin
+
+            docker stop strava_templates_web strava_templates_backend || true
+            docker rm strava_templates_web strava_templates_backend || true
+
+            docker rmi rvksoft/strava_templates_backend:latest
+            docker rmi rvksoft/strava_templates_web:latest
+
+            docker pull rvksoft/strava_templates_backend:latest
+            docker pull rvksoft/strava_templates_web:latest
+          
+            docker run -d -p 8000:8000 --env-file .env --name strava_templates_backend rvksoft/strava_templates_backend
+#            docker run -d -p 3000:80 --name strava_templates_web rvksoft/strava_templates_web
+            
+            sudo docker cp strava_templates_backend:/app/docker-compose.prod.yml /home/ubuntu/docker-compose.prod.yml
+          
+            sudo apt update
+            sudo apt install nginx -y
+            sudo rm -rf /etc/nginx/sites-available/*
+            sudo rm -rf /etc/nginx/sites-enabled/*
+            sudo docker cp strava_templates_backend:/app/ec2_nginx.conf /etc/nginx/sites-available/strava.kovalev.cloud
+            sudo ln -s /etc/nginx/sites-available/strava.kovalev.cloud /etc/nginx/sites-enabled/strava.kovalev.cloud
+            sudo systemctl start nginx
+            sudo systemctl enable nginx
+            sudo service nginx reload
+            docker exec strava_templates_backend python manage.py migrate
+            sudo docker stop strava_templates_backend
+            sudo docker rm strava_templates_backend
+            cd /home/ubuntu
+            sudo docker-compose up -f docker-compose.prod.yml
+               
+          EOF
+        env:
+          DOCKER_USERNAME: ${{ secrets.DOCKER_USERNAME }}
+          DOCKER_PASSWORD: ${{ secrets.DOCKER_PASSWORD }}

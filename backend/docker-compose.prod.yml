@@ -1,0 +1,46 @@
+version: "3.7"
+services:
+
+  redis:
+    container_name: redis
+    image: redis:alpine
+
+  backend:
+    container_name: strava_backend
+    image: rvksoft/strava_templates_backend:latest
+    depends_on:
+      - db
+      - redis
+    links:
+      - redis
+      - celery
+    env_file: .env.dev
+    command: >
+      sh -c "sleep 10 && /app/scripts/run_app_dev.sh"  # Добавляем задержку для ожидания запуска db и redis
+    volumes:
+      - .:/app:rw,Z
+    ports:
+      - "8000:8000"
+
+  web:
+    image: rvksoft/strava_templates_web:latest
+    ports:
+      - "3000:80"
+
+  celery:
+    container_name: celery
+    env_file: .env.dev0
+    restart: always
+    build: .
+    command: >
+      sh -c "sleep 10 && celery -A strava_views worker --loglevel=info"  # Задержка для ожидания backend, db, redis
+    depends_on:
+      - db
+      - redis
+    volumes:
+      - ./:/app
+    links:  # Убираем links между celery и backend, чтобы избежать циклической зависимости
+      - redis
+
+volumes:
+  db-database:
