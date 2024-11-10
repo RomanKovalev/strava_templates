@@ -1,4 +1,4 @@
-name: Deploy App to EC2
+name: Deploy App to EC2 V2 (Compose)
 
 on:
   workflow_dispatch:
