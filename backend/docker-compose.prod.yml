@@ -6,20 +6,13 @@ services:
     image: redis:alpine
 
   backend:
-    container_name: strava_backend
-    image: rvksoft/strava_templates_backend:latest
-    depends_on:
-      - redis
-    links:
-      - redis
-      - celery
-    env_file: .env
-    command: >
-      sh -c "sleep 10 && /app/scripts/run_app_dev.sh"
-    volumes:
-      - .:/app:rw,Z
+    image: rvksoft/strava_templates_backend
+    container_name: strava_templates_backend
     ports:
       - "8000:8000"
+    env_file:
+      - .env
+    restart: always
 
   web:
     image: rvksoft/strava_templates_web:latest
