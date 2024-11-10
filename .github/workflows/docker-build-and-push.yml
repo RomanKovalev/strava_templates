@@ -44,3 +44,12 @@ jobs:
     - name: Push frontend Docker image
       run: |
         docker push ${{ secrets.DOCKER_USERNAME }}/strava_templates_web:${{ github.event.inputs.tag }}
+
+    - name: Build Celery Docker image
+      run: |
+        docker build -t ${{ secrets.DOCKER_USERNAME }}/strava_templates_celery:${{ github.event.inputs.tag }} -f backend/Dockerfile backend/
+
+    - name: Push Celery Docker image
+      run: |
+        docker push ${{ secrets.DOCKER_USERNAME }}/strava_templates_celery:${{ github.event.inputs.tag }}
+ 
