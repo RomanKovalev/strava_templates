@@ -13,7 +13,7 @@ services:
     links:
       - redis
       - celery
-    env_file: .env.dev
+    env_file: .env
     command: >
       sh -c "sleep 10 && /app/scripts/run_app_dev.sh"
     volumes:
@@ -28,14 +28,14 @@ services:
 
   celery:
     container_name: celery
-    env_file: .env.dev0
+    image: rvksoft/strava_templates_celery:latest
+    env_file: .env
     restart: always
-    build: .
     command: >
       sh -c "sleep 10 && celery -A strava_views worker --loglevel=info"
     depends_on:
       - redis
     volumes:
       - ./:/app
-    links:  # Убираем links между celery и backend, чтобы избежать циклической зависимости
+    links:
       - redis
