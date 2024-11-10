@@ -9,14 +9,13 @@ services:
     container_name: strava_backend
     image: rvksoft/strava_templates_backend:latest
     depends_on:
-      - db
       - redis
     links:
       - redis
       - celery
     env_file: .env.dev
     command: >
-      sh -c "sleep 10 && /app/scripts/run_app_dev.sh"  # Добавляем задержку для ожидания запуска db и redis
+      sh -c "sleep 10 && /app/scripts/run_app_dev.sh"
     volumes:
       - .:/app:rw,Z
     ports:
@@ -33,14 +32,10 @@ services:
     restart: always
     build: .
     command: >
-      sh -c "sleep 10 && celery -A strava_views worker --loglevel=info"  # Задержка для ожидания backend, db, redis
+      sh -c "sleep 10 && celery -A strava_views worker --loglevel=info"
     depends_on:
-      - db
       - redis
     volumes:
       - ./:/app
     links:  # Убираем links между celery и backend, чтобы избежать циклической зависимости
       - redis
-
-volumes:
-  db-database:
