@@ -108,7 +108,7 @@ class StravaAuthCallbackView(APIView):
 
         refresh = RefreshToken.for_user(user)
 
-        response = redirect('http://localhost:5173/')
+        response = redirect('http://altfitx.com/')
         access_expiration = datetime.utcnow() + timedelta(minutes=5)
         response.set_cookie(
             key='jwt_access',

@@ -16,6 +16,7 @@ services:
 
   web:
     image: rvksoft/strava_templates_web:latest
+    container_name: strava_templates_web
     ports:
       - "3000:80"
 
@@ -28,7 +29,5 @@ services:
       sh -c "sleep 10 && celery -A strava_views worker --loglevel=info"
     depends_on:
       - redis
-    volumes:
-      - ./:/app
     links:
       - redis
