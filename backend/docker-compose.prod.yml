@@ -8,6 +8,8 @@ services:
   backend:
     image: rvksoft/strava_templates_backend
     container_name: strava_templates_backend
+    volumes:
+      - ./app:/app
     ports:
       - "8000:8000"
     env_file:

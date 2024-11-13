@@ -129,7 +129,7 @@ class StravaAuthCallbackView(APIView):
             secure=True,  # Только через HTTPS
             samesite='Lax'
         )
-        fetchrava_activities.delay(user)
+        fetchrava_activities.delay(user.access_token)
         return response
 
 

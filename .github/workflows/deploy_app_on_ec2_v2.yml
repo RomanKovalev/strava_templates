@@ -74,7 +74,9 @@ jobs:
             docker run -d -p 8000:8000 --env-file .env --name strava_templates_backend rvksoft/strava_templates_backend
             
             sudo docker cp strava_templates_backend:/app/docker-compose.prod.yml /home/ubuntu/docker-compose.prod.yml
-          
+            echo "For remote debugging via PyCharm"
+            sudo docker cp strava_templates_backend:/app/ /home/ubuntu/app/
+            
             sudo apt update
             sudo apt install nginx -y
             sudo rm -rf /etc/nginx/sites-available/*
