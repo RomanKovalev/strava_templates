@@ -4,3 +4,7 @@ Local development
 
 celery -A strava_views worker --loglevel=info
 celery -A strava_views beat --loglevel=info
+
+python manage.py shell -c "from profiles.models import StravaUserProfile as StravaProfile;user=StravaProfile.objects.all()[0];from activities.tasks import fetch_strava_activities;fetch_strava_activities(user)"
+
+docker-compose -f docker-compose.prod.yml restart celery
