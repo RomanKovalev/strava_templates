@@ -25,6 +25,8 @@ services:
   celery:
     container_name: celery
     image: rvksoft/strava_templates_celery:latest
+    volumes:
+      - ./app:/app
     env_file: .env
     restart: always
     command: >
