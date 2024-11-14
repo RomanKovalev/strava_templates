@@ -15,11 +15,11 @@ from rest_framework.response import Response
 from rest_framework_simplejwt.tokens import RefreshToken
 from rest_framework import status
 
-from activities.tasks import fetchrava_activities
+from activities.tasks import fetch_strava_activities
 from activities.models import Map, Activity
 from profiles.models import StravaUserProfile as StravaProfile
 from activities.serializers import ActivitySerializer
-from activities.utils import fetch_strava_activities, generate_week_year_pairs, seconds_to_dhms
+from activities.utils import generate_week_year_pairs, seconds_to_dhms
 
 
 class MyProtectedView(APIView):
@@ -115,7 +115,7 @@ class StravaAuthCallbackView(APIView):
             value=refresh.access_token,
             expires=access_expiration,
             httponly=True,
-            secure=True,  # Только через HTTPS
+            secure=True,
             samesite='Lax'
         )
 
@@ -126,10 +126,10 @@ class StravaAuthCallbackView(APIView):
             value=str(refresh),
             expires=refresh_expiration,
             httponly=True,
-            secure=True,  # Только через HTTPS
+            secure=True,
             samesite='Lax'
         )
-        fetchrava_activities.delay(user.access_token)
+        fetch_strava_activities.delay(user.id)
         return response
 
 
@@ -410,5 +410,5 @@ class StartSyncingView(APIView):
     def post(self, request):
         print(request.user.username)
 
-        fetchrava_activities.delay(request.user.username)
+        fetc1hrava_activities.delay(request.user.username)
         return Response(status=status.HTTP_200_OK)
