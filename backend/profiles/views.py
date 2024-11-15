@@ -1,9 +1,10 @@
-from django.contrib.auth import authenticate
+import requests
+from django.contrib.auth import authenticate, get_user_model
+from django.http import JsonResponse
 from datetime import datetime, timedelta
 from rest_framework import status
 from rest_framework.response import Response
 from rest_framework.decorators import api_view
-from django.contrib.auth import get_user_model
 from rest_framework_simplejwt.tokens import RefreshToken
 
 User = get_user_model()
@@ -12,7 +13,17 @@ User = get_user_model()
 def register_user(request):
     email = request.data.get('email')
     password = request.data.get('password')
-
+    captcha_token = request.data.get('captchaToken')
+    response = requests.post(
+        'https://www.google.com/recaptcha/api/siteverify',
+        data={
+            'secret': settings.GOOGLE_RECAPTCHA_SECRET_KEY,
+            'response': captcha_token,
+        }
+    )
+    result = response.json()
+    if not result.get('success'):
+        return JsonResponse({'error': 'Captcha failed'}, status=400)
     if User.objects.filter(username=email).exists():
         return Response({'error': 'User already exists'}, status=status.HTTP_400_BAD_REQUEST)
 

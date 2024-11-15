@@ -4,15 +4,17 @@ import styles from './AuthModal.module.css';
 import {useNavigate} from "react-router-dom";
 import { useDispatch } from 'react-redux';
 import {login as loginAction} from "../store/authSlice";
+import ReCAPTCHA from 'react-google-recaptcha';
 
 const AuthModal = ({ isLoginForm, onClose, handleLoginClick, handleSignupClick }) => {
     const [errorMessage, setErrorMessage] = useState('');
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
     const [confirmPassword, setConfirmPassword] = useState('');
+    const [captchaToken, setCaptchaToken] = useState(null);
+
     const navigate = useNavigate();
     const dispatch = useDispatch();
-
     const registerUser = async (payload) => {
       try {
         const response = await api.post('/v1/register/', payload);
@@ -61,6 +63,10 @@ const handleLogInSubmit = async (e) => {
 
 const handleSignupSubmit = async (e) => {
     e.preventDefault();
+    if (!captchaToken) {
+      alert('Пожалуйста, подтвердите, что вы не робот.');
+      return;
+    }
     console.log("handleSignupSubmit")
     if (!email || !password || !confirmPassword) {
       setErrorMessage('All fields are required');
@@ -79,7 +85,8 @@ const handleSignupSubmit = async (e) => {
     try {
         const result = await registerUser({
             email,
-            password
+            password,
+            captchaToken
         });
         console.log("result: ", result)
         dispatch(loginAction(result.user));
@@ -89,6 +96,9 @@ const handleSignupSubmit = async (e) => {
         console.error(error.message);
     }
 };
+const handleCaptchaChange = (token) => {
+    setCaptchaToken(token); // Сохраняем токен для валидации
+  };
 
     return (
     <div className={styles.modalOverlay}>
@@ -121,6 +131,10 @@ const handleSignupSubmit = async (e) => {
               <input type="email" placeholder="Email" required value={email} onChange={(e) => setEmail(e.target.value)}/>
               <input type="password" placeholder="Password" required value={password} onChange={(e) => setPassword(e.target.value)}/>
               <input type="password" placeholder="Confirm Password" required value={confirmPassword} onChange={(e) => setConfirmPassword(e.target.value)}/>
+              <ReCAPTCHA
+                sitekey="6LfyYYAqAAAAADp_nMS5FbCLxH77QrMDKbGnJ3ts"
+                onChange={handleCaptchaChange}
+              />
               <button type="submit" className={`${styles.btn} ${styles.signupBtn}`} onClick={handleSignupSubmit}>Sign me up</button>
           </form>
           <p>
