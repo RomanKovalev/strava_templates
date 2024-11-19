@@ -31,7 +31,6 @@ jobs:
         fi
 
     - name: Deploy CloudFormation stack if not exists
-      if: env.stack_exists == 'false'
       run: |
         aws cloudformation deploy \
           --template-file ec2_template.yaml \
