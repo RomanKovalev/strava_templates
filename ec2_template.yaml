@@ -167,6 +167,32 @@
             ToPort: 5432
             CidrIp: 10.0.0.64/28
 
+    StravaTemplatesEC2InstanceRole:
+      Type: AWS::IAM::Role
+      Properties:
+        AssumeRolePolicyDocument:
+          Version: "2012-10-17"
+          Statement:
+            - Effect: Allow
+              Principal:
+                Service: ec2.amazonaws.com
+              Action: sts:AssumeRole
+        Policies:
+          - PolicyName: AllowSESSendingEmails
+            PolicyDocument:
+              Version: "2012-10-17"
+              Statement:
+                - Effect: Allow
+                  Action:
+                    - ses:SendEmail
+                    - ses:SendRawEmail
+                  Resource: "*"
+
+    StravaTemplatesEC2InstanceProfile:
+      Type: AWS::IAM::InstanceProfile
+      Properties:
+        Roles:
+          - !Ref StravaTemplatesEC2InstanceRole
 
     StravaTemplatesEC2Instance:
       Type: AWS::EC2::Instance
@@ -182,6 +208,7 @@
             Ebs:
               VolumeSize: 20
               VolumeType: gp3
+        IamInstanceProfile: !Ref StravaTemplatesEC2InstanceProfile
         Tags:
           - Key: Name
             Value: StravaTemplatesEC2Instance
