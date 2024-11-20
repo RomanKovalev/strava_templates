@@ -81,22 +81,20 @@ input {
 }
 
 .signupИtn:hover {
-  background-color: #e04a00; /* Темнее при наведении */
+  background-color: #e04a00;
 }
 
 
-/* Стили для ссылки "I've forgotten my password" */
 .forgotPassword {
   background: none;
   border: none;
-  color: #ff5a00; /* Оранжевый цвет текста */
+  color: #ff5a00;
   cursor: pointer;
-  text-decoration: underline; /* Подчеркнутый текст */
+  text-decoration: underline;
   font-size: 14px;
   margin-bottom: 10px;
 }
 
-/* Стили для формы регистрации */
 .signupForm {
   display: flex;
   flex-direction: column;
@@ -106,29 +104,28 @@ input {
   width: 100%;
   padding: 10px;
   margin-bottom: 10px;
-  border: 1px solid #ccc; /* Серый бордер */
+  border: 1px solid #ccc;
   border-radius: 5px;
   font-size: 14px;
 }
 
-/* Стили для кнопки "Sign me up" */
 .signupBtn {
   width: 100%;
   padding: 10px;
-  background-color: #ff5a00; /* Ярко-оранжевый цвет */
-  color: white; /* Белый текст */
-  border: none; /* Без рамки */
-  border-radius: 5px; /* Скругленные углы */
-  font-size: 16px; /* Размер шрифта */
-  cursor: pointer; /* Курсор-указатель при наведении */
-  transition: background-color 0.3s ease; /* Плавное изменение фона */
+  background-color: #ff5a00;
+  color: white;
+  border: none;
+  border-radius: 5px;
+  font-size: 16px;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+  margin-top: 8px;
 }
 
 .signupBtn:hover {
-  background-color: #e04a00; /* Темнее при наведении */
+  background-color: #e04a00;
 }
 
-/* Стили для формы логина */
 .loginForm {
   display: flex;
   flex-direction: column;
@@ -138,24 +135,23 @@ input {
   width: 100%;
   padding: 10px;
   margin-bottom: 10px;
-  border: 1px solid #ccc; /* Серый бордер */
+  border: 1px solid #ccc;
   border-radius: 5px;
   font-size: 14px;
 }
 
-/* Стили для кнопки "Log me in" */
 .loginBtn {
   width: 100%;
   padding: 10px;
-  background-color: #ff5a00; /* Ярко-оранжевый цвет */
-  color: white; /* Белый текст */
-  border: none; /* Без рамки */
-  border-radius: 5px; /* Скругленные углы */
-  font-size: 16px; /* Размер шрифта */
-  cursor: pointer; /* Курсор-указатель при наведении */
-  transition: background-color 0.3s ease; /* Плавное изменение фона */
+  background-color: #ff5a00;
+  color: white;
+  border: none;
+  border-radius: 5px;
+  font-size: 16px;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
 }
 
 .loginBtn:hover {
-  background-color: #e04a00; /* Темнее при наведении */
+  background-color: #e04a00;
 }
