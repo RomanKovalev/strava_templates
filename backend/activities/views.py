@@ -179,13 +179,13 @@ class DashboardApiView(APIView):
             strava_profile = StravaProfile.objects.get(username=request.user.username)
         except StravaProfile.DoesNotExist:
             return Response({"error": "Strava profile not found"}, status=status.HTTP_404_NOT_FOUND)
-        activities = Activity.objects.filter(athlete=request.user).order_by('-start_date')[:5]
-        if len(activities) <= 10:
+        if Activity.objects.filter(athlete=request.user).count() <= 10:
             return Response({}, status=status.HTTP_204_NO_CONTENT)
+        activities = Activity.objects.filter(athlete=request.user).order_by('-start_date')[:6]
         serializer = ActivitySerializer(activities, many=True)
 
         first_activity_start_date = Activity.objects.filter(
-            athlete__user=request.user
+            athlete=request.user
         ).order_by('start_date').first().start_date.replace(tzinfo=None)
         current_date = datetime.now().replace(tzinfo=None)
         date_difference = relativedelta(current_date, first_activity_start_date)
@@ -388,6 +388,7 @@ class DashboardApiView(APIView):
         }, status=status.HTTP_200_OK)
 
 class ActivityListView(APIView):
+    permission_classes = [IsAuthenticated]
     def get(self, request):
         activities = Activity.objects.all()
         serializer = ActivitySerializer(activities, many=True)
