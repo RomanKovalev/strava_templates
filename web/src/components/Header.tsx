@@ -10,18 +10,18 @@ import {login as loginAction, logout as logoutAction} from "../store/authSlice";
 export const Header = () => {
   const isAuthenticated = useSelector((state: RootState) => state.auth.isAuthenticated);
 
-  const handleSynckClick = (e) => {
-    e.preventDefault();
-    const checkAuth = async () => {
-          try {
-            const response = await api.post<AuthResponse>('/v1/start-syncing/');
-            console.log(response)
-          } catch (error) {
-            console.error(error);
-          }
-        };
-        checkAuth();
-  }
+  // const handleSynckClick = (e) => {
+  //   e.preventDefault();
+  //   const checkAuth = async () => {
+  //         try {
+  //           const response = await api.post<AuthResponse>('/v1/start-syncing/');
+  //           console.log(response)
+  //         } catch (error) {
+  //           console.error(error);
+  //         }
+  //       };
+  //       checkAuth();
+  // }
 
   return (
     <Navbar fluid={true} rounded={true}>
@@ -38,9 +38,9 @@ export const Header = () => {
             <Navbar.Link as="div">
               <Link to="/activities">Activities</Link>
             </Navbar.Link>
-            <Navbar.Link as="div">
-              <a href="" onClick={handleSynckClick}>Sync Activities</a>
-            </Navbar.Link>
+            {/*<Navbar.Link as="div">*/}
+            {/*  <a href="" onClick={handleSynckClick}>Sync Activities</a>*/}
+            {/*</Navbar.Link>*/}
             <Navbar.Link as="div">
               <Link to="/logout">Logout</Link>
             </Navbar.Link>
