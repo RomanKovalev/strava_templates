@@ -199,7 +199,7 @@
       Properties:
         InstanceType: t3.micro
         KeyName: "EC2 temp"
-        ImageId: ami-0f12d24db5eaa6369
+        ImageId: ami-09423ec3aa48e9438
         SubnetId: !Ref StravaTemplatesEC2Subnet
         SecurityGroupIds:
           - !Ref EC2SecurityGroup
