@@ -55,6 +55,13 @@ jobs:
       - name: Connect to EC2 instance and pull Docker image
         run: |
           ssh -o StrictHostKeyChecking=no ubuntu@${{ env.INSTANCE_IP }} << 'EOF'
+          sudo apt update
+          sudo apt install docker.io -y
+          sudo systemctl enable --now docker
+          sudo usermod -aG docker $USER
+          sudo newgrp docker
+          
+          
             echo $DOCKER_PASSWORD | docker login --username $DOCKER_USERNAME --password-stdin
 
             docker stop strava_templates_web strava_templates_backend || true
