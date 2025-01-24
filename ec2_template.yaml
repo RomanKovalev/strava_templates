@@ -312,14 +312,13 @@
         Protocol: HTTPS
         SslPolicy: ELBSecurityPolicy-TLS13-1-2-2021-06
         Certificates:
-          - CertificateArn: arn:aws:acm:eu-north-1:992235354036:certificate/2986ce82-e483-4c7c-b26e-c5224c1edd73
+          - CertificateArn: arn:aws:acm:eu-north-1:977099012190:certificate/02ff532b-16a4-4ba4-b8c5-6b84aa595b3a
 
     AdditionalCertificates:
       Type: AWS::ElasticLoadBalancingV2::ListenerCertificate
       Properties:
         Certificates:
-          - CertificateArn: arn:aws:acm:eu-north-1:992235354036:certificate/2986ce82-e483-4c7c-b26e-c5224c1edd73
-          - CertificateArn: arn:aws:acm:eu-north-1:992235354036:certificate/e2257185-0747-4501-8a1a-c40bca2b12d2
+          - CertificateArn: arn:aws:acm:eu-north-1:977099012190:certificate/02ff532b-16a4-4ba4-b8c5-6b84aa595b3a
         ListenerArn: !Ref ALBListenerHTTPS
 
     ALBListenerRuleApi:
