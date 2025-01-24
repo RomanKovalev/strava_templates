@@ -359,7 +359,7 @@
     ALBARecordA:
       Type: 'AWS::Route53::RecordSet'
       Properties:
-        HostedZoneId: 'Z0885243165F94TUJLIUR'
+        HostedZoneId: 'Z02639822U1TPTTX8GNW9'
         Name: altfitx.com
         Type: 'A'
         AliasTarget:
@@ -369,7 +369,7 @@
     ALBARecordB:
       Type: 'AWS::Route53::RecordSet'
       Properties:
-        HostedZoneId: 'Z0885243165F94TUJLIUR'
+        HostedZoneId: 'Z02639822U1TPTTX8GNW9'
         Name: api.altfitx.com
         Type: 'A'
         AliasTarget:
