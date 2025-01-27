@@ -132,7 +132,7 @@ const handleCaptchaChange = (token) => {
               <input type="password" placeholder="Password" required value={password} onChange={(e) => setPassword(e.target.value)}/>
               <input type="password" placeholder="Confirm Password" required value={confirmPassword} onChange={(e) => setConfirmPassword(e.target.value)}/>
               <ReCAPTCHA
-                sitekey="6LfyYYAqAAAAADp_nMS5FbCLxH77QrMDKbGnJ3ts"
+                sitekey="6LcxAMUqAAAAAH2o0rNGbXTaNAnR-rpJKUVVUECu"
                 onChange={handleCaptchaChange}
               />
               <button type="submit" className={`${styles.btn} ${styles.signupBtn}`} onClick={handleSignupSubmit}>Sign me up</button>
