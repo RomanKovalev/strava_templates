@@ -1,6 +1,7 @@
 import logging
 from celery import shared_task
 import requests
+from django.apps import apps
 from activities.models import Activity, Map
 from profiles.models import StravaUserProfile
 from strava_views import settings
@@ -23,6 +24,11 @@ def fetch_strava_activities(strava_user_profile_id):
         if response.status_code == 200:
             print("syncing_activities_data.page: ", strava_user_profile.page)
             data = response.json()
+
+            Activity = apps.get_model('activities', 'Activity')
+            valid_fields = {field.name for field in Activity._meta.get_fields()}
+            filtered_activity_data = {key: value for key, value in activity_data.items() if key in valid_fields}
+
             if data != []:
                 for activity_data in data:
                     map_data = activity_data.pop('map')
@@ -39,7 +45,7 @@ def fetch_strava_activities(strava_user_profile_id):
                     Activity.objects.get_or_create(
                         athlete=strava_user_profile,
                         map=map_instance,
-                        **activity_data
+                        defaults=filtered_activity_data
                     )
                 strava_user_profile.page += 1
                 strava_user_profile.save()
